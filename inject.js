@@ -1,6 +1,5 @@
 
 
-
 //----- global vars -----
 //menu currently displaying or not
 var TMENU_ACTIVE = false;
@@ -78,7 +77,7 @@ function refreshTuiMenu()
 
 	if(TMENU_ACTIVE && !TMENU_LOADED)
 	{
-		$(TMENU_ID).html('<p> <a id="tui-tweet" href="#">Like this [data]</a> </p>');
+		$(TMENU_ID).html('<p> <a id="tui-tweet" href="#">Like '+ params["name"] + '</a>');
 		TMENU_LOADED = true;
 		
 		//popup window for twitter
