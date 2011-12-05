@@ -1,0 +1,16 @@
+{
+  "name": "GBrowse Testing",
+  "version": "0.31",
+  "permissions": 
+  [
+	"tabs",
+	"http://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["jquery.js",  "inject.js"],
+	  "run_at": "document_end"
+    }
+  ]
+}
