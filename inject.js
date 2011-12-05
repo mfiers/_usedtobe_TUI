@@ -9,7 +9,7 @@ var TMENU_LOADED = false;
 var TMENU_ID_HMTL = 'tui-menu';
 //jquery formatted id
 var TMENU_ID = '#' + TMENU_ID_HMTL;
-
+var TUI_LIKE = false;
 //twitter anywhere api link
 var TWITTER_ANYWHERE_HREF = "http://platform.twitter.com/anywhere.js?id=IJUb6CuxDlb9CeDVwAcQ&v=1";
 //twitter popup tweet 
@@ -89,15 +89,21 @@ function refreshTuiMenu()
 		
 		//TODO these variables need to be dynamically generated
 		var tui_id = 'tairg';
-		var obj_id = 'AT1G01040.1';
-		
+		var obj_id = params["name"];
+		if(!TUI_LIKE)
+		{
+			TUI_LIKE = !TUI_LIKE;
 		//popup window for twitter
-		$('#tui-tweet').click(function() {
-			var newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
-			'Post To Twitter','height=350,width=650');
-			//if (window.focus) {newwindow.focus()}
-		});
-		
+			$('#tui-tweet').click(function() {
+				var newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
+				'Post To Twitter','height=350,width=650');
+				//if (window.focus) {newwindow.focus()}
+			});
+		}
+		else
+		{
+			$(TMENU_ID).html('<p> <a id="tui-tweet">You Like '+ params["name"] + '</a>');
+		}
 	}
 	else if(!TMENU_ACTIVE)
 	{
