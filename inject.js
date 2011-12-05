@@ -12,7 +12,14 @@ var TMENU_ID = '#' + TMENU_ID_HMTL;
 
 //twitter anywhere api link
 var TWITTER_ANYWHERE_HREF = "http://platform.twitter.com/anywhere.js?id=IJUb6CuxDlb9CeDVwAcQ&v=1";
+//twitter popup tweet 
+var TWITTER_POPUP_TWEET = 'https://twitter.com/intent/tweet?text=';
 
+
+//TUI like message format 
+//{0} = tui id (eg: tairg)
+//{1} = object id (eg: AT1G01040.1)
+var TUI_LIKE_FORMAT = '<msg here> #tui tui:I tui:like %s:%s';
 
 
 //----- start script -----
@@ -77,12 +84,16 @@ function refreshTuiMenu()
 
 	if(TMENU_ACTIVE && !TMENU_LOADED)
 	{
-		$(TMENU_ID).html('<p> <a id="tui-tweet" href="#">Like '+ params["name"] + '</a>');
+		$(TMENU_ID).html('<p> <a id="tui-tweet">Like '+ params["name"] + '</a>');
 		TMENU_LOADED = true;
+		
+		//TODO these variables need to be dynamically generated
+		var tui_id = 'tairg';
+		var obj_id = 'AT1G01040.1';
 		
 		//popup window for twitter
 		$('#tui-tweet').click(function() {
-			var newwindow=window.open('https://twitter.com/intent/tweet?text=%3Cmsg%20here%3E%20%23tui%20tui%3AI%20tui%3Alike%20tairg%3AAT1G01040.1',
+			var newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
 			'Post To Twitter','height=350,width=650');
 			//if (window.focus) {newwindow.focus()}
 		});
