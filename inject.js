@@ -92,11 +92,13 @@ function refreshTuiMenu()
 		var obj_id = params["name"];
 		if(!TUI_LIKE)
 		{
-			TUI_LIKE = !TUI_LIKE;
+			
 		//popup window for twitter
 			$('#tui-tweet').click(function() {
-				var newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
+				TUI_LIKE = !TUI_LIKE;
+				newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
 				'Post To Twitter','height=350,width=650');
+				
 				//if (window.focus) {newwindow.focus()}
 			});
 		}
