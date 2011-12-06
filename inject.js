@@ -28,22 +28,54 @@ dlog("checking for required params");
 
 var params = getUrlVars();
 
+//this ensures the params are correct 
 if(params["name"] && params["type"] && params["type"] == "gene")
 {
 	dlog("valid params");
 	
+	//now we need to check for a valid page
+	
+	
 	//jquery init
 	 $(document).ready(function() {
 	 
-		dlog("linking twitter api");
-		//load js
-		$.getScript(TWITTER_ANYWHERE_HREF);
+		dlog('Document ready');
 	 
-	   	createTuiMenu();
+		dlog('finding "gene model" tag"');
+		var foundEl = $('td').find(":contains('Gene Model: " + params["name"] + "')")[0];
+		
+		if(foundEl)
+		{
+			dlog('Found element')
+			
+			dlog("linking twitter api");
+			//load js
+			$.getScript(TWITTER_ANYWHERE_HREF);
+		 
+			//createTuiMenu();
+			createTuiLike(foundEl);
+			
+		}
+		else dlog('No element found');
 		
 	 });
 }
 else dlog("params not valid");
+
+//image element to a 'like' symbol
+var LIKE_IMG_EL = '<img src="http://teambravo.media.officelive.com/images/463px-Symbol_thumbs_up.svg.png" width="12" height="18" />';
+
+//appends a tui like button to the top of the page
+function createTuiLike(element)
+{
+	dlog('creating tui like element');
+
+	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL + '</a></b>');
+	$('#tui-like-link').click(function () {
+		alert('You like: ' + params["name"]);
+	});
+
+}
 
 
 //creates a menu at the bottom of the page
