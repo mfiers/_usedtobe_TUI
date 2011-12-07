@@ -72,7 +72,8 @@ function createTuiLike(element)
 
 	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL + '</a></b>');
 	$('#tui-like-link').click(function () {
-		alert('You like: ' + params["name"]);
+		//alert('You like: ' + params["name"]);
+		tuiTweetPopup();
 	});
 
 }
@@ -107,6 +108,16 @@ function createTuiMenu()
 
 
 
+function tuiTweetPopup()
+{	
+	var tui_id = 'tairg';
+	var obj_id = params["name"];
+
+	newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
+				'Post To Twitter','height=350,width=650');
+}
+
+
 
 //refresh function called everytime page updates
 function refreshTuiMenu()
@@ -119,18 +130,13 @@ function refreshTuiMenu()
 		$(TMENU_ID).html('<p> <a id="tui-tweet">Like '+ params["name"] + '</a>');
 		TMENU_LOADED = true;
 		
-		//TODO these variables need to be dynamically generated
-		var tui_id = 'tairg';
-		var obj_id = params["name"];
 		if(!TUI_LIKE)
 		{
 			
 		//popup window for twitter
 			$('#tui-tweet').click(function() {
 				TUI_LIKE = !TUI_LIKE;
-				newwindow=window.open(TWITTER_POPUP_TWEET + encodeURIComponent(sprintf(TUI_LIKE_FORMAT, tui_id, obj_id)) ,
-				'Post To Twitter','height=350,width=650');
-				
+				tuiTweetPopup();
 				//if (window.focus) {newwindow.focus()}
 			});
 		}
