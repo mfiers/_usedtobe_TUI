@@ -14,6 +14,8 @@ independent. It will contain an TUI object with all the
 functions available to use on a page.
 ############################################################*/
 
+
+
 //define the tui namespace
 var TUI = {
 
@@ -23,6 +25,9 @@ var TUI = {
 	META_TUI_TYPE: "tui-type",
 	META_TUI_LIKE_COUNT: "tui-like-count",
 	META_TUI_DISLIKE_COUNT: "tui-dislike-count",
+	
+	/* Tui like format */
+	TUI_LIKE_FORMAT: ' #tui :I :like %s:%s',
 
 
 	//initializes the TUI object
@@ -38,6 +43,10 @@ var TUI = {
 		TUI.__appendToHead(TUI.META_TUI_TYPE, "0");
 		TUI.__appendToHead(TUI.META_TUI_LIKE_COUNT, "0");
 		TUI.__appendToHead(TUI.META_TUI_DISLIKE_COUNT, "0");
+		
+		
+		//set the default provider to twitter
+		TUIServiceProvider.setProvider(TUIServiceProvider.SP_TWITTER);
 	
 	},
 	
@@ -91,11 +100,39 @@ var TUI = {
 	},
 	
 	
+	//creates a tui like message for the current viewing page
+	createTuiLike: function() {
+	
+		//grab the current object name
+		var name = TUI.getTuiObjectName();
+		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
+		
+		return sprintf(TUI.TUI_LIKE_FORMAT, name, id);
+	},
+	
+	
+	//gets the #tui name for the current viewing page
+	//eg if viewing a gene then it returns "tairg"
+	getTuiObjectName: function() 
+	{
+		var n; //undefined if nothing found
+	
+		switch(TUI.getTuiMeta(TUI.META_TUI_TYPE))
+		{
+			case "gene" : n = "tairg"; break;
+			case "locus" : n = "tairl"; break;
+			case "aa_sequence" : n = "tairp"; break;
+		}
+	
+		return n;
+	},
+	
+	
 	//creates a like menu next to the page title / header
 	_createLikeMenu: function() {
 	
 		//dlog("creating like menu");
-	
+		//TODO
 	},
 	
 
@@ -122,11 +159,11 @@ var TUI = {
 		{
 			dlog("Valid TUI Page");
 			
-			//ensure we have all the libs loaded
-			TUI._init();
-			
 			//pass loading to JQuery 
 			$(document).ready(function() {
+			
+				//ensure we have all the libs loaded
+				TUI._init();
 				//adds meta-data to the page
 				TUI._encodeTuiMetaData();
 				//embeds a like menu to the page
@@ -141,6 +178,61 @@ var TUI = {
 	}
 };
 
+
+//Either twitter or identica 
+var TUIServiceProvider = {
+	//enum values for provider
+	SP_None: 0,
+	SP_Twitter: 1,
+	SP_Identica : 2,
+	
+	//url to open when using twitter
+	TWITTER_POPUP_TWEET_URL: 'https://twitter.com/intent/tweet?text=',
+	//url to open when using identi.ca (NOTE: if user is not logged in then this will not work)
+	IDENTICA_POPUP_NOTICE_URL: 'http://identi.ca/index.php?action=newnotice&status_textarea=',
+	
+	// Current set provider
+	provider: 0,
+	
+	
+	setProvider: function(providerID) {
+		//ensure we have a valid selection
+		switch(providerID)
+		{
+			case TUIServiceProvider.SP_Twitter: TUIServiceProvider.provider = providerID;
+			case TUIServiceProvider.SP_Identica: TUIServiceProvider.provider = providerID;
+			case TUIServiceProvider.SP_None: TUIServiceProvider.provider = providerID;
+		}
+	},
+	
+	
+	//posts a message based on the currently selected service provider
+	postMessage: function(message) {
+	
+		switch(provider)
+		{
+			case TUIServiceProvider.SP_Twitter: TUIServiceProvider._postMessageTwitter(message); break;
+			case TUIServiceProvider.SP_Identica: TUIServiceProvider._postMessageIdentica(message); break;
+			default: throw('No Service Provider has been set!');
+		}
+	},
+	
+	
+	
+	
+	//posts a message to twitter
+	_postMessageTwitter: function(message) {
+		var newwindow=window.open(TUIServiceProvider.TWITTER_POPUP_TWEET_URL + encodeURIComponent(message) ,
+		'Post To Twitter','height=350,width=650');
+	},
+	
+	
+	//posts a message to identica
+	_postMessageIdentica: function(message) {
+		var newwindow=window.open(TUIServiceProvider.IDENTICA_POPUP_NOTICE_URL + encodeURIComponent(message) ,
+		'Post To Identi.ca','height=350,width=650');
+	}
+}
 
 //source: http://papermashup.com/read-url-get-variables-withjavascript/
 function getUrlVars() {
