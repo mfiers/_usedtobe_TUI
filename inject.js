@@ -50,7 +50,7 @@ if(params["name"] && params["type"] && params["type"] == "gene")
 	 
 		dlog('finding "gene model" tag"');
 		foundEl = $('td').find(":contains('Gene Model: " + params["name"] + "')")[0];
-		//$(document).everyTime('5s',getLikeCount(foundEl,false),'0');
+		var refreshLikeCount = setInterval(getNewLikeCount,1000);
 		if(foundEl)
 		{
 			dlog('Found element')
@@ -137,7 +137,8 @@ function getNewLikeCount()
 {
 	getLikeCount(foundEl,false);
 	dlog('Like count after liking: '+ numberOfLikes);
-	$('tui-like-link').append('Like ' + LIKE_IMG_EL +' '+numberOfLikes );
+	$('#tui-like-link').remove();
+	createTuiLike(foundEl,numberOfLikes);
 }
 
 //refresh function called everytime page updates
@@ -213,14 +214,11 @@ var bLike;
 function getLikeCount(foundEl,bLike)
 {
 	var obj_id = params["name"];
-	dlog('gene name'+obj_id);
 	var url='http://search.twitter.com/search.json?&q=';
-	
 	var query;
-	
-	
+		
 		query="#tui :I :like tairg:"+obj_id;
-		dlog('The query is ' + query);
+		//dlog('The query is ' + query);
 		$.getJSON(url+encodeURIComponent(query),function(json)
 		{
 			
