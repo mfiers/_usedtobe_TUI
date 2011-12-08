@@ -1,6 +1,6 @@
 {
   "name": "GBrowse Testing",
-  "version": "0.341",
+  "version": "0.35",
   "permissions": 
   [
 	"tabs",
@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js": ["sprintf-0.6.js", "jquery.js",  "inject.js"],
+      "js": ["sprintf-0.6.js", "jquery.js", "tui.js", "inject.js"],
 	  "run_at": "document_end"
     }
   ]
