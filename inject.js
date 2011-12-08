@@ -16,6 +16,11 @@ var TWITTER_ANYWHERE_HREF = "http://platform.twitter.com/anywhere.js?id=IJUb6Cux
 var TWITTER_POPUP_TWEET = 'https://twitter.com/intent/tweet?text=';
 
 
+
+//init the tui object (and inject data into the page)
+TUI.load();
+
+
 //TUI like message format 
 //{0} = tui id (eg: tairg)
 //{1} = object id (eg: AT1G01040.1)
@@ -172,20 +177,4 @@ function menuClicked()
 {
 	TMENU_ACTIVE = !TMENU_ACTIVE;
 	refreshTuiMenu();
-}
-
-
-//debug log for chrome
-function dlog(text)
-{
-	console.log("#tui: " + text);
-}
-
-//source: http://papermashup.com/read-url-get-variables-withjavascript/
-function getUrlVars() {
-	var vars = {};
-	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		vars[key] = value;
-	});
-	return vars;
 }
