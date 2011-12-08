@@ -16,16 +16,13 @@ var TWITTER_ANYWHERE_HREF = "http://platform.twitter.com/anywhere.js?id=IJUb6Cux
 var TWITTER_POPUP_TWEET = 'https://twitter.com/intent/tweet?text=';
 var numberOfLikes;
 
-<<<<<<< HEAD
 var foundEl;
-=======
 
 
 //init the tui object (and inject data into the page)
 TUI.load();
 
 
->>>>>>> e5a8ad450274f87632c6439c993e198b36e6c5c4
 //TUI like message format 
 //{0} = tui id (eg: tairg)
 //{1} = object id (eg: AT1G01040.1)
@@ -197,8 +194,6 @@ function menuClicked()
 	TMENU_ACTIVE = !TMENU_ACTIVE;
 	refreshTuiMenu();
 }
-<<<<<<< HEAD
-
 
 //debug log for chrome
 function dlog(text)
@@ -242,5 +237,3 @@ function getLikeCount(foundEl,bLike)
 		});
 		
 	}
-=======
->>>>>>> e5a8ad450274f87632c6439c993e198b36e6c5c4
