@@ -14,7 +14,7 @@ var TUI_LIKE = false;
 var TWITTER_ANYWHERE_HREF = "http://platform.twitter.com/anywhere.js?id=IJUb6CuxDlb9CeDVwAcQ&v=1";
 //twitter popup tweet 
 var TWITTER_POPUP_TWEET = 'https://twitter.com/intent/tweet?text=';
-var numberOfLikes;
+var numberOfLikes=0;
 
 var foundEl;
 
@@ -136,7 +136,6 @@ function tuiTweetPopup()
 function getNewLikeCount()
 {
 	getLikeCount(foundEl,false);
-	dlog('Like count after liking: '+ numberOfLikes);
 	$('#tui-like-link').remove();
 	createTuiLike(foundEl,numberOfLikes);
 }
@@ -187,8 +186,6 @@ function refreshTuiMenu()
 	$(TMENU_ID).css('background-color', '#DEB887');
 }
 
-
-
 //called when menu is clicked on
 function menuClicked()
 {
@@ -210,28 +207,57 @@ function getUrlVars() {
 	});
 	return vars;
 }
-var bLike;
+var bLike; //boolean like,when the user has clicked like
 function getLikeCount(foundEl,bLike)
 {
 	var obj_id = params["name"];
 	var url='http://search.twitter.com/search.json?&q=';
 	var query;
+	var users = new Array();
+	query="#tui :I :like tairg:"+obj_id;
 		
-		query="#tui :I :like tairg:"+obj_id;
-		//dlog('The query is ' + query);
-		$.getJSON(url+encodeURIComponent(query),function(json)
+	$.getJSON(url+encodeURIComponent(query),function(json)
+	{
+		$.each(json.results,function(i,tweet)
 		{
-			
-			$.each(json.results,function(i,tweet)
-			{
-			  // $("#results").append('<p><img src="'+tweet.profile_image_url+'" widt="48" height="48" />'+tweet.text+'</p>');
-			   numberOfLikes = i+1; //starts with 0
-			});
-			dlog('numberOfLikes :'+numberOfLikes);
-			if(bLike)
-			{
-				createTuiLike(foundEl,numberOfLikes);
-			}
+		  users.push(tweet.from_user);
 		});
+		numberOfLikes = 0;
+		var actualUsers =  new Array();	
+			
+		for(var j = 0 ; j < users.length;j++)
+		{
+			var user = users.slice(j,j+1);
+			if(j>0)
+			{
+				checkUser(user,actualUsers);
+			}
+			else
+			{
+				actualUsers.push(users.slice(j,j+1));	
+				numberOfLikes = 1;
+			}
+		}
+		if(bLike)
+		{
+			createTuiLike(foundEl,numberOfLikes);
+		}
+	});
 		
+}
+function checkUser(user,actualUsers)
+{
+	var found = false;
+	for(var k = 0;k <actualUsers.length;k++)
+	{
+		if(actualUsers.slice(k,k+1).toString() == user)
+		{
+			found = true;
+		}
 	}
+	if(!found) //user has not liked before
+	{
+		actualUsers.push(user);
+		numberOfLikes = numberOfLikes+1;
+	}	
+}
