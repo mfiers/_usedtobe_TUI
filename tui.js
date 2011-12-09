@@ -149,6 +149,16 @@ var TUI = {
 		return false;
 	},
 	
+    
+    //gets the current id (eg ATG10101.1)
+    getCurrentId: function() {
+        return TUI.getTuiMeta(TUI.META_TUI_ID);
+    },
+    
+    //gets the current type (eg gene, locus)
+    getCurrentType: function() {
+        return TUI.getTuiMeta(TUI.META_TUI_TYPE);
+    },
 	
 
 	//checks the page for correct features and loads the tui object
