@@ -40,9 +40,6 @@ if(TUI.isValidTuiPage())
 			dlog('getting the number of likes of this gene');
 			getLikeCount(foundEl,true);
 			dlog('TESTING');
-		
-			
-			
 		}
 		else dlog('No element found');
 		
@@ -53,11 +50,11 @@ if(TUI.isValidTuiPage())
 var LIKE_IMG_EL = '<img src="http://teambravo.media.officelive.com/images/463px-Symbol_thumbs_up.svg.png" width="12" height="18" />';
 
 //appends a tui like button to the top of the page
-function createTuiLike(element)
+function createTuiLike(element,likes)
 {
 	dlog('creating tui like element');
 	
-	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL +' <span id="like_count">0</span></a></b>');
+	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL +' <span id="like_count">'+likes+'</span></a></b>');
 	$('#tui-like-link').click(function () {
 		tuiTweetPopup();
 		
