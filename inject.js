@@ -111,31 +111,27 @@ function getLikeCount(foundEl,bLike)
 	var obj_id = TUI.getCurrentId();
 	var url='http://search.twitter.com/search.json?q=';
 	var query;
-	var users = new Array();
 	query=TUI.createTuiLike();
 		
 	$.getJSON(url+encodeURIComponent(query),function(json)
 	{
-		$.each(json.results,function(i,tweet)
-		{
-		  users.push(tweet.from_user);
-		});
 		numberOfLikes = 0;
 		var actualUsers =  new Array();	
-			
-		for(var j = 0 ; j < users.length;j++)
+		$.each(json.results,function(i,tweet)
 		{
-			var user = users.slice(j,j+1);
-			if(j>0)
+			if(i>0)
 			{
+				var user = tweet.from_user;
 				checkUser(user,actualUsers);
 			}
 			else
 			{
-				actualUsers.push(users.slice(j,j+1));	
+				actualUsers.push(tweet.from_user);	
 				numberOfLikes = 1;
 			}
-		}
+		 
+		});
+					
 		if(bLike)
 		{
 			createTuiLike(foundEl,numberOfLikes);
