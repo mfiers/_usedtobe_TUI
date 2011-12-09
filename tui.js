@@ -219,7 +219,7 @@ var TUIServiceProvider = {
 	//posts a message based on the currently selected service provider
 	postMessage: function(message) {
 	
-		switch(provider)
+		switch(TUIServiceProvider.provider)
 		{
 			case TUIServiceProvider.SP_Twitter: TUIServiceProvider._postMessageTwitter(message); break;
 			case TUIServiceProvider.SP_Identica: TUIServiceProvider._postMessageIdentica(message); break;
