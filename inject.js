@@ -109,7 +109,7 @@ var bLike; //boolean like,when the user has clicked like
 function getLikeCount(foundEl,bLike)
 {
 	var obj_id = TUI.getCurrentId();
-	var url='http://search.twitter.com/search.json?&q=';
+	var url='http://search.twitter.com/search.json?q=';
 	var query;
 	var users = new Array();
 	query=TUI.createTuiLike();
