@@ -10,10 +10,6 @@ var TMENU_ID_HMTL = 'tui-menu';
 //jquery formatted id
 var TMENU_ID = '#' + TMENU_ID_HMTL;
 var TUI_LIKE = false;
-//twitter anywhere api link
-var TWITTER_ANYWHERE_HREF = "http://platform.twitter.com/anywhere.js?id=IJUb6CuxDlb9CeDVwAcQ&v=1";
-//twitter popup tweet 
-var TWITTER_POPUP_TWEET = 'https://twitter.com/intent/tweet?text=';
 var numberOfLikes=0;
 
 var foundEl;
@@ -42,16 +38,9 @@ if(TUI.isValidTuiPage())
 			dlog('Found element')
 			//query the number of likes on that gene
 			dlog('getting the number of likes of this gene');
-			 getLikeCount(foundEl,true);
+			getLikeCount(foundEl,true);
 			dlog('TESTING');
 		
-			
-			
-			dlog("linking twitter api");
-			//load js
-			$.getScript(TWITTER_ANYWHERE_HREF);
-			
-			//createTuiMenu();
 			
 			
 		}
@@ -64,17 +53,24 @@ if(TUI.isValidTuiPage())
 var LIKE_IMG_EL = '<img src="http://teambravo.media.officelive.com/images/463px-Symbol_thumbs_up.svg.png" width="12" height="18" />';
 
 //appends a tui like button to the top of the page
-function createTuiLike(element,numberOfLikes)
+function createTuiLike(element)
 {
 	dlog('creating tui like element');
 	
-	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL +' '+numberOfLikes +'</a></b>');
+	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL +' <span id="like_count">0</span></a></b>');
 	$('#tui-like-link').click(function () {
 		tuiTweetPopup();
 		
 	});
 	
 		
+        
+}
+
+
+function updateLikeCount(likes)
+{
+    $('#like_count').html(likes);
 }
 
 
@@ -99,8 +95,7 @@ function tuiTweetPopup()
 function getNewLikeCount()
 {
 	getLikeCount(foundEl,false);
-	$('#tui-like-link').remove();
-	createTuiLike(foundEl,numberOfLikes);
+    updateLikeCount(numberOfLikes);
 }
 
 
