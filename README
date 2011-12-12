@@ -1,0 +1,6 @@
+#tui - semantic microblogging in community genome annotation
+
+Test URL: http://www.arabidopsis.org/servlets/TairObject?type=gene&name=AT1G01040.1
+
+Harvester: Polls twitter and identi.ca for #tui tweets and posts the data on Semantic Media Wiki
+Plugin: A plugin for browsers to alter the GBrowse web app and offer quick and easy #tui format messages to post to twitter and identi.ca
