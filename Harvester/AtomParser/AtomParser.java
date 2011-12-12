@@ -6,6 +6,7 @@ package AtomParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ public class AtomParser
         } catch (ParserConfigurationException ex){
             Logger.getLogger(AtomParser.class.getName()).log(Level.SEVERE, null, ex);
         }
+        getUserData();
     }
     private void parseDocument()
     {
@@ -60,9 +62,19 @@ public class AtomParser
                 user = new User(i);
                 user.setUser(el);
                 queryList.add(user);
-                System.out.println("User "+user.getUserIndex() + " Name: "+ user.getUserName() + " Title: " + user.getTitle() + " ImageURL : "+user.getImageUrl() + " published: "+ user.getPublished());
+               // System.out.println("User "+user.getUserIndex() + " Name: "+ user.getUserName() + " Title: " + user.getTitle() + " ImageURL : "+user.getImageUrl() + " published: "+ user.getPublished());
                 
             }
+        }
+    }
+    public void getUserData()
+    {
+        Iterator iterator = queryList.iterator();
+        while(iterator.hasNext())
+        {
+            User newUser = (User)iterator.next();
+            System.out.println("User "+newUser.getUserIndex() + " Name: "+ newUser.getUserName() + " Title: " + newUser.getTitle() + " ImageURL : "+newUser.getImageUrl() + " published: "+ newUser.getPublished());
+            
         }
     }
     public static void main(String[] args)
