@@ -1,10 +1,10 @@
 /*############################################################
 
-					TUI JS LIBRARY 
-	
-						#TUI 
-	Semantic Microblogging in Community Genome Annotation
-			https://github.com/andrew-smith/TUI
+                    TUI JS LIBRARY 
+    
+                        #TUI 
+    Semantic Microblogging in Community Genome Annotation
+            https://github.com/andrew-smith/TUI
 
 	
 	
@@ -22,6 +22,7 @@ var TUI = {
 
 	/* Meta Data Tags */
 	META_TUI_ID: "tui-id",
+	META_TUI_ID_PREFIX: "tui-id-prefix",
 	META_TUI_TYPE: "tui-type",
 	META_TUI_LIKE_COUNT: "tui-like-count",
 	META_TUI_DISLIKE_COUNT: "tui-dislike-count",
@@ -40,6 +41,7 @@ var TUI = {
 		
 		//init all the meta-data tags (just placeholders)
 		TUI.__appendToHead(TUI.META_TUI_ID, "0");
+		TUI.__appendToHead(TUI.META_TUI_ID_PREFIX, "null");
 		TUI.__appendToHead(TUI.META_TUI_TYPE, "0");
 		TUI.__appendToHead(TUI.META_TUI_LIKE_COUNT, "0");
 		TUI.__appendToHead(TUI.META_TUI_DISLIKE_COUNT, "0");
@@ -65,6 +67,10 @@ var TUI = {
 	
 		//get the type
 		TUI.setTuiMeta(TUI.META_TUI_TYPE, getUrlVars()["type"]);
+		
+        //set the id prefix
+        TUI.setTuiMeta(TUI.META_TUI_ID_PREFIX, TUI.getTuiObjectName());
+        
 	
 		//first need to see what type of page this is
 		switch(TUI.getTuiMeta(TUI.META_TUI_TYPE))
@@ -104,7 +110,7 @@ var TUI = {
 	createTuiLike: function() {
 	
 		//grab the current object name
-		var name = TUI.getTuiObjectName();
+		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
 		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
 		
 		return sprintf(TUI.TUI_LIKE_FORMAT, name, id);
