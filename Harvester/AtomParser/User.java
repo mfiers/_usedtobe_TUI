@@ -32,9 +32,9 @@ public class User
     private final static String HREF = "href";
     
     
-    public User(int userIndex)
+    public User()
     {
-        this.userIndex = userIndex;
+       
     }
     public void setUser(Element el)
     {
@@ -88,6 +88,10 @@ public class User
 	}
         return textVal;
     }
+    private String getNameFromURI(String uri)
+    {
+        return uri.substring( uri.lastIndexOf('/')+1, uri.length() );
+    }
     public String getUserName()
     {
        return name;
@@ -110,8 +114,8 @@ public class User
     {
         return published;
     }
-    private String getNameFromURI(String uri)
-    {
-        return uri.substring( uri.lastIndexOf('/')+1, uri.length() );
-    }
+   public void setUserIndex(int index)
+   {
+       userIndex = index;
+   }
 }

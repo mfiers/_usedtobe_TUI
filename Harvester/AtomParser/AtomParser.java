@@ -6,6 +6,7 @@ package AtomParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,16 +27,18 @@ public class AtomParser
 {
     private Document dom;
     private List<User> queryList;
-    private User user;
-    public AtomParser()
+    private String searchURL;
+    private HashSet set;
+    public AtomParser(String searchURL)
     {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         queryList = new ArrayList<User>();
+        set = new HashSet();
         try 
         {
             DocumentBuilder db = dbf.newDocumentBuilder();
            
-            dom = db.parse("http://search.twitter.com/search.atom?q=%23tui%20%3Ai%20%3Alike");
+            dom = db.parse(searchURL);
             parseDocument();
             
         } catch (SAXException ex) {
@@ -45,7 +48,7 @@ public class AtomParser
         } catch (ParserConfigurationException ex){
             Logger.getLogger(AtomParser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        getUserData();
+        viewUserData();
     }
     private void parseDocument()
     {
@@ -53,33 +56,44 @@ public class AtomParser
         //root element
         Element docEl = dom.getDocumentElement();
         NodeList nl = docEl.getElementsByTagName("entry");
-        //get all the elements under entry
+        //get all the elements under entry(main tag)
         if(nl!=null && nl.getLength()>0)
         {
             for(int i = 0; i <nl.getLength();i++)
             {
                 Element el = (Element)nl.item(i);
-                user = new User(i);
+                User user = new User();
                 user.setUser(el);
-                queryList.add(user);
-               // System.out.println("User "+user.getUserIndex() + " Name: "+ user.getUserName() + " Title: " + user.getTitle() + " ImageURL : "+user.getImageUrl() + " published: "+ user.getPublished());
+                if(!userFound(user.getUserName()))
+                {
+                    set.add(user.getUserName());    //add the username to the hashset
+                    user.setUserIndex(set.size());  
+                    queryList.add(user);    //add the user to the list
+                }
                 
             }
         }
     }
-    public void getUserData()
+    private boolean userFound(String userName)
+    {
+        return set.contains(userName);
+            
+    }
+    public void viewUserData()
     {
         Iterator iterator = queryList.iterator();
         while(iterator.hasNext())
         {
             User newUser = (User)iterator.next();
+            
             System.out.println("User "+newUser.getUserIndex() + " Name: "+ newUser.getUserName() + " Title: " + newUser.getTitle() + " ImageURL : "+newUser.getImageUrl() + " published: "+ newUser.getPublished());
             
         }
     }
     public static void main(String[] args)
     {
-        AtomParser ap = new AtomParser();
+        
+        AtomParser ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3Ai%20%3Alike");
         
     }
 }
