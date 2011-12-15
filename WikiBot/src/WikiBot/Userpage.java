@@ -92,15 +92,15 @@ public class Userpage {
 
     //   eg for like     [[Like::TAIRG:AT1G01040.1]] ...genomeType-gene or protein(TAIRG)
     public String semanticSyntax(String messageType) {
-        String likeContent = "";
+        String content = "";
 
        
         String start = "[[";
         String col = ":";
         String end = "]]\n";
 //        messageType = getMessageType(type);
-        likeContent = likeContent.concat(start + messageType + col + col + object_name + col + object_Id + end);
-        return likeContent;
+        content = content.concat(start + messageType + col + col + object_name + col + object_Id + end);
+        return content;
     }
 
     public String getStartTag(String type, boolean begn) {
@@ -116,15 +116,4 @@ public class Userpage {
         data = data.concat("\n" + "<!-- " + type.toUpperCase() + "_" + start + "_HERE-->\n");
         return data;
     }
-
-//    private String getMessageType(int type) {
-//        String messageType = "";
-//        if (type == LIKE) {
-//            messageType = "like";
-//        }
-//        if (type == DISLIKE) {
-//            messageType = "dislike";
-//        }
-//        return messageType;
-//    }
 }
