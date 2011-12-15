@@ -63,9 +63,16 @@ public class AtomParser {
                 User user = new User();
                 user.setUser(el);
                 if (!userFound(user.getUserName())) {
-                    set.add(user.getUserName());    //add the username to the hashset
+                      //add the username to the hashset
                     user.setUserIndex(set.size());
-                    userList.add(user);    //add the user to the list
+                    String title = user.getTitle();
+                    
+                    
+                    
+                    //check if title is valid
+                     set.add(user.getUserName()); //only add to set if a valid Title
+                    userList.add(user);    //add the user to the list only if valid title
+                    
                 }
 
             }
