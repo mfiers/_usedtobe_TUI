@@ -4,7 +4,6 @@
  */
 package AtomParser;
 
-import java.awt.Image;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -14,7 +13,7 @@ import org.w3c.dom.NodeList;
 
 /**
  *
- * @author Andrew and Mukti
+ * 
  */
 public class User {
 

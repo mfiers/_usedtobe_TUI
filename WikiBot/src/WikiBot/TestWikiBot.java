@@ -2,19 +2,17 @@ package WikiBot;
 
 import AtomParser.AtomParser;
 import AtomParser.User;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
 
 /**
- * Andrew and Mukti
+ *
  */
 public class TestWikiBot {
 
@@ -45,16 +43,16 @@ public class TestWikiBot {
         loadWiki();
     }
 
-    public void loadWiki() {
+    private void loadWiki() {
         loginWiki();
         setUserPage();
     }
 
-    public void setUserList() {
+    private void setUserList() {
         userList = ap.getUserList();
     }
 /** adds username **/
-    public void addUsername() {
+    private void addUsername() {
         int i = 0;
         Iterator iterator = userList.iterator();
         while (iterator.hasNext()) {

@@ -6,7 +6,7 @@ package WikiBot;
 
 /**
  *
- * @author Andrew and Mukti
+ * 
  */
 public class Userpage {
 
@@ -47,7 +47,7 @@ public class Userpage {
                 String splitContent, endContent;
 
 
-                int index = content.indexOf("<!-- LIKE_START_HERE-->") + new String("<!-- LIKE_START_HERE-->").length();;
+                int index = content.indexOf("<!-- LIKE_START_HERE-->") + "<!-- LIKE_START_HERE-->".length();;
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(type));
@@ -72,7 +72,7 @@ public class Userpage {
             if (!content.contains(semanticSyntax(messageType))) {
                 String splitContent, endContent;
 
-                int index = content.indexOf("<!-- DISLIKE_START_HERE-->") + new String("<!-- DISLIKE_START_HERE-->").length();;
+                int index = content.indexOf("<!-- DISLIKE_START_HERE-->") + "<!-- DISLIKE_START_HERE-->".length();;
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(messageType));
@@ -92,15 +92,12 @@ public class Userpage {
 
     //   eg for like     [[Like::TAIRG:AT1G01040.1]] ...genomeType-gene or protein(TAIRG)
     public String semanticSyntax(String messageType) {
-        String content = "";
-
-       
+        String semanticSyntax = "";
         String start = "[[";
         String col = ":";
         String end = "]]\n";
-//        messageType = getMessageType(type);
-        content = content.concat(start + messageType + col + col + object_name + col + object_Id + end);
-        return content;
+        semanticSyntax = semanticSyntax.concat(start + messageType + col + col + object_name + col + object_Id + end);
+        return semanticSyntax;
     }
 
     public String getStartTag(String type, boolean begn) {

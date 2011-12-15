@@ -30,9 +30,6 @@ public class AtomParser {
     private String searchURL;
     private HashSet set;
     private String object;
-    
-    /** Regular Expression to search tweets for */
-    private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
 
     public AtomParser(String searchURL) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -68,15 +65,13 @@ public class AtomParser {
                 if (!userFound(user.getUserName())) {
                       //add the username to the hashset
                     user.setUserIndex(set.size());
+                    String title = user.getTitle();
                     
-                    //check if message is proper tui format
-                    String data = user.getTitle().toUpperCase().replace(" :", " TUI:");
                     
-                    if(data.matches(REGEX_TUI))
-                    {
-                        user.setUserIndex(set.size());
-                        userList.add(user);    //add the user to the list
-                    }
+                    
+                    //check if title is valid
+                     set.add(user.getUserName()); //only add to set if a valid Title
+                    userList.add(user);    //add the user to the list only if valid title
                     
                 }
 
@@ -89,14 +84,12 @@ public class AtomParser {
 
     }
 
-    public void viewUserData() {
+    private void viewUserData() {
         Iterator iterator = userList.iterator();
         while (iterator.hasNext()) {
             User newUser = (User) iterator.next();
-
             System.out.println("User " + newUser.getUserIndex() + " Name: " + newUser.getUserName() + " Title: " + newUser.getTitle() + " StatusURL : " + newUser.getStatusUrl() + " published: " + newUser.getPublished());
-
-        }
+       }
         System.out.println("Number of likes: " + getNumberOfUsers());
     }
 
