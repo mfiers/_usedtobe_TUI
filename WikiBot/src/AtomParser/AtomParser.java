@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author Andrew and Mukti
+ * 
  */
 public class AtomParser {
 
@@ -30,6 +30,7 @@ public class AtomParser {
     private String searchURL;
     private HashSet set;
     private String object;
+    private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
 
     public AtomParser(String searchURL) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -63,25 +64,23 @@ public class AtomParser {
                 User user = new User();
                 user.setUser(el);
                 if (!userFound(user.getUserName())) {
-                      //add the username to the hashset
+                    //add the username to the hashset
                     user.setUserIndex(set.size());
-                    String title = user.getTitle();
-                    
-                    
-                    
-                    //check if title is valid
-                     set.add(user.getUserName()); //only add to set if a valid Title
-                    userList.add(user);    //add the user to the list only if valid title
-                    
-                }
 
+                    //check if message is proper tui format
+                    String data = user.getTitle().toUpperCase().replace(" :", " TUI:");
+
+                    if (data.matches(REGEX_TUI)) {
+                        user.setUserIndex(set.size());
+                        userList.add(user);    //add the user to the list
+                    }
+                }
             }
         }
     }
    
     private boolean userFound(String userName) {
         return set.contains(userName);
-
     }
 
     private void viewUserData() {
@@ -110,8 +109,7 @@ public class AtomParser {
     }
 
     public static void main(String[] args) {
-
         AtomParser ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.1");
-        ap.setObject("AT1G01040.1");
+       // ap.setObject("AT1G01040.1");
     }
 }
