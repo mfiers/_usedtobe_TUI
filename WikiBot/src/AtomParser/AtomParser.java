@@ -38,7 +38,6 @@ public class AtomParser {
         set = new HashSet();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-
             dom = db.parse(searchURL);
             parseDocument();
 
@@ -87,9 +86,7 @@ public class AtomParser {
         Iterator iterator = userList.iterator();
         while (iterator.hasNext()) {
             User newUser = (User) iterator.next();
-            System.out.println("User " + newUser.getUserIndex() + " Name: " + newUser.getUserName() + " Title: " + newUser.getTitle() + " StatusURL : " + newUser.getStatusUrl() + " published: " + newUser.getPublished());
-       }
-        System.out.println("Number of likes: " + getNumberOfUsers());
+        }
     }
 
     public int getNumberOfUsers() {
