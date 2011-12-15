@@ -41,6 +41,7 @@ public class Bot
         Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Search URL: {0}", twitterSearch);
         
         Bot b = new Bot(new AtomParser(twitterSearch));
+        b.findAndPublishResults();
         
     }
     
@@ -55,6 +56,15 @@ public class Bot
     public Bot(AtomParser atomParser)
     {
         this.atomParser = atomParser;
+    }
+    
+    /**
+     * Searches through the atomparser and posts all the 
+     * like statuses to the wiki
+     */
+    public void findAndPublishResults()
+    {
+        
     }
     
 }
