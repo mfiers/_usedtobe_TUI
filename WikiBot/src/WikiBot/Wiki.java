@@ -1,3 +1,5 @@
+package WikiBot;
+
 
 /**
  *  @(#)Wiki.java 0.24 05/09/2011
