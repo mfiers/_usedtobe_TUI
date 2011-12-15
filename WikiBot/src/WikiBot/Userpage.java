@@ -4,6 +4,9 @@
  */
 package WikiBot;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * 
@@ -25,6 +28,7 @@ public class Userpage {
     }
 
     public void createNewUserpage(String type) {
+        Logger.getLogger(Userpage.class.getName()).log(Level.INFO,"Creating new userpage");
         this.type = type;
         content = content.concat("[[Category:User]]\n");
         if (type.equalsIgnoreCase(LIKE)) {
@@ -45,16 +49,15 @@ public class Userpage {
         } else {
             if (!content.contains(semanticSyntax(type))) {
                 String splitContent, endContent;
-
-
+                Logger.getLogger(Userpage.class.getName()).log(Level.INFO,"Appending Like syntax to the page");
                 int index = content.indexOf("<!-- LIKE_START_HERE-->") + "<!-- LIKE_START_HERE-->".length();;
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(type));
                 splitContent = splitContent.concat(endContent);
                 content = splitContent;
-                System.out.println("Finaly Content: " + content);
-            } else {
+             } 
+            else {
                 return content;
             }
         }
@@ -71,14 +74,13 @@ public class Userpage {
         } else {
             if (!content.contains(semanticSyntax(messageType))) {
                 String splitContent, endContent;
-
+                 Logger.getLogger(Userpage.class.getName()).log(Level.INFO,"Appending Dislike syntax to the page");
                 int index = content.indexOf("<!-- DISLIKE_START_HERE-->") + "<!-- DISLIKE_START_HERE-->".length();;
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(messageType));
                 splitContent = splitContent.concat(endContent);
                 content = splitContent;
-                System.out.println("Finaly Content: " + content);
             } else {
                 return content;
             }
@@ -92,16 +94,18 @@ public class Userpage {
 
     //   eg for like     [[Like::TAIRG:AT1G01040.1]] ...genomeType-gene or protein(TAIRG)
     public String semanticSyntax(String messageType) {
+        Logger.getLogger(Userpage.class.getName()).log(Level.INFO,"Creating semanticSyntax for the userpage");
         String semanticSyntax = "";
         String start = "[[";
         String col = ":";
         String end = "]]\n";
         semanticSyntax = semanticSyntax.concat(start + messageType + col + col + object_name + col + object_Id + end);
         return semanticSyntax;
+        
     }
 
     public String getStartTag(String type, boolean begn) {
-
+         Logger.getLogger(Userpage.class.getName()).log(Level.INFO,"Creating label");
         String data = "";
         String start;
         if (begn) {

@@ -52,11 +52,7 @@ public class TestWikiBot {
         userList = ap.getUserList();
     }
 /** adds username **/
-<<<<<<< HEAD
     private void addUsername() {
-=======
-    public void addUsername() {
->>>>>>> fc8a0060f29b12111e965ee1cb0d19d51c0caa16
         int i = 0;
         Iterator iterator = userList.iterator();
         while (iterator.hasNext()) {
@@ -93,9 +89,10 @@ public class TestWikiBot {
             Scanner scanner = new Scanner(messageElements[2]).useDelimiter(" ");
             messageType = scanner.next();
             object_name = scanner.next();
-            System.out.println("OBJECT NAME : "+object_name);
-            System.out.println("OBJECT ID : "+object_Id);
-            System.out.println("MESSAGE TYPE : " + messageType);
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name);
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);
+            
         } else {
             return validMessage;
         }
