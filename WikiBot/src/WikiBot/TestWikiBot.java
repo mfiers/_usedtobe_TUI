@@ -52,7 +52,14 @@ public class TestWikiBot {
         userList = ap.getUserList();
     }
 /** adds username **/
+<<<<<<< HEAD
     private void addUsername() {
+=======
+
+    private void addUsername() {
+
+    public void addUsername() {
+>>>>>>> f4db024ef1e48e15fbc25646f1d0bfb028807e6a
         int i = 0;
         Iterator iterator = userList.iterator();
         while (iterator.hasNext()) {
