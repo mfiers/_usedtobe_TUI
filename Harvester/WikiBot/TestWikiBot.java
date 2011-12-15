@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.FailedLoginException;
@@ -26,9 +28,10 @@ public class TestWikiBot {
     private List<User> userList;
     String[] username;
     private Wiki wiki;
-    private static final int LIKE = 0;
-    private static final int DISLIKE = 1;
-    private int type;
+    private String object_name, object_Id;
+    private static final String LIKE = "like";
+    private static final String DISLIKE = "dislike";
+    private String messageType;
 
     /**
      * @param args the command line arguments
@@ -36,8 +39,8 @@ public class TestWikiBot {
     public TestWikiBot() {
         ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.1");
 
-        ap.setObject("AT1G01040.1");
-        type = LIKE;
+
+
         setUserList();
         username = new String[userList.size()];
 
@@ -83,36 +86,102 @@ public class TestWikiBot {
 
         return username;
     }
+    // gets the objectName,object_Id and predicate from the #tui message
 
+    public boolean setSemanticSyntaxObjects(String message) {
+        boolean validMessage = false;
+
+        String[] messageElements = new String[4];
+        if (message.contains("#tui")) {
+            int i = 0;
+            validMessage = true;
+            Scanner scan = new Scanner(message).useDelimiter(":");
+            while (scan.hasNext()) {
+                messageElements[i] = scan.next();
+                i++;
+            }
+            object_Id = messageElements[messageElements.length-1];
+            ap.setObject(object_Id);
+            Scanner scanner = new Scanner(messageElements[2]).useDelimiter(" ");
+            messageType = scanner.next();
+            object_name = scanner.next();
+            System.out.println("OBJECT NAME : "+object_name);
+            System.out.println("OBJECT ID : "+object_Id);
+            System.out.println("MESSAGE TYPE : " + messageType);
+        } else {
+            return validMessage;
+        }
+        return validMessage;
+    }
     // makes a page for all the users 
+
     public void setUserPage() {
 
-        for (int i = 0; i < username.length; i++) {
-            String pageName = username[i];
-            String likeObject = ap.getObject();
+        Iterator iterator = userList.iterator();
+        while (iterator.hasNext()) {
+            User user = (User) iterator.next();
+            String title = user.getTitle();
+            String pageName = user.getUserName();
             String content = null;
-            content = getPageContent(pageName);
-            System.out.println("content: " + content.length());
-            Userpage userpage = new Userpage(pageName, likeObject, content, GENE);
-            if (content.length() < 2) {
-                userpage.createNewUserpage(type);
+            if (setSemanticSyntaxObjects(title)) {
+                for (int i = 0; i < username.length; i++) {
+                    content = getPageContent(pageName);
+                    Userpage userpage = new Userpage(pageName, object_Id, content, object_name);
+                    if (content.length() < 2) {
+                        userpage.createNewUserpage(messageType);
+
+                    } else {
+                        if (messageType.equalsIgnoreCase(DISLIKE)) {
+                            userpage.createDislike(DISLIKE);
+                        } else if (messageType.equalsIgnoreCase(LIKE)) {
+                            userpage.createLike(LIKE);
+                        }
+                    }
+                    content = userpage.getContent();
+                    try {
+                        wiki.edit(twiPage + pageName, content, "", false);
+                    } catch (IOException ex) {
+                        Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (LoginException ex) {
+                        Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
 
             } else {
-                if (type == DISLIKE) {
-                    userpage.createDislike(DISLIKE);
-                } else if (type == LIKE) {
-                    userpage.createLike(LIKE);
-                }
-            }
-            content = userpage.getContent();
-            try {
-                wiki.edit(twiPage + pageName, content, "", false);
-            } catch (IOException ex) {
-                Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (LoginException ex) {
-                Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+                //not a tui message
             }
         }
+
+
+
+
+
+//        for (int i = 0; i < username.length; i++) {
+//            String pageName = username[i];
+//            String likeObject = ap.getObject();
+//            String content = null;
+//            content = getPageContent(pageName);
+//            System.out.println("content: " + content.length());
+//            Userpage userpage = new Userpage(pageName, object_Id, content, GENE);
+//            if (content.length() < 2) {
+//                userpage.createNewUserpage(type);
+//
+//            } else {
+//                if (type == DISLIKE) {
+//                    userpage.createDislike(DISLIKE);
+//                } else if (type == LIKE) {
+//                    userpage.createLike(LIKE);
+//                }
+//            }
+//            content = userpage.getContent();
+//            try {
+//                wiki.edit(twiPage + pageName, content, "", false);
+//            } catch (IOException ex) {
+//                Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (LoginException ex) {
+//                Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
 
     public void loginWiki() {

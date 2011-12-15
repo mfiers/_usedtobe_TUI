@@ -21,79 +21,92 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author mpra289
+ * @author Andrew and Mukti
  */
-public class AtomParser 
-{
+public class AtomParser {
+
     private Document dom;
-    private List<User> queryList;
+    private List<User> userList;
     private String searchURL;
     private HashSet set;
-    public AtomParser(String searchURL)
-    {
+    private String object;
+
+    public AtomParser(String searchURL) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        queryList = new ArrayList<User>();
+        userList = new ArrayList<User>();
         set = new HashSet();
-        try 
-        {
+        try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-           
+
             dom = db.parse(searchURL);
             parseDocument();
-            
+
         } catch (SAXException ex) {
             Logger.getLogger(AtomParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(AtomParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex){
+        } catch (ParserConfigurationException ex) {
             Logger.getLogger(AtomParser.class.getName()).log(Level.SEVERE, null, ex);
         }
         viewUserData();
     }
-    private void parseDocument()
-    {
-        
+
+    private void parseDocument() {
+
         //root element
         Element docEl = dom.getDocumentElement();
         NodeList nl = docEl.getElementsByTagName("entry");
         //get all the elements under entry(main tag)
-        if(nl!=null && nl.getLength()>0)
-        {
-            for(int i = 0; i <nl.getLength();i++)
-            {
-                Element el = (Element)nl.item(i);
+        if (nl != null && nl.getLength() > 0) {
+            for (int i = 0; i < nl.getLength(); i++) {
+                Element el = (Element) nl.item(i);
                 User user = new User();
                 user.setUser(el);
-                if(!userFound(user.getUserName()))
-                {
+                if (!userFound(user.getUserName())) {
                     set.add(user.getUserName());    //add the username to the hashset
-                    user.setUserIndex(set.size());  
-                    queryList.add(user);    //add the user to the list
+                    user.setUserIndex(set.size());
+                    userList.add(user);    //add the user to the list
                 }
-                
+
             }
         }
     }
-    private boolean userFound(String userName)
-    {
+   
+    private boolean userFound(String userName) {
         return set.contains(userName);
-            
+
     }
-    public void viewUserData()
-    {
-        Iterator iterator = queryList.iterator();
-        while(iterator.hasNext())
-        {
-            User newUser = (User)iterator.next();
-            
-            System.out.println("User "+newUser.getUserIndex() + " Name: "+ newUser.getUserName() + " Title: " + newUser.getTitle() + " ImageURL : "+newUser.getImageUrl() + " published: "+ newUser.getPublished());
-            
+
+    public void viewUserData() {
+        Iterator iterator = userList.iterator();
+        while (iterator.hasNext()) {
+            User newUser = (User) iterator.next();
+
+            System.out.println("User " + newUser.getUserIndex() + " Name: " + newUser.getUserName() + " Title: " + newUser.getTitle() + " StatusURL : " + newUser.getStatusUrl() + " published: " + newUser.getPublished());
+
         }
+        System.out.println("Number of likes: " + getNumberOfUsers());
     }
-    public static void main(String[] args)
-    {
-        
-        AtomParser ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3Ai%20%3Alike");
-        
+
+    public int getNumberOfUsers() {
+        return userList.size();
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setObject(String likeObject) {
+        this.object = likeObject;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public static void main(String[] args) {
+
+        AtomParser ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.1");
+        ap.setObject("AT1G01040.1");
     }
 }
