@@ -38,55 +38,41 @@ public class TestWikiBot {
      */
     public TestWikiBot() {
         ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.1");
-
-
-
         setUserList();
         username = new String[userList.size()];
-
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
-        String testing = "";
-        String test = appendContent(testing);
+        addUsername();
         loadWiki();
     }
 
     public void loadWiki() {
         loginWiki();
         setUserPage();
-
     }
 
     public void setUserList() {
         userList = ap.getUserList();
-
     }
-
-    public String appendContent(String content) {
-//        setUserLikeList();
-//        content = "";
+/** adds username **/
+    public void addUsername() {
         int i = 0;
         Iterator iterator = userList.iterator();
         while (iterator.hasNext()) {
-
             User newUser = (User) iterator.next();
             setUsername(newUser.getUserName(), i);
             i++;
         }
-        // content = content.concat("\n"+"This gene has "+ ap.getNumberOfUsers()+ " likes.");
-        return content;
     }
-
+/** sets the name of all the users  **/
     private void setUsername(String name, int i) {
-
         username[i] = name;
-
     }
 
     public String[] getUsername() {
-
         return username;
     }
-    // gets the objectName,object_Id and predicate from the #tui message
+    
+    /** gets the objectName,object_Id and predicate from the #tui message **/
 
     public boolean setSemanticSyntaxObjects(String message) {
         boolean validMessage = false;
@@ -113,6 +99,7 @@ public class TestWikiBot {
         }
         return validMessage;
     }
+ 
     // makes a page for all the users 
 
     public void setUserPage() {
@@ -151,37 +138,6 @@ public class TestWikiBot {
                 //not a tui message
             }
         }
-
-
-
-
-
-//        for (int i = 0; i < username.length; i++) {
-//            String pageName = username[i];
-//            String likeObject = ap.getObject();
-//            String content = null;
-//            content = getPageContent(pageName);
-//            System.out.println("content: " + content.length());
-//            Userpage userpage = new Userpage(pageName, object_Id, content, GENE);
-//            if (content.length() < 2) {
-//                userpage.createNewUserpage(type);
-//
-//            } else {
-//                if (type == DISLIKE) {
-//                    userpage.createDislike(DISLIKE);
-//                } else if (type == LIKE) {
-//                    userpage.createLike(LIKE);
-//                }
-//            }
-//            content = userpage.getContent();
-//            try {
-//                wiki.edit(twiPage + pageName, content, "", false);
-//            } catch (IOException ex) {
-//                Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (LoginException ex) {
-//                Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
     }
 
     public void loginWiki() {
@@ -197,7 +153,6 @@ public class TestWikiBot {
     private String getPageContent(String pageName) {
         String content = null;
         try {
-
             content = wiki.getPageText(twiPage + pageName) + "\n";
 
         } catch (IOException ex) {
@@ -209,6 +164,5 @@ public class TestWikiBot {
     public static void main(String[] args) {
 
         TestWikiBot twb = new TestWikiBot();
-
     }
 }
