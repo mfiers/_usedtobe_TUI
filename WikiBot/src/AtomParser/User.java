@@ -68,9 +68,7 @@ public class User {
 
                     return getNameFromURI(author[1]);
                 }
-
             }
-
         }
         return textVal;
     }
