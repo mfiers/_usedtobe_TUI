@@ -51,7 +51,7 @@ public class Page {
 
     public String createLike(String type) {
         this.type = type;
-        if (!content.contains("<!-- LIKE_START_HERE-->")) {
+        if (!content.contains("<!-- LIKE_START_HERE -->")) {
             content = content.concat(getStartTag(LIKE, true));
             content = content.concat(semanticSyntax(type));
             content = content.concat(getStartTag(LIKE, false));
@@ -60,7 +60,7 @@ public class Page {
             if (!content.contains(semanticSyntax(type))) {
                 String splitContent, endContent;
                 Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending Like syntax to the page");
-                int index = content.indexOf("<!-- LIKE_START_HERE-->") + "<!-- LIKE_START_HERE-->".length();;
+                int index = content.indexOf("<!-- LIKE_START_HERE -->") + "<!-- LIKE_START_HERE -->".length();;
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(type));
@@ -75,7 +75,7 @@ public class Page {
 
     public String createDislike(String messageType) {
         this.type = messageType;
-        if (!content.contains("<!-- DISLIKE_START_HERE-->")) {
+        if (!content.contains("<!-- DISLIKE_START_HERE -->")) {
             content = content.concat(getStartTag(DISLIKE, true));
             content = content.concat(semanticSyntax(messageType));
             content = content.concat(getStartTag(DISLIKE, false));
@@ -84,7 +84,7 @@ public class Page {
             if (!content.contains(semanticSyntax(messageType))) {
                 String splitContent, endContent;
                 Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending Dislike syntax to the page");
-                int index = content.indexOf("<!-- DISLIKE_START_HERE-->") + "<!-- DISLIKE_START_HERE-->".length();;
+                int index = content.indexOf("<!-- DISLIKE_START_HERE -->") + "<!-- DISLIKE_START_HERE -->".length();;
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(messageType));

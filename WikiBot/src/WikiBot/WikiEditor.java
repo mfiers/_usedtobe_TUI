@@ -2,6 +2,7 @@ package WikiBot;
 
 import AtomParser.AtomParser;
 import AtomParser.User;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -166,11 +167,16 @@ public class WikiEditor {
     }
 
     private String getPageContent(String pageName) {
-        String content = null;
-        try {
+        String content = "";
+        try 
+        {
             content = wiki.getPageText(pageName) + "\n";
 
-        } catch (IOException ex) {
+        } 
+        catch (FileNotFoundException ex) {
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
             Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return content;
