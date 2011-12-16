@@ -28,7 +28,7 @@ var TUI = {
 	META_TUI_DISLIKE_COUNT: "tui-dislike-count",
 	
 	/* Tui like format */
-	TUI_LIKE_FORMAT: ' #tui :I :like %s:%s',
+	TUI_LIKE_FORMAT: ' #tui :I :%s %s:%s',
 
 
 	//initializes the TUI object
@@ -72,14 +72,12 @@ var TUI = {
         TUI.setTuiMeta(TUI.META_TUI_ID_PREFIX, TUI.getTuiObjectName());
         
 	
-		//first need to see what type of page this is
-		switch(TUI.getTuiMeta(TUI.META_TUI_TYPE))
-		{
-		
-			case "gene" : TUI.__findTargetId('Gene Model: '); break;
-			case "locus": TUI.__findTargetId('Locus: '); break;
-			case "aa_sequence": TUI.__findTargetId('Protein: '); break;
-		}
+		//set the  id
+        var el = TUI.getElementToInject();        
+        var data = el.innerText.split(": ")[1];
+        data = $.trim(data);        
+        TUI.setTuiMeta(TUI.META_TUI_ID, data);
+        
 	},
 	
 	//finds the first table td element that contains tdContent
@@ -88,11 +86,26 @@ var TUI = {
 	
 		var el = $('td').find(":contains('" + tdContent + "')")[0];
 		
-		var data = el.innerText.substring(tdContent.length);
-		data = $.trim(data);
-		
-		TUI.setTuiMeta(TUI.META_TUI_ID, data);
+        //return the element 
+        return el;
 	},
+    
+    //gets the element to inject the data into
+    getElementToInject: function() {
+    
+        var el;
+    
+        //first need to see what type of page this is
+		switch(TUI.getTuiMeta(TUI.META_TUI_TYPE))
+		{
+		
+			case "gene" : el = TUI.__findTargetId('Gene Model: '); break;
+			case "locus": el = TUI.__findTargetId('Locus: '); break;
+			case "aa_sequence": el = TUI.__findTargetId('Protein: '); break;
+		}
+    
+        return el;
+    },
 	
 	
 	//gets one of the meta-data tag content that has been dynamically inserted inside the page
@@ -113,7 +126,17 @@ var TUI = {
 		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
 		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
 		
-		return sprintf(TUI.TUI_LIKE_FORMAT, name, id);
+		return sprintf(TUI.TUI_LIKE_FORMAT, 'like', name, id);
+	},
+	
+    //creates a tui dislike message for the current viewing page
+	createTuiDislike: function() {
+	
+		//grab the current object name
+		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
+		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
+		
+		return sprintf(TUI.TUI_LIKE_FORMAT, 'dislike', name, id);
 	},
 	
 	
@@ -133,14 +156,6 @@ var TUI = {
 		return n;
 	},
 	
-	
-	//creates a like menu next to the page title / header
-	_createLikeMenu: function() {
-	
-		//dlog("creating like menu");
-		//TODO
-	},
-	
 
 	//checks if the current page looks like a GBrowse site
 	isValidTuiPage: function()
@@ -149,7 +164,7 @@ var TUI = {
 		//if(params["name"] && params["type"] && params["type"] == "gene")
 		if(location.href.indexOf("http://www.arabidopsis.org/servlets/TairObject?") == 0)
 		{
-			return true;
+            return true;
 		}
 	
 		return false;
@@ -182,8 +197,6 @@ var TUI = {
 				TUI._init();
 				//adds meta-data to the page
 				TUI._encodeTuiMetaData();
-				//embeds a like menu to the page
-				TUI._createLikeMenu();
 			});
 			
 		}
