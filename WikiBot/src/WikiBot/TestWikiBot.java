@@ -35,7 +35,7 @@ public class TestWikiBot {
      * @param args the command line arguments
      */
     public TestWikiBot() {
-        ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.1");
+        ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.2");
         setUserList();
         username = new String[userList.size()];
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
@@ -46,6 +46,7 @@ public class TestWikiBot {
     private void loadWiki() {
         loginWiki();
         setUserPage();
+        setObjectPage(object_name.toUpperCase()+":"+object_Id.toUpperCase());
     }
 
     private void setUserList() {
@@ -71,7 +72,8 @@ public class TestWikiBot {
         return username;
     }
     
-    /** gets the objectName,object_Id and predicate from the #tui message **/
+    /** sets the objectName,object_Id and predicate from the #tui message 
+     returns false if the message is invalid**/
 
     public boolean setSemanticSyntaxObjects(String message) {
         boolean validMessage = false;
@@ -90,9 +92,9 @@ public class TestWikiBot {
             Scanner scanner = new Scanner(messageElements[2]).useDelimiter(" ");
             messageType = scanner.next();
             object_name = scanner.next();
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name);
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name); //eg TAIRG
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);     //eg AT1G01040
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);   // eg LIKE
             
         } else {
             return validMessage;
@@ -100,7 +102,7 @@ public class TestWikiBot {
         return validMessage;
     }
  
-    // makes a page for all the users 
+    // makes a page for all the users in the userList
 
     public void setUserPage() {
 
@@ -112,12 +114,12 @@ public class TestWikiBot {
             String content = null;
             if (setSemanticSyntaxObjects(title)) {
                 for (int i = 0; i < username.length; i++) {
-                    content = getPageContent(pageName);
-                    Userpage userpage = new Userpage(pageName, object_Id, content, object_name);
-                    if (content.length() < 2) {
+                    content = getPageContent(twiPage + pageName);
+                    Page userpage = new Page(pageName, object_Id, content, object_name);
+                    if (content.length() < 2) {             //if page does not exist,create a new userpage
                         userpage.createNewUserpage(messageType);
 
-                    } else {
+                    } else {                                 //if the page already exists
                         if (messageType.equalsIgnoreCase(DISLIKE)) {
                             userpage.createDislike(DISLIKE);
                         } else if (messageType.equalsIgnoreCase(LIKE)) {
@@ -125,21 +127,32 @@ public class TestWikiBot {
                         }
                     }
                     content = userpage.getContent();
-                    try {
-                        wiki.edit(twiPage + pageName, content, "", false);
-                    } catch (IOException ex) {
-                        Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (LoginException ex) {
-                        Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    editWiki(twiPage + pageName,content,false);
                 }
-
-            } else {
-                //not a tui message
             }
         }
     }
+    public void editWiki(String pageName, String pageContent, boolean wikiB) {
+        try {
+            wiki.edit(pageName, pageContent, "", wikiB);
+        } catch (IOException ex) {
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LoginException ex) {
+            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void setObjectPage(String objectPagename) {
+        String pageContent = getPageContent(objectPagename);
+        Page objectPage = new Page(object_Id, object_name);
+        if (pageContent.length() < 2) //object page does not exist
+        {
+            objectPage.createObjectPage();
+            pageContent = objectPage.getContent();
+            editWiki(objectPagename,pageContent,false);
+        }
 
+    }
     public void loginWiki() {
         try {
             wiki.login(BOT_USER, BOT_PASS);
@@ -153,7 +166,7 @@ public class TestWikiBot {
     private String getPageContent(String pageName) {
         String content = null;
         try {
-            content = wiki.getPageText(twiPage + pageName) + "\n";
+            content = wiki.getPageText(pageName) + "\n";
 
         } catch (IOException ex) {
             Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
