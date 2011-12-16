@@ -48,6 +48,8 @@ public class Bot
     /** Twitter feed to use */
     private AtomParser atomParser;
     
+    private WikiEditor editor;
+    
     
     /**
      * Creates a new bot with some search results from twitter
@@ -56,6 +58,7 @@ public class Bot
     public Bot(AtomParser atomParser)
     {
         this.atomParser = atomParser;
+        editor = new WikiEditor(atomParser);
     }
     
     /**

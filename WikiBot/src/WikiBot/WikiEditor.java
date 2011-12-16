@@ -14,7 +14,7 @@ import javax.security.auth.login.LoginException;
 /**
  *
  */
-public class TestWikiBot {
+public class WikiEditor {
 
     private static String TEST_PAGE = "TAIR:AT1G01040.1";
     private static final String twiPage = "Twitter:";
@@ -34,8 +34,8 @@ public class TestWikiBot {
     /**
      * @param args the command line arguments
      */
-    public TestWikiBot() {
-        ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.2");
+    public WikiEditor(AtomParser parser) {
+        ap = parser;
         setUserList();
         username = new String[userList.size()];
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
@@ -46,7 +46,7 @@ public class TestWikiBot {
     private void loadWiki() {
         loginWiki();
         setUserPage();
-        setObjectPage(object_name.toUpperCase()+":"+object_Id.toUpperCase());
+       
     }
 
     private void setUserList() {
@@ -92,9 +92,9 @@ public class TestWikiBot {
             Scanner scanner = new Scanner(messageElements[2]).useDelimiter(" ");
             messageType = scanner.next();
             object_name = scanner.next();
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name); //eg TAIRG
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);     //eg AT1G01040
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);   // eg LIKE
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name); //eg TAIRG
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);     //eg AT1G01040
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);   // eg LIKE
             
         } else {
             return validMessage;
@@ -118,6 +118,7 @@ public class TestWikiBot {
                     Page userpage = new Page(pageName, object_Id, content, object_name);
                     if (content.length() < 2) {             //if page does not exist,create a new userpage
                         userpage.createNewUserpage(messageType);
+                        setObjectPage(object_name.toUpperCase()+":"+object_Id.toUpperCase());
 
                     } else {                                 //if the page already exists
                         if (messageType.equalsIgnoreCase(DISLIKE)) {
@@ -136,9 +137,9 @@ public class TestWikiBot {
         try {
             wiki.edit(pageName, pageContent, "", wikiB);
         } catch (IOException ex) {
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (LoginException ex) {
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -157,9 +158,9 @@ public class TestWikiBot {
         try {
             wiki.login(BOT_USER, BOT_PASS);
         } catch (IOException ex) {
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FailedLoginException ex) {
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -169,13 +170,8 @@ public class TestWikiBot {
             content = wiki.getPageText(pageName) + "\n";
 
         } catch (IOException ex) {
-            Logger.getLogger(TestWikiBot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return content;
-    }
-
-    public static void main(String[] args) {
-
-        TestWikiBot twb = new TestWikiBot();
     }
 }
