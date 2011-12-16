@@ -92,6 +92,7 @@ public class WikiEditor {
             Scanner scanner = new Scanner(messageElements[2]).useDelimiter(" ");
             messageType = scanner.next();
             object_name = scanner.next();
+            setObjectPage(object_name.toUpperCase()+":"+object_Id.toUpperCase());
             Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name); //eg TAIRG
             Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);     //eg AT1G01040
             Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);   // eg LIKE
@@ -118,7 +119,7 @@ public class WikiEditor {
                     Page userpage = new Page(pageName, object_Id, content, object_name);
                     if (content.length() < 2) {             //if page does not exist,create a new userpage
                         userpage.createNewUserpage(messageType);
-                        setObjectPage(object_name.toUpperCase()+":"+object_Id.toUpperCase());
+                        
 
                     } else {                                 //if the page already exists
                         if (messageType.equalsIgnoreCase(DISLIKE)) {
