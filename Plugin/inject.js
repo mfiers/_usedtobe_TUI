@@ -1,3 +1,8 @@
+$.ajaxSetup ({
+    // Disable caching of AJAX responses
+    cache: false
+});
+
 
 //init the tui object (and inject data into the page)
 TUI.load();
@@ -46,45 +51,29 @@ function createTuiLike()
 		TUIServiceProvider.setProvider(TUIServiceProvider.SP_Twitter);
         TUIServiceProvider.postMessage(TUI.createTuiDislike());
 	});
+    
+    retrieveLikeData();
 }
 
-/*
+var BASE_WIKI_RDF_LINK = "http://socgen.soer11.ceres.auckland.ac.nz/wiki/index.php/Special:ExportRDF/"; //TAIRG:AT1G01040.2
 
-
-
-//appends a tui like button to the top of the page
-function createTuiLike(element,likes)
+function retrieveLikeData()
 {
-	dlog('creating tui like element');
-	
-	$(element).append(' <b><a id="tui-like-link">Like ' + LIKE_IMG_EL +' <span id="like_count">'+likes+'</span></a></b>');
-	$('#tui-like-link').click(function () {
-		tuiTweetPopup();
-		
-	});
-	
-		
+    var url = BASE_WIKI_RDF_LINK + TUI.getTuiObjectName().toUpperCase() + ":" + TUI.getCurrentId().toUpperCase();
+    dlog("Getting likes from: " + url);
+    
+    $.get(url, function(data) {
+    
+        //data is xml
+    
+        var dl = data.childNodes[1].childNodes[3].childNodes[9].textContent;   //.find("property:TotalDislikes").text();
+        var l = data.childNodes[1].childNodes[3].childNodes[11].textContent;
         
+        $('#' + TUI_DISLIKE_COUNT_ID).html(dl);
+        $('#' + TUI_LIKE_COUNT_ID).html(l);
+        
+        
+        //dlog(data);
+    
+    });
 }
-
-
-function updateLikeCount(likes)
-{
-    $('#like_count').html(likes);
-}
-
-
-
-
-function tuiTweetPopup()
-{	
-    TUIServiceProvider.setProvider(TUIServiceProvider.SP_Twitter);
-    TUIServiceProvider.postMessage(TUI.createTuiLike());
-}
-
-function getNewLikeCount()
-{
-	getLikeCount(foundEl,false);
-    updateLikeCount(numberOfLikes);
-}
-*/
