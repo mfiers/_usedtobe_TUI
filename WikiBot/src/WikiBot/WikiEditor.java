@@ -76,10 +76,11 @@ public class WikiEditor {
     /** sets the objectName,object_Id and predicate from the #tui message 
      returns false if the message is invalid**/
 
-    public boolean setSemanticSyntaxObjects(String message) {
+      public String[] setSemanticSyntaxObjects(String message) {
         boolean validMessage = false;
 
         String[] messageElements = new String[4];
+        String[] msgObjects = new String[3];
         if (message.contains("#tui")) {
             int i = 0;
             validMessage = true;
@@ -97,11 +98,13 @@ public class WikiEditor {
             Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"OBJECT NAME : ",object_name); //eg TAIRG
             Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"OBJECT ID : ",object_Id);     //eg AT1G01040
             Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO,"MESSAGE TYPE : ", messageType);   // eg LIKE
-            
+            msgObjects[0] = object_name;
+            msgObjects[1] = object_Id;
+            msgObjects[2] = messageType;
         } else {
-            return validMessage;
+            return msgObjects;
         }
-        return validMessage;
+        return msgObjects;
     }
  
     // makes a page for all the users in the userList
@@ -114,25 +117,27 @@ public class WikiEditor {
             String title = user.getTitle();
             String pageName = user.getUserName();
             String content = null;
-            if (setSemanticSyntaxObjects(title)) {
-                for (int i = 0; i < username.length; i++) {
-                    content = getPageContent(twiPage + pageName);
-                    Page userpage = new Page(pageName, object_Id, content, object_name);
-                    if (content.length() < 2) {             //if page does not exist,create a new userpage
-                        userpage.createNewUserpage(messageType);
-                        
-
-                    } else {                                 //if the page already exists
-                        if (messageType.equalsIgnoreCase(DISLIKE)) {
-                            userpage.createDislike(DISLIKE);
-                        } else if (messageType.equalsIgnoreCase(LIKE)) {
-                            userpage.createLike(LIKE);
-                        }
-                    }
-                    content = userpage.getContent();
-                    editWiki(twiPage + pageName,content,false);
+            String messageObjects[] = setSemanticSyntaxObjects(title);
+            object_name = messageObjects[0];
+            object_Id = messageObjects[1];
+            messageType = messageObjects[2];
+            for (int i = 0; i < username.length; i++) {
+                content = getPageContent(twiPage + pageName);
+                Page userpage = new Page(pageName, object_Id, content, object_name);
+                if (content.length() < 2) {             //if page does not exist,create a new userpage
+                    userpage.createNewUserpage(messageType);
                 }
+                else {                                 //if the page already exists
+                    if (messageType.equalsIgnoreCase(DISLIKE)) {
+                        userpage.createDislike(DISLIKE);
+                    } else if (messageType.equalsIgnoreCase(LIKE)) {
+                        userpage.createLike(LIKE);
+                    }
+                }
+                content = userpage.getContent();
+                editWiki(twiPage + pageName, content, false);
             }
+
         }
     }
     public void editWiki(String pageName, String pageContent, boolean wikiB) {
