@@ -65,14 +65,14 @@ function retrieveLikeData()
     $.get(url, function(data) {
     
         //data is xml
-    
+        /*
         var dl = data.childNodes[1].childNodes[3].childNodes[9].textContent;   //.find("property:TotalDislikes").text();
         var l = data.childNodes[1].childNodes[3].childNodes[11].textContent;
         
         $('#' + TUI_DISLIKE_COUNT_ID).html(dl);
         $('#' + TUI_LIKE_COUNT_ID).html(l);
         
-        
+        */
         //dlog(data);
     
     });
