@@ -28,19 +28,26 @@ public class Main {
                 String[] splt = line.split("\\s");
                 
                 //username
-                String user = splt[0];
+                final String user = splt[0];
                 
                 //build the message
-                String message = "";
+                String messageBuilder = "";
                 for(int l = 1; l< splt.length; l++)
                 {
-                    message += splt[l] + " ";
+                    messageBuilder += splt[l] + " ";
                 }
                 
-                message = message.trim().toUpperCase().replace(" :", " TUI:");
+                messageBuilder = messageBuilder.trim().toUpperCase().replace(" :", " TUI:");
                 
                 
-                newParser we = new newParser(user, message);
+                final String message = messageBuilder;
+                
+                new Thread( new Runnable() {
+                    @Override
+                    public void run() {
+                        newParser we = new newParser(user, message);
+                    }
+                }).start();
             }
         }
     }
