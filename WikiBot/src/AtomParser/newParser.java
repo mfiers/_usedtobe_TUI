@@ -16,20 +16,20 @@ public class newParser {
     private String message;
     private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
     private newWikiEditor editor;
-    public newParser(String username,String message)
+    public newParser(String username,String msg)
     {
         this.username = username;
-        this.message = message;
+        this.message = msg;
         if(isValidTuiMessage())
         {
-            editor = new newWikiEditor(username,message);
+            editor = new newWikiEditor(username,this.message);
         }
     }
     
     public boolean isValidTuiMessage() {
         boolean isValid = false;
-        String data = message.replace(" :", " TUI:");
-        if (data.matches(REGEX_TUI)) {
+        message = message.replace(" :", " TUI:");
+        if (message.matches(REGEX_TUI)) {
             isValid = true;
         }
         return isValid;
