@@ -28,8 +28,8 @@ public class newParser {
     
     public boolean isValidTuiMessage() {
         boolean isValid = false;
-        String data = message.replace(" :", " TUI:");
-        if (data.matches(REGEX_TUI)) {
+        message = message.replace(" :", " TUI:");
+        if (message.matches(REGEX_TUI)) {
             isValid = true;
         }
         return isValid;
