@@ -16,10 +16,10 @@ public class newParser {
     private String message;
     private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
     private newWikiEditor editor;
-    public newParser(String username,String message)
+    public newParser(String username,String msg)
     {
         this.username = username;
-        this.message = message;
+        this.message = msg;
         if(isValidTuiMessage())
         {
             editor = new newWikiEditor(username,message);
