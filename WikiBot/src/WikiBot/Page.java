@@ -50,6 +50,7 @@ public class Page {
     }
 
     public String createLike(String type) {
+         check(DISLIKE);
         this.type = type;
         if (!content.contains("<!-- LIKE_START_HERE -->")) {
             content = content.concat(getStartTag(LIKE, true));
@@ -74,6 +75,7 @@ public class Page {
     }
 
     public String createDislike(String messageType) {
+         check(LIKE);
         this.type = messageType;
         if (!content.contains("<!-- DISLIKE_START_HERE -->")) {
             content = content.concat(getStartTag(DISLIKE, true));
@@ -95,6 +97,22 @@ public class Page {
             }
         }
         return content;
+    }
+     public void check(String messageType) {
+        String splitContent, endContent;
+        if (content.contains(semanticSyntax(messageType))) // if the gene is already liked/disliked 
+        {
+            int index = content.indexOf(semanticSyntax(messageType));// + semanticSyntax(messageType).length());
+            int sum = semanticSyntax(messageType).length();
+            index = index + sum;
+            splitContent = content.substring(0, content.indexOf(semanticSyntax(messageType)));
+            splitContent = splitContent.concat(content.substring(index));
+            content = splitContent;
+            
+        } else {
+            Logger.getLogger(Page.class.getName()).log(Level.INFO, "Does not ", messageType);
+        }
+
     }
 
     public String getContent() {
