@@ -123,7 +123,7 @@ public class Page {
         } else {
             start = "END";
         }
-        data = data.concat("\n" + "<!-- " + type.toUpperCase() + "_" + start + "_HERE-->\n");
+        data = data.concat("\n" + "<!-- " + type.toUpperCase() + "_" + start + "_HERE -->\n");
         return data;
     }
 }
