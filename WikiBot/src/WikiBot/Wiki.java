@@ -552,7 +552,7 @@ public class Wiki implements Serializable
     // preferences
     private int max = 500; // awkward workaround
     private static final Logger logger = Logger.getLogger("wiki"); // only one required
-    private int throttle = 10000; // throttle
+    private int throttle = 500; // throttle
     private int maxlag = 5;
     private volatile long lastlagcheck;
     private int assertion = 0; // assertion mode
