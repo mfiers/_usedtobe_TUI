@@ -28,7 +28,7 @@ var TUI = {
 	META_TUI_DISLIKE_COUNT: "tui-dislike-count",
 	
 	/* Tui like format */
-	TUI_LIKE_FORMAT: ' #tui :I :%s %s:%s',
+	TUI_LIKE_FORMAT: ' #tui I %s %s:%s',
 
 
 	//initializes the TUI object
