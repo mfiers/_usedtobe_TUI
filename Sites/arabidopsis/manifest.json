@@ -1,0 +1,16 @@
+{
+  "name": "TUI Arabidopsis",
+  "version": "0.1",
+  "permissions": 
+  [
+	"tabs",
+	"http://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["jquery.js", "arabidopsis.js"],
+	  "run_at": "document_end"
+    }
+  ]
+}
