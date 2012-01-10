@@ -19,6 +19,7 @@ functions available to use on a page.
 //define the tui namespace
 var TUI = {
 
+    VERSION: "0.01 testing",
 
 	/* Meta Data Tags */
 	META_TUI_ID: "tui-id",
@@ -33,6 +34,8 @@ var TUI = {
 
 	//initializes the TUI object
 	_init: function() {
+    
+        dlog("Version: " + TUI.VERSION);
 	
 		//ensure JQuery loaded
 		if(!jQuery) throw('JQuery not loaded');
@@ -45,11 +48,6 @@ var TUI = {
 		TUI.__appendToHead(TUI.META_TUI_TYPE, "0");
 		TUI.__appendToHead(TUI.META_TUI_LIKE_COUNT, "0");
 		TUI.__appendToHead(TUI.META_TUI_DISLIKE_COUNT, "0");
-		
-		
-		//set the default provider to twitter
-		TUIServiceProvider.setProvider(TUIServiceProvider.SP_TWITTER);
-	
 	},
 	
 	//helper method for appending data to the head
@@ -104,12 +102,15 @@ var TUI = {
 
 	//loads the tui object and injects data into 
 	init: function() {
-        //pass loading to JQuery 
-        $(document).ready(function() {
+    
+        //ensure we have all the libs loaded
+        //and inject empty elements onto the page
+        TUI._init();
         
-            //ensure we have all the libs loaded
-            TUI._init();
-        });
+        //once that has been completed - notify all listeners that it is safe to start working
+        //with the TUI object
+        //this is called after one second to allow other scripts to attach themselves to the event
+        setTimeout("$(document).trigger('tuiLoaded')", 1000);
 	}
 };
 

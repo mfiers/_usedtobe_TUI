@@ -32,7 +32,7 @@ var TUIServiceProvider = {
 		switch(TUIServiceProvider.provider)
 		{
 			case TUIServiceProvider.SP_Twitter: TUIServiceProvider._popupWindow(TUIServiceProvider.TWITTER_POPUP_TWEET_URL, 'Post to Twitter', message); break;
-			case TUIServiceProvider..SP_Identica: TUIServiceProvider._popupWindow(TUIServiceProvider.IDENTICA_POPUP_NOTICE_URL, 'Post to Identi.ca', message); break;
+			case TUIServiceProvider.SP_Identica: TUIServiceProvider._popupWindow(TUIServiceProvider.IDENTICA_POPUP_NOTICE_URL, 'Post to Identi.ca', message); break;
 			default: throw('No Service Provider has been set!');
 		}
 	},
