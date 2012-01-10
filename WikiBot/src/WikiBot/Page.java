@@ -126,7 +126,7 @@ public class Page {
         String start = "[[";
         String col = ":";
         String end = "]]\n";
-        semanticSyntax = semanticSyntax.concat(start + messageType + col + col + object_name.toUpperCase() + col + object_Id + end);
+        semanticSyntax = semanticSyntax.concat(start + messageType.toLowerCase() + col + col + object_name.toUpperCase() + col + object_Id + end);
         return semanticSyntax;
 
     }
