@@ -1,0 +1,1 @@
+Note: When compiling the plugin make sure to append the script name to the end of the js array in manifest.json

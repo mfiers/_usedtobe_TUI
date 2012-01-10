@@ -1,5 +1,5 @@
 {
-  "name": "TUI Base Testing",
+  "name": "TUI Base Testing", /* change name to TUI <site_name> */
   "version": "0.52",
   "permissions": 
   [
@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js": ["sprintf-0.6.js", "jquery.js", "tui_base.js", "tui_messaging.js", "inject.js"],
+      "js": ["sprintf-0.6.js", "jquery.js", "tui_base.js", "tui_messaging.js", "inject.js" /*, "[target_site.js]" */],
 	  "run_at": "document_end"
     }
   ]
