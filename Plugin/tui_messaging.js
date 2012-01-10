@@ -1,5 +1,5 @@
 
-//Either twitter or identica 
+//Either twitter or identica (or possibly g+
 var TUIServiceProvider = {
 	//enum values for provider
 	SP_None: 0,
@@ -12,7 +12,7 @@ var TUIServiceProvider = {
 	IDENTICA_POPUP_NOTICE_URL: 'http://identi.ca/index.php?action=newnotice&status_textarea=',
 	
 	// Current set provider
-	provider: 0,
+	provider: 0, //default none
 	
 	
 	setProvider: function(providerID) {
@@ -31,25 +31,15 @@ var TUIServiceProvider = {
 	
 		switch(TUIServiceProvider.provider)
 		{
-			case TUIServiceProvider.SP_Twitter: TUIServiceProvider._postMessageTwitter(message); break;
-			case TUIServiceProvider.SP_Identica: TUIServiceProvider._postMessageIdentica(message); break;
+			case TUIServiceProvider.SP_Twitter: TUIServiceProvider._popupWindow(TUIServiceProvider.TWITTER_POPUP_TWEET_URL, 'Post to Twitter', message); break;
+			case TUIServiceProvider..SP_Identica: TUIServiceProvider._popupWindow(TUIServiceProvider.IDENTICA_POPUP_NOTICE_URL, 'Post to Identi.ca', message); break;
 			default: throw('No Service Provider has been set!');
 		}
 	},
 	
-	
-	
-	
-	//posts a message to twitter
-	_postMessageTwitter: function(message) {
-		var newwindow=window.open(TUIServiceProvider.TWITTER_POPUP_TWEET_URL + encodeURIComponent(message) ,
-		'Post To Twitter','height=350,width=650');
-	},
-	
-	
-	//posts a message to identica
-	_postMessageIdentica: function(message) {
-		var newwindow=window.open(TUIServiceProvider.IDENTICA_POPUP_NOTICE_URL + encodeURIComponent(message) ,
-		'Post To Identi.ca','height=350,width=650');
-	}
+    //helper method to create a popup window
+	_popupWindow: function(url, title,  message) {
+        var newwindow=window.open(url + encodeURIComponent(message) ,
+		title,'height=350,width=650');
+    }
 }
