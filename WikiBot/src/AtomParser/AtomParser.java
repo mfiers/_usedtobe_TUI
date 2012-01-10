@@ -104,9 +104,4 @@ public class AtomParser {
     public String getObject() {
         return object;
     }
-
-    public static void main(String[] args) {
-        AtomParser ap = new AtomParser("http://search.twitter.com/search.atom?q=%23tui%20%3AI%20%3Alike%20tairg%3AAT1G01040.1");
-       // ap.setObject("AT1G01040.1");
-    }
 }

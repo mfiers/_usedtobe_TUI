@@ -28,10 +28,35 @@ public class newParser {
     
     public boolean isValidTuiMessage() {
         boolean isValid = false;
-        message = message.replace(" :", " TUI:");
-        if (message.matches(REGEX_TUI)) {
-            isValid = true;
+        
+        //need to put in "TUI:" in front of "I" and "Like"
+        
+        //message = message.replace(" :", " TUI:");
+        
+        String[] msgSplit = message.toUpperCase().split("#TUI", 2); //limit two splits
+        if(msgSplit.length > 1)
+        {
+            String tuiData = "#TUI " + msgSplit[1].trim();
+            
+            //need to check if the 5th index == "I"
+            if(tuiData.charAt(5) == 'I')
+            {
+                tuiData = tuiData.replaceFirst("#TUI I", "#TUI TUI:I");
+            }
+            
+            //now replace either "like" or "dislike" with "tui:like/dislike".
+            tuiData = tuiData.replaceFirst(" LIKE ", " TUI:LIKE ");
+            tuiData = tuiData.replaceFirst(" DISLIKE ", " TUI:DISLIKE ");
+            
+            message = msgSplit[0] + tuiData;
+            
+            if (message.matches(REGEX_TUI)) {
+                isValid = true;
+            }
         }
+        
+        
+        
         return isValid;
     }
     

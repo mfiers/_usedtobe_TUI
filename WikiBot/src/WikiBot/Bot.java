@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 /**
  *
  * Main bot that will run every minute to retrieve tweets from twitter
+ * @deprecated Uses run.Main now
  */
 public class Bot 
 {

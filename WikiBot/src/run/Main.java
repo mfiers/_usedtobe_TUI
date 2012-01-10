@@ -40,6 +40,9 @@ public class Main {
                 messageBuilder = messageBuilder.trim().toUpperCase().replace(" :", " TUI:");
                 
                 
+                
+                
+                
                 final String message = messageBuilder;
                 
                 new Thread( new Runnable() {
