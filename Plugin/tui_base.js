@@ -57,57 +57,7 @@ var TUI = {
 		$('head').append('<meta name="' + id + '" content="' + content + '" />');
 	},
 	
-	
-	//adds <meta> tags to the head of the document so we can quickly access tui data 
-	_encodeTuiMetaData: function() {
-	
-		dlog("adding data to head");
-	
-		var params = getUrlVars();
-	
-		//get the type
-		TUI.setTuiMeta(TUI.META_TUI_TYPE, getUrlVars()["type"]);
-		
-        //set the id prefix
-        TUI.setTuiMeta(TUI.META_TUI_ID_PREFIX, TUI.getTuiObjectName());
-        
-	
-		//set the  id
-        var el = TUI.getElementToInject();        
-        var data = el.innerText.split(": ")[1];
-        data = $.trim(data);        
-        TUI.setTuiMeta(TUI.META_TUI_ID, data);
-        
-	},
-	
-	//finds the first table td element that contains tdContent
-	//then the rest of the innerText is assumed to the the id
-	__findTargetId: function(tdContent) {
-	
-		var el = $('td').find(":contains('" + tdContent + "')")[0];
-		
-        //return the element 
-        return el;
-	},
     
-    //gets the element to inject the data into
-    getElementToInject: function() {
-    
-        var el;
-    
-        //first need to see what type of page this is
-		switch(TUI.getTuiMeta(TUI.META_TUI_TYPE))
-		{
-		
-			case "gene" : el = TUI.__findTargetId('Gene Model: '); break;
-			case "locus": el = TUI.__findTargetId('Locus: '); break;
-			case "aa_sequence": el = TUI.__findTargetId('Protein: '); break;
-		}
-    
-        return el;
-    },
-	
-	
 	//gets one of the meta-data tag content that has been dynamically inserted inside the page
 	getTuiMeta: function(tagName) {
 		return $('meta[name=' + tagName + ']').attr("content");
@@ -140,36 +90,6 @@ var TUI = {
 	},
 	
 	
-	//gets the #tui name for the current viewing page
-	//eg if viewing a gene then it returns "tairg"
-	getTuiObjectName: function() 
-	{
-		var n; //undefined if nothing found
-	
-		switch(TUI.getTuiMeta(TUI.META_TUI_TYPE))
-		{
-			case "gene" : n = "tairg"; break;
-			case "locus" : n = "tairl"; break;
-			case "aa_sequence" : n = "tairp"; break;
-		}
-	
-		return n;
-	},
-	
-
-	//checks if the current page looks like a GBrowse site
-	isValidTuiPage: function()
-	{
-		var params = getUrlVars();
-		//if(params["name"] && params["type"] && params["type"] == "gene")
-		if(location.href.indexOf("http://www.arabidopsis.org/servlets/TairObject?") == 0)
-		{
-            return true;
-		}
-	
-		return false;
-	},
-	
     
     //gets the current id (eg ATG10101.1)
     getCurrentId: function() {
@@ -182,41 +102,16 @@ var TUI = {
     },
 	
 
-	//checks the page for correct features and loads the tui object
-	load: function() {
-		
-		dlog("Checking if valid TUI page");
-		if(TUI.isValidTuiPage())
-		{
-			dlog("Valid TUI Page");
-			
-			//pass loading to JQuery 
-			$(document).ready(function() {
-			
-				//ensure we have all the libs loaded
-				TUI._init();
-				//adds meta-data to the page
-				TUI._encodeTuiMetaData();
-			});
-			
-		}
-		else
-		{
-			dlog("Not a valid TUI page");
-		}
+	//loads the tui object and injects data into 
+	init: function() {
+        //pass loading to JQuery 
+        $(document).ready(function() {
+        
+            //ensure we have all the libs loaded
+            TUI._init();
+        });
 	}
 };
-
-
-
-//source: http://papermashup.com/read-url-get-variables-withjavascript/
-function getUrlVars() {
-	var vars = {};
-	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		vars[key] = value;
-	});
-	return vars;
-}
 
 //debug log for chrome
 function dlog(text)
