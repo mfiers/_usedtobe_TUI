@@ -1,6 +1,6 @@
 {
   "name": "TUI Base Testing", /* change name to TUI <site_name> */
-  "version": "0.52",
+  "version": "0.53",
   "permissions": 
   [
 	"tabs",
