@@ -37,6 +37,7 @@ function loadWormBase()
     {
         case "gene" : idPfx = "wrmbg"; break;
         case "locus" : idPfx = "wrmbl"; break;
+        case "protein" : idPfx = "wrmbp"; break;
     }
     
     if(!idPfx) return; //exit
@@ -79,6 +80,7 @@ function getElementToInject()
 
         case "gene" : el = findTargetId('Gene Summary'); break;
         case "locus": el = findTargetId('Locus report'); break;
+        case "protein": el = findTargetId('Protein Summary'); break;
     }
     return el;
 }
