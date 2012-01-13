@@ -31,11 +31,9 @@ var TUIView = {
     
         //add click listeners for the elements
         $('#' + TUIView.TUI_LIKE_LINK_ID).click(function () {
-            TUIServiceProvider.setProvider(TUIServiceProvider.SP_Twitter);
             TUIServiceProvider.postMessage(TUI.createTuiLike());
         });
         $('#' + TUIView.TUI_DISLIKE_LINK_ID).click(function () {
-            TUIServiceProvider.setProvider(TUIServiceProvider.SP_Twitter);
             TUIServiceProvider.postMessage(TUI.createTuiDislike());
         });
     },
