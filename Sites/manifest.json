@@ -1,5 +1,5 @@
 {
-  "name": "TUI WormBase Testing", /* change name to TUI <site_name> */
+  "name": "TUI Stuff.co.nz Testing", /* change name to TUI <site_name> */
   "version": "0.53",
   "permissions": 
   [
@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js": ["sprintf-0.6.js", "jquery.js", "tui_base.js", "tui_messaging.js", "tui_view.js", "inject.js", "wormbase.js"],
+      "js": ["sprintf-0.6.js", "jquery.js", "tui_base.js", "tui_messaging.js", "tui_view.js", "inject.js", "stuff.js"],
 	  "run_at": "document_end"
     }
   ]
