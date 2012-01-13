@@ -13,9 +13,16 @@ var TUIView = {
 
     //injects a like display on the specified element
     injectLikeDisplay: function(element) {
+        TUIView.injectLikeDisplay(element, false);
+    },
+    
+    //injects a like display on the specified element 
+    //boolean to add a new line before the like count
+    injectLikeDisplay: function(element, newline) {
     
         //inject elements into the element
-        $(element).append(' <b><a id="' + TUIView.TUI_LIKE_LINK_ID + '">Like ' + TUIView.LIKE_IMG_EL + '</a>&nbsp; </b>');
+        var nl = (newline) ? '<br />' : "";
+        $(element).append(nl + ' <b><a id="' + TUIView.TUI_LIKE_LINK_ID + '">Like ' + TUIView.LIKE_IMG_EL + '</a>&nbsp; </b>');
         $(element).append(' <b><a id="' + TUIView.TUI_DISLIKE_LINK_ID + '">Dislike ' + TUIView.DISLIKE_IMG_EL + '</a>&nbsp; </b>');
     
         //add click listeners for the elements

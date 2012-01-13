@@ -28,7 +28,7 @@ function loadStuff()
     }
     
     //finds the first h1 element in the left column 
-    TUIView.injectLikeDisplay($("#left_col").find('h1'));
+    TUIView.injectLikeDisplay($("#left_col").find('h1'), true);
 }
 
 
