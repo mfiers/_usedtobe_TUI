@@ -14,8 +14,7 @@ import java.util.logging.Logger;
 public class Page {
 
     private String username;
-    private static final String LIKE = "like";
-    private static final String DISLIKE = "dislike";
+    public enum MESSAGETYPE { LIKE, DISLIKE , TITLE, COMMENT };
     private String object_Id, content, object_name;
     private String type;
 
@@ -42,51 +41,32 @@ public class Page {
         Logger.getLogger(Page.class.getName()).log(Level.INFO, "Creating new userpage");
         this.type = type;
         content = content.concat("[[Category:User]]\n");
-        if (type.equalsIgnoreCase(LIKE)) {
-            content = createLike(type);
-        } else if (type.equalsIgnoreCase(DISLIKE)) {
-            content = createDislike(type);
-        }
+        create(type);
     }
 
-    public String createLike(String type) {
-         check(DISLIKE);
-        this.type = type;
-        if (!content.contains("<!-- LIKE_START_HERE -->")) {
-            content = content.concat(getStartTag(LIKE, true));
-            content = content.concat(semanticSyntax(type));
-            content = content.concat(getStartTag(LIKE, false));
-
-        } else {
-            if (!content.contains(semanticSyntax(type))) {
-                String splitContent, endContent;
-                Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending Like syntax to the page");
-                int index = content.indexOf("<!-- LIKE_START_HERE -->") + "<!-- LIKE_START_HERE -->".length();;
-                splitContent = content.substring(0, index);
-                endContent = content.substring(index, content.length());
-                splitContent = splitContent.concat("\n" + semanticSyntax(type));
-                splitContent = splitContent.concat(endContent);
-                content = splitContent;
-            } else {
-                return content;
-            }
+    //Create like/dislike/title/comment pages
+    public String create(String messageType)
+    {
+        
+        switch(MESSAGETYPE.valueOf(messageType))    //checking if the previously liked/disliked 
+        {
+            case LIKE : check(MESSAGETYPE.DISLIKE.toString());
+                        break;
+            case DISLIKE : check(MESSAGETYPE.LIKE.toString());
+                            break;
+            default: break;
         }
-        return content;
-    }
-
-    public String createDislike(String messageType) {
-         check(LIKE);
-        this.type = messageType;
-        if (!content.contains("<!-- DISLIKE_START_HERE -->")) {
-            content = content.concat(getStartTag(DISLIKE, true));
+         if (!content.contains("<!-- "+messageType.toUpperCase()+"_START_HERE -->")) {
+            content = content.concat(getStartTag(messageType, true));
             content = content.concat(semanticSyntax(messageType));
-            content = content.concat(getStartTag(DISLIKE, false));
+            content = content.concat(getStartTag(messageType, false));
 
-        } else {
+        }
+         else {
             if (!content.contains(semanticSyntax(messageType))) {
                 String splitContent, endContent;
-                Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending Dislike syntax to the page");
-                int index = content.indexOf("<!-- DISLIKE_START_HERE -->") + "<!-- DISLIKE_START_HERE -->".length();;
+                Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending"+ messageType +"syntax to the page");
+                int index = content.indexOf("<!-- "+messageType.toUpperCase()+"_START_HERE -->") + ("<!-- "+messageType.toUpperCase()+"_START_HERE -->").length();
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
                 splitContent = splitContent.concat("\n" + semanticSyntax(messageType));
@@ -96,6 +76,7 @@ public class Page {
                 return content;
             }
         }
+        
         return content;
     }
      public void check(String messageType) {

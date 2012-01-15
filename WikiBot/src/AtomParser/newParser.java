@@ -59,5 +59,8 @@ public class newParser {
         
         return isValid;
     }
-    
+    public static void main(String[] args)
+    {
+        newParser np = new newParser("mpra289"," #tui I like tairg:AT1G01040.1");
+    }
 }

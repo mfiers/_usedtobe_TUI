@@ -20,8 +20,6 @@ public class newWikiEditor {
 
     private Wiki wiki;
     private static final String twiPage = "Twitter:";
-    private static final String LIKE = "like";
-    private static final String DISLIKE = "dislike";
     private static char[] BOT_PASS = "u]767M4h657%2dj".toCharArray();
     private String object_name, object_Id, messageType;
     private String username, message;
@@ -32,6 +30,7 @@ public class newWikiEditor {
         this.message = message;
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
         loadWiki();
+       
     }
 
     private void loadWiki() {
@@ -80,7 +79,6 @@ public class newWikiEditor {
             pageContent = objectPage.getContent();
             editWiki(objectPagename,pageContent,false);
         }
-
     }
 
     public void setUserPage() {
@@ -93,12 +91,9 @@ public class newWikiEditor {
         Page userpage = new Page(username, object_Id, content, object_name);
         if (content.length() < 2) {             //if page does not exist,create a new userpage
             userpage.createNewUserpage(messageType);
-        } else {                                 //if the page already exists
-            if (messageType.equalsIgnoreCase(DISLIKE)) {
-                userpage.createDislike(DISLIKE);
-            } else if (messageType.equalsIgnoreCase(LIKE)) {
-                userpage.createLike(LIKE);
-            }
+        } else {       
+            //if the page already exists,create add the messageType to the page
+            userpage.create(messageType);
         }
         content = userpage.getContent();
         editWiki(twiPage + username, content, false);

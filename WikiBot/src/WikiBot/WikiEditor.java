@@ -116,9 +116,9 @@ public class WikiEditor {
                 }
                 else {                                 //if the page already exists
                     if (messageType.equalsIgnoreCase(DISLIKE)) {
-                        userpage.createDislike(DISLIKE);
+                        userpage.create(DISLIKE);
                     } else if (messageType.equalsIgnoreCase(LIKE)) {
-                        userpage.createLike(LIKE);
+                        userpage.create(LIKE);
                     }
                 }
                 content = userpage.getContent();
