@@ -18,17 +18,22 @@ function loadStuff()
 
     //split the URL
     var urlSplit = window.location.href.split("/");
+    var validPage = false; //ensure this page is valid
     //find the number - this is the article ID
     for(var i=0; i<urlSplit.length; i++)
     {
         if(isNumber(urlSplit[i]))
         {
             TUI.setTuiMeta(TUI.META_TUI_ID, urlSplit[i]);
+            validPage = true;
         }
     }
     
-    //finds the first h1 element in the left column 
-    TUIView.injectLikeDisplay($("#left_col").find('h1'), true);
+    if(validPage)
+    {
+        //finds the first h1 element in the left column 
+        TUIView.injectLikeDisplay($("#left_col").find('h1'), true);
+    }
 }
 
 
