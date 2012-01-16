@@ -46,6 +46,7 @@ function loadTair()
     
     
     //inject the like UI
+    TUIView.injectTitleChangeDisplay(getElementToInject());
     TUIView.injectLikeDisplay(getElementToInject());
 }
 

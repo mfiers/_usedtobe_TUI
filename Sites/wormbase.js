@@ -56,6 +56,7 @@ function loadWormBase()
     TUI.setTuiMeta(TUI.META_TUI_ID, name);
     
     //inject the like UI
+    TUIView.injectTitleChangeDisplay(getElementToInject());
     TUIView.injectLikeDisplay(getElementToInject());
 }
 
