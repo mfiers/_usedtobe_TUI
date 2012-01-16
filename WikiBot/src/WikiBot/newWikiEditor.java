@@ -4,6 +4,7 @@
  */
 package WikiBot;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -18,12 +19,40 @@ import javax.security.auth.login.LoginException;
  */
 public class newWikiEditor {
 
+    
+    static
+    {
+        try {
+            //load the login details from file
+            Scanner scan = new Scanner(new File("botpw.txt"));
+            
+            String line = null;
+            while(scan.hasNextLine())
+            {
+                line = scan.nextLine();
+                //get the user login name
+                if(line.startsWith("user"))
+                    BOT_USER = line.split("=", 2)[1];
+                //get the password
+                if(line.startsWith("pass"))
+                    BOT_PASS = line.split("=", 2)[1].toCharArray();
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "ERROR! botpw.txt file not found!");
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "EXITING PROGRAM");
+            System.exit(-1);
+            
+        }
+    }
+    
     private Wiki wiki;
     private static final String twiPage = "Twitter:";
-    private static char[] BOT_PASS = "u]767M4h657%2dj".toCharArray();
+    private static char[] BOT_PASS;
     private String object_name, object_Id, messageType;
     private String username, message;
-    private static String BOT_USER = "TuiBot";
+    private static String BOT_USER;
     public enum validMessageType {LIKE, DISLIKE, TITLE, COMMENT};
 
     public newWikiEditor(String username, String message) {

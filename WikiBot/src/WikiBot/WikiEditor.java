@@ -2,6 +2,7 @@ package WikiBot;
 
 import AtomParser.AtomParser;
 import AtomParser.User;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
@@ -17,6 +18,35 @@ import javax.security.auth.login.LoginException;
  */
 public class WikiEditor {
 
+    
+    static
+    {
+        try {
+            //load the login details from file
+            Scanner scan = new Scanner(new File("botpw.txt"));
+            
+            String line = null;
+            while(scan.hasNextLine())
+            {
+                line = scan.nextLine();
+                
+                //get the user login name
+                if(line.startsWith("user"))
+                    BOT_USER = line.split("=", 2)[1];
+                //get the password
+                if(line.startsWith("pass"))
+                    BOT_PASS = line.split("=", 2)[1].toCharArray();
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, "ERROR! botpw.txt file not found!");
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, "EXITING PROGRAM");
+            System.exit(-1);
+            
+        }
+    }
+    
     private static String TEST_PAGE = "TAIR:AT1G01040.1";
     private static final String twiPage = "Twitter:";
     private static String BOT_USER = "TuiBot";
