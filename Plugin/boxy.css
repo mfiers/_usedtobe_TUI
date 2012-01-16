@@ -13,10 +13,10 @@
 	.boxy-wrapper .boxy-bottom-right,
 	.boxy-wrapper .boxy-bottom-left { width: 10px; height: 10px; padding: 0 }
 	
-	:root .boxy-wrapper .boxy-top-left { background: url('chrome-extension://liabhaaonpimkagbifdjioikglajaffi/images/boxy-nw.png'); }
-	:root .boxy-wrapper .boxy-top-right { background: url('chrome-extension://liabhaaonpimkagbifdjioikglajaffi/images/boxy-ne.png'); }
-	:root .boxy-wrapper .boxy-bottom-right { background: url('chrome-extension://liabhaaonpimkagbifdjioikglajaffi/images/boxy-se.png'); }
-	:root .boxy-wrapper .boxy-bottom-left { background: url('chrome-extension://liabhaaonpimkagbifdjioikglajaffi/images/boxy-sw.png'); }
+	:root .boxy-wrapper .boxy-top-left { background: url('chrome-extension://__MSG_@@extension_id__/images/boxy-nw.png'); }
+	:root .boxy-wrapper .boxy-top-right { background: url('chrome-extension://__MSG_@@extension_id__/images/boxy-ne.png'); }
+	:root .boxy-wrapper .boxy-bottom-right { background: url('chrome-extension://__MSG_@@extension_id__/images/boxy-se.png'); }
+	:root .boxy-wrapper .boxy-bottom-left { background: url('chrome-extension://__MSG_@@extension_id__/images/boxy-sw.png'); }
 
 	
 	.boxy-wrapper .boxy-top,
