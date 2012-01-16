@@ -40,6 +40,12 @@ var TUIView = {
 
     //id of element that will control the title change
     TUI_TITLE_ID: "tui-title-change",
+    //id of the input element that the user enters the new title into
+    TUI_TITLE_INPUT_ID: "tui-title-input", 
+    
+    
+    
+    
     
     //changes the title of the page so that when double clicked on
     //it will pop up a window asking if you would like to change the title
@@ -51,9 +57,14 @@ var TUIView = {
     
         //register a double-click event when title is clicked on
         $('#' + TUIView.TUI_TITLE_ID).dblclick(function() {
-            Boxy.confirm('Input data will go here...', 
+            Boxy.confirm(
+            '<p style="text-align: center; " class="_null"> Enter a new title you wish to suggest. </p>' + 
+            '<textarea style="width: 348px; " class="_null" id="' + TUIView.TUI_TITLE_INPUT_ID + '" ></textarea>', 
             function() {
                 //called when user hits 'ok'
+                var data =  $('#' + TUIView.TUI_TITLE_INPUT_ID).val();
+                data = TUI.createChangeTitleMessage(data);
+                TUIServiceProvider.postMessage(data);
             },
             {title: 'Change Title'});
         });
