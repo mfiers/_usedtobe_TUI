@@ -30,6 +30,8 @@ var TUI = {
 	
 	/* Tui like format */
 	TUI_LIKE_FORMAT: ' #tui I %s %s:%s',
+    /* Tui change title format */
+    TUI_TITLE_FORMAT: ' #tui %s:%s dc:title %s',
 
 
 	//initializes the TUI object
@@ -86,6 +88,17 @@ var TUI = {
 		
 		return sprintf(TUI.TUI_LIKE_FORMAT, 'dislike', name, id);
 	},
+    
+    
+    //creates a tui change-title formatted message
+    createChangeTitleMessage: function(newTitle)
+    {
+        var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
+		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
+        var title = TUI.encodeTuiString(newTitle);
+        
+        return sprintf(TUI.TUI_TITLE_FORMAT, name, id, title);
+    },
 	
 	
     
