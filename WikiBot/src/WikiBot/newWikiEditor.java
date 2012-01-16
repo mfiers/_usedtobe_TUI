@@ -24,20 +24,28 @@ public class newWikiEditor {
     private String object_name, object_Id, messageType;
     private String username, message;
     private static String BOT_USER = "TuiBot";
-    public enum validMessageType {LIKE, DISLIKE, TITLE, COMMENT};
+
+    public enum validMessageType {
+
+        LIKE, DISLIKE, TITLE, COMMENT
+    };
 
     public newWikiEditor(String username, String message) {
         this.username = username;
         this.message = message;
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
         loadWiki();
-       
     }
 
     private void loadWiki() {
-        loginWiki();
-        setUserPage();
-
+        setSemanticSyntaxObjects(); // Extract information from the message
+        if (isValidMessageType(messageType)) {
+            loginWiki();    // log onto wiki
+            setObjectPage(object_name.toUpperCase() + ":" + object_Id.toUpperCase());   // check and set the object page
+            setUserPage();      //check and set the userpage
+        } else {
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "NOT A VALID MESSAGE TYPE", "");
+        }
     }
 
     public void loginWiki() {
@@ -66,65 +74,70 @@ public class newWikiEditor {
         Scanner scanner = new Scanner(messageElements[2]).useDelimiter(" ");
         messageType = scanner.next();
         object_name = scanner.next();
-        setObjectPage(object_name.toUpperCase() + ":" + object_Id.toUpperCase());
+
         Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "OBJECT NAME : ", object_name); //eg TAIRG
         Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "OBJECT ID : ", object_Id);     //eg AT1G01040
         Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "MESSAGE TYPE : ", messageType);   // eg LIKE
     }
-     public void setObjectPage(String objectPagename) {
+    /*
+     * Checks if the object page exists or not
+     * Create a new object page if the page does not exist.
+     */
+
+    public void setObjectPage(String objectPagename) {
         String pageContent = getPageContent(objectPagename);
         Page objectPage = new Page(object_Id, object_name);
         if (pageContent.length() < 2) //object page does not exist
         {
             objectPage.createObjectPage();
             pageContent = objectPage.getContent();
-            editWiki(objectPagename,pageContent,false);
+            editWiki(objectPagename, pageContent, false);
+        } else {
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, objectPagename, " : already exists");
         }
     }
-     public boolean isValidMessageType(String messageType)
-     {
-         boolean isValid = false;
-       
-         switch(validMessageType.valueOf(messageType.toUpperCase()))
-                 {
-             case LIKE : 
-             case DISLIKE : 
-             case TITLE :
-             case COMMENT : isValid = true;
-                            break;
-             default : isValid = false;
-                 
-                 }
-         return isValid;
-     }
+    /*
+     * Checks if the message is of a valid type
+     * A message can only have Like,dislike,title,comment type
+     */
+
+    public boolean isValidMessageType(String messageType) {
+        boolean isValid = false;
+        switch (validMessageType.valueOf(messageType.toUpperCase())) {
+            case LIKE:
+            case DISLIKE:
+            case TITLE:
+            case COMMENT:
+                isValid = true;
+                break;
+            default:
+                isValid = false;
+        }
+        return isValid;
+    }
+    /*
+     *     Checks if the page already exists or not
+     *     appends the message to the page(using create() method)
+     */
 
     public void setUserPage() {
-
-
-        setSemanticSyntaxObjects();
         String content = null;
-
         content = getPageContent(twiPage + username);
         Page userpage = new Page(username, object_Id, content, object_name);
-
-        //check if valid messageType
-        if (isValidMessageType(messageType))
-        {
-            if (content.length() < 2) {             //if page does not exist,create a new userpage
-                userpage.createNewUserpage(messageType);
-            } else {
-                //if the page already exists,create add the messageType to the page
-                userpage.create(messageType);
-            }
-            content = userpage.getContent();
-            editWiki(twiPage + username, content, false);
-        } 
-        else {
-            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "NOT A VALID MESSAGE TYPE", "");
+        if (content.length() < 2) {             //if page does not exist,create a new userpage
+            userpage.createNewUserpage(messageType);
+        } else {
+            //if the page already exists,add the message to the page
+            userpage.create(messageType);
         }
-
+        content = userpage.getContent();
+        editWiki(twiPage + username, content, false);
     }
-  public void editWiki(String username, String pageContent, boolean wikiB) {
+    /*
+     * appends the content to wiki
+     */
+
+    public void editWiki(String username, String pageContent, boolean wikiB) {
         try {
             wiki.edit(username, pageContent, "", wikiB);
         } catch (IOException ex) {
@@ -133,17 +146,18 @@ public class newWikiEditor {
             Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   private String getPageContent(String pageName) {
+    /*
+     * Gets page content from wiki
+     */
+
+    private String getPageContent(String pageName) {
         String content = "";
-        try 
-        {
+        try {
             content = wiki.getPageText(pageName) + "\n";
 
-        } 
-        catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return content;
