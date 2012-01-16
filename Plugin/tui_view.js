@@ -38,6 +38,35 @@ var TUIView = {
         });
     },
 
+    //id of element that will control the title change
+    TUI_TITLE_ID: "tui-title-change",
+    
+    //changes the title of the page so that when double clicked on
+    //it will pop up a window asking if you would like to change the title
+    //(should be done before injecting the like)
+    injectTitleChangeDisplay: function(element)
+    {
+        //create <span> around the title so we can assign it an ID
+        $(element).html('<span id="' + TUIView.TUI_TITLE_ID + '">' + $(element).html() + '</span>');
+    
+        //register a double-click event when title is clicked on
+        $('#' + TUIView.TUI_TITLE_ID).dblclick(function() {
+            Boxy.confirm('Input data will go here...', 
+            function() {
+                //called when user hits 'ok'
+            },
+            {title: 'Change Title'});
+        });
+        
+        //underline animation when user hovers over the title
+        $('#' + TUIView.TUI_TITLE_ID).hover(function () {
+            //on mouse over
+            $(this).css("text-decoration", "underline");
+        }, function() { 
+            //on mouse exit
+            $(this).css("text-decoration", "none");
+        });
+    },
 
 
 };

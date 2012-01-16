@@ -32,7 +32,9 @@ function loadStuff()
     if(validPage)
     {
         //finds the first h1 element in the left column 
-        TUIView.injectLikeDisplay($("#left_col").find('h1'), true);
+        var el = $("#left_col").find('h1');
+        TUIView.injectTitleChangeDisplay(el);
+        TUIView.injectLikeDisplay(el, true);
     }
 }
 
