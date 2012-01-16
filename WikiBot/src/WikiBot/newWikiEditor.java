@@ -53,7 +53,6 @@ public class newWikiEditor {
     private String object_name, object_Id, messageType;
     private String username, message;
     private static String BOT_USER;
-    public enum validMessageType {LIKE, DISLIKE, TITLE, COMMENT};
 
     public enum validMessageType {
 
