@@ -24,6 +24,7 @@ public class newWikiEditor {
     private String object_name, object_Id, messageType;
     private String username, message;
     private static String BOT_USER = "TuiBot";
+    public enum validMessageType {LIKE, DISLIKE, TITLE, COMMENT};
 
     public newWikiEditor(String username, String message) {
         this.username = username;
@@ -47,7 +48,7 @@ public class newWikiEditor {
                 Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (IOException ex) {
-            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -66,9 +67,9 @@ public class newWikiEditor {
         messageType = scanner.next();
         object_name = scanner.next();
         setObjectPage(object_name.toUpperCase() + ":" + object_Id.toUpperCase());
-        Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO, "OBJECT NAME : ", object_name); //eg TAIRG
-        Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO, "OBJECT ID : ", object_Id);     //eg AT1G01040
-        Logger.getLogger(WikiEditor.class.getName()).log(Level.INFO, "MESSAGE TYPE : ", messageType);   // eg LIKE
+        Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "OBJECT NAME : ", object_name); //eg TAIRG
+        Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "OBJECT ID : ", object_Id);     //eg AT1G01040
+        Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "MESSAGE TYPE : ", messageType);   // eg LIKE
     }
      public void setObjectPage(String objectPagename) {
         String pageContent = getPageContent(objectPagename);
@@ -80,6 +81,22 @@ public class newWikiEditor {
             editWiki(objectPagename,pageContent,false);
         }
     }
+     public boolean isValidMessageType(String messageType)
+     {
+         boolean isValid = false;
+       
+         switch(validMessageType.valueOf(messageType.toUpperCase()))
+                 {
+             case LIKE : 
+             case DISLIKE : 
+             case TITLE :
+             case COMMENT : isValid = true;
+                            break;
+             default : isValid = false;
+                 
+                 }
+         return isValid;
+     }
 
     public void setUserPage() {
 
@@ -89,23 +106,31 @@ public class newWikiEditor {
 
         content = getPageContent(twiPage + username);
         Page userpage = new Page(username, object_Id, content, object_name);
-        if (content.length() < 2) {             //if page does not exist,create a new userpage
-            userpage.createNewUserpage(messageType);
-        } else {       
-            //if the page already exists,create add the messageType to the page
-            userpage.create(messageType);
+
+        //check if valid messageType
+        if (isValidMessageType(messageType))
+        {
+            if (content.length() < 2) {             //if page does not exist,create a new userpage
+                userpage.createNewUserpage(messageType);
+            } else {
+                //if the page already exists,create add the messageType to the page
+                userpage.create(messageType);
+            }
+            content = userpage.getContent();
+            editWiki(twiPage + username, content, false);
+        } 
+        else {
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "NOT A VALID MESSAGE TYPE", "");
         }
-        content = userpage.getContent();
-        editWiki(twiPage + username, content, false);
 
     }
   public void editWiki(String username, String pageContent, boolean wikiB) {
         try {
             wiki.edit(username, pageContent, "", wikiB);
         } catch (IOException ex) {
-            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (LoginException ex) {
-            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
    private String getPageContent(String pageName) {
@@ -116,10 +141,10 @@ public class newWikiEditor {
 
         } 
         catch (FileNotFoundException ex) {
-            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex) {
-            Logger.getLogger(WikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return content;
     }
