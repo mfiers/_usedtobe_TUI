@@ -19,7 +19,7 @@ functions available to use on a page.
 //define the tui namespace
 var TUI = {
 
-    VERSION: "0.01 testing",
+    VERSION: "testing",
 
 	/* Meta Data Tags */
 	META_TUI_ID: "tui-id",
@@ -99,6 +99,33 @@ var TUI = {
         return TUI.getTuiMeta(TUI.META_TUI_TYPE);
     },
 	
+    
+    //encodes a string to TUI definition 
+    encodeTuiString: function(str) {
+    
+        /*
+        * NOTE: This function could pose a problem.
+        *
+        * If the string contains a quote mark before entering this function
+        * then this could add quote marks around it but parsers attempting to 
+        * parse the string as a string could fail.
+        *
+        * Some work here is needed...
+        */
+    
+        //first trim the whitespace from the ends of the string
+        str = $.trim(str);
+        
+        //check if it contains whitespace
+        //if it does contain whitespace then is not needed to have quote marks around it
+        if(!(/\S/.test(str)))
+        {
+            //if it DOESN'T contain whitespace then we need to surround it with quote marks
+            str = '"' + str  + '"';
+        }
+    
+        return str;
+    },
 
 	//loads the tui object and injects data into 
 	init: function() {
