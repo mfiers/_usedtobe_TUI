@@ -11,19 +11,20 @@ The user downloads the TUI Plugin for their favorite website(s) and installs it 
 * _More coming soon..._
 
 When one of these options are chosen then the TUI plugin will create a semantic message (format similar to RDF) that can then be posted to twitter (or other microblogging service) to be stored. For example if the user likes the gene at this page: http://www.arabidopsis.org/servlets/TairObject?type=gene&name=AT1G01040.1
-Then the semantic message would be this: 
-__#tui I like tairg:AT1G01040.1__
+Then the semantic message would be this:  
+__#tui I like tairg:AT1G01040.1__  
 
 The #tui message would then be posted to the users twitter stream where it can then be publicly accessed and people could see that this user likes that gene.
 
 
 
 ### Test URLs
-http://www.arabidopsis.org/servlets/TairObject?type=gene&name=AT1G01040.1
-http://www.wormbase.org/db/gene/gene?name=WBGene00021408;class=Gene
+
+http://www.arabidopsis.org/servlets/TairObject?type=gene&name=AT1G01040.1  
+http://www.wormbase.org/db/gene/gene?name=WBGene00021408;class=Gene  
 
 
 ### Directory Descriptions:
-Plugin: The base TUI plugincode  for browsers to inject TUI content and offer quick and easy #tui format messages to post to twitter and other microblogging services.
-Sites: A list of all the site-specific scripts for the TUI plugin.
-WikiBot: Polls twitter and identi.ca for #tui tweets and posts the data on Semantic Media Wiki
+__Plugin__: The base TUI plugincode  for browsers to inject TUI content and offer quick and easy #tui format messages to post to twitter and other microblogging services.  
+__Sites__: A list of all the site-specific scripts for the TUI plugin.  
+__WikiBot__: Polls twitter and identi.ca for #tui tweets and posts the data on Semantic Media Wiki.  
