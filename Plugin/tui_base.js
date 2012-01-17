@@ -131,7 +131,7 @@ var TUI = {
         
         //check if it contains whitespace
         //if it does contain whitespace then is not needed to have quote marks around it
-        if(!(/\S/.test(str)))
+        if(!(/\s/.test(str)))
         {
             //if it DOESN'T contain whitespace then we need to surround it with quote marks
             str = '"' + str  + '"';
