@@ -91,6 +91,6 @@ public class newParser {
     }
  public static void main(String[] args)
   {
-      newParser np = new newParser("fisherboy","#tui TAIRG:AT1G01040.2 dc:title GENE TWO");
+      newParser np = new newParser("mpra289","#tui TAIRG:AT1G01040.2 dc:title GENE TWO");
   }
 }
