@@ -57,16 +57,32 @@ var TUIView = {
     
         //register a double-click event when title is clicked on
         $('#' + TUIView.TUI_TITLE_ID).dblclick(function() {
-            Boxy.confirm(
-            '<p style="text-align: center; " class="_null"> Enter a new title you wish to suggest. </p>' + 
-            '<textarea style="width: 348px; " class="_null" id="' + TUIView.TUI_TITLE_INPUT_ID + '" ></textarea>', 
-            function() {
-                //called when user hits 'ok'
-                var data =  $('#' + TUIView.TUI_TITLE_INPUT_ID).val();
+        
+            //create a random id every time the popup box happens
+            var RAND_ID = TUIView.TUI_TITLE_INPUT_ID + "-" + Date.now();
+            
+            var submitFunction = function() {
+                var data =  $('#' + RAND_ID).val();
                 data = TUI.createChangeTitleMessage(data);
                 TUIServiceProvider.postMessage(data);
-            },
+                
+                //close boxy
+                Boxy.get($('#' + RAND_ID)).hideAndUnload();
+            };
+        
+            Boxy.confirm(
+            '<p style="text-align: center; " class="_null"> Enter a new title you wish to suggest. </p>' + 
+            '<textarea style="width: 348px; " class="_null" id="' + RAND_ID + '" ></textarea>', 
+            submitFunction,
             {title: 'Change Title'});
+            
+            //keypress event
+            //register for "enter" key being pressed
+            $('#' + RAND_ID).keypress(function(event) {
+                if(event.which == 13 ) { //13 == enter key
+                    submitFunction();
+                }
+            });
         });
         
         //underline animation when user hovers over the title
