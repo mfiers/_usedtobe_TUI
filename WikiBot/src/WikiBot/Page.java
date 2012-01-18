@@ -67,9 +67,9 @@ public class Page {
             content = content.concat(getStartTag(messageType, false));
 
         } else {
-            if (!content.contains(semanticSyntax(messageType))) {
+                if (!content.toLowerCase().contains(semanticSyntax(messageType).toLowerCase())) {
                 String splitContent, endContent;
-                Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending" + messageType + "syntax to the page");
+                Logger.getLogger(Page.class.getName()).log(Level.INFO, "Appending " + messageType + " syntax to the page");
                 int index = content.indexOf("<!-- " + messageType.toUpperCase() + "_START_HERE -->") + ("<!-- " + messageType.toUpperCase() + "_START_HERE -->").length();
                 splitContent = content.substring(0, index);
                 endContent = content.substring(index, content.length());
