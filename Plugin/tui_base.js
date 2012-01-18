@@ -8,13 +8,19 @@
 
 	
 	
-Work in progress (not currently used in plugin)
-This file will be the main TUI library - hopefully browser 
-independent. It will contain an TUI object with all the 
-functions available to use on a page.
+This file is the main TUI library that supplies base functions
+to assist other TUI plugins
 ############################################################*/
 
+"use strict";
 
+//debug log for chrome
+function dlog(text)
+{
+	if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+		console.log("#tui: " + text);
+    }
+}
 
 //define the tui namespace
 var TUI = {
@@ -40,9 +46,13 @@ var TUI = {
         dlog("Version: " + TUI.VERSION);
 	
 		//ensure JQuery loaded
-		if(!jQuery) throw('JQuery not loaded');
+		if(!jQuery) { 
+            throw('JQuery not loaded');
+        }
 		//ensure sprintf loaded
-		if(!sprintf) throw ('sprintf not loaded');
+		if(!sprintf) {
+            throw ('sprintf not loaded');
+        }
 		
 		//init all the meta-data tags (just placeholders)
 		TUI.__appendToHead(TUI.META_TUI_ID, "0");
@@ -73,8 +83,8 @@ var TUI = {
 	createTuiLike: function() {
 	
 		//grab the current object name
-		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
-		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
+		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX), 
+            id = TUI.getTuiMeta(TUI.META_TUI_ID);
 		
 		return sprintf(TUI.TUI_LIKE_FORMAT, 'like', name, id);
 	},
@@ -83,8 +93,8 @@ var TUI = {
 	createTuiDislike: function() {
 	
 		//grab the current object name
-		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
-		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
+		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX),
+            id = TUI.getTuiMeta(TUI.META_TUI_ID);
 		
 		return sprintf(TUI.TUI_LIKE_FORMAT, 'dislike', name, id);
 	},
@@ -93,9 +103,9 @@ var TUI = {
     //creates a tui change-title formatted message
     createChangeTitleMessage: function(newTitle)
     {
-        var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX);
-		var id = TUI.getTuiMeta(TUI.META_TUI_ID);
-        var title = TUI.encodeTuiString(newTitle);
+        var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX),
+            id = TUI.getTuiMeta(TUI.META_TUI_ID),
+            title = TUI.encodeTuiString(newTitle);
         
         return sprintf(TUI.TUI_TITLE_FORMAT, name, id, title);
     },
@@ -139,6 +149,10 @@ var TUI = {
     
         return str;
     },
+    
+    _TUIReady: function() {
+        $(document).trigger('tuiLoaded');
+    },
 
 	//loads the tui object and injects data into 
 	init: function() {
@@ -150,13 +164,6 @@ var TUI = {
         //once that has been completed - notify all listeners that it is safe to start working
         //with the TUI object
         //this is called after one second to allow other scripts to attach themselves to the event
-        setTimeout("$(document).trigger('tuiLoaded')", 1000);
+        setTimeout(TUI._TUIReady(), 1000);
 	}
 };
-
-//debug log for chrome
-function dlog(text)
-{
-	if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
-		console.log("#tui: " + text);
-}
