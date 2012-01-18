@@ -1,4 +1,4 @@
-
+"use strict";
 
 var TUIView = {
 
@@ -59,9 +59,9 @@ var TUIView = {
         $('#' + TUIView.TUI_TITLE_ID).dblclick(function() {
         
             //create a random id every time the popup box happens
-            var RAND_ID = TUIView.TUI_TITLE_INPUT_ID + "-" + Date.now();
+            var RAND_ID = TUIView.TUI_TITLE_INPUT_ID + "-" + Date.now(), submitFunction;
             
-            var submitFunction = function() {
+            submitFunction = function() {
                 var data =  $('#' + RAND_ID).val();
                 data = TUI.createChangeTitleMessage(data);
                 TUIServiceProvider.postMessage(data);
@@ -79,7 +79,7 @@ var TUIView = {
             //keypress event
             //register for "enter" key being pressed
             $('#' + RAND_ID).keypress(function(event) {
-                if(event.which == 13 ) { //13 == enter key
+                if(event.which === 13 ) { //13 == enter key
                     submitFunction();
                 }
             });
@@ -93,7 +93,7 @@ var TUIView = {
             //on mouse exit
             $(this).css("text-decoration", "none");
         });
-    },
+    }
 
 
 };
