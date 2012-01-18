@@ -33,7 +33,7 @@ public class newParser {
         }
     }
 
-    public boolean isValidTuiMessage() {
+    private boolean isValidTuiMessage() {
         boolean isValid = false;
 
         //need to put in "TUI:" in front of "I" and "Like"
