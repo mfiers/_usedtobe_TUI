@@ -13,21 +13,21 @@ import java.util.logging.Logger;
  */
 public class Page {
 
-    private String username;
+  //  private String username;
 
     public enum MESSAGETYPE {
 
         LIKE, DISLIKE, TITLE, COMMENT
     };
     private String object_Id, content, object_name;
-    private String type, title;
+    private String title;
 
     // initializing user page
-    public Page(String username, String object_Id, String content, String object_name) {
+    public Page(String object_Id, String content, String object_name) {
         this.content = content;
         this.object_name = object_name;
 
-        this.username = username;
+       // this.username = username;
         this.object_Id = object_Id;
     }
     //initializing object page
@@ -41,15 +41,14 @@ public class Page {
         content = "{{ObjectPage}}";
     }
 
-    public void createNewUserpage(String type) {
+    public void createNewUserpage(String messageType) {
         Logger.getLogger(Page.class.getName()).log(Level.INFO, "Creating new userpage");
-        this.type = type;
         content = content.concat("[[Category:User]]\n");
-        create(type);
+        create(messageType);
     }
 
     //Create like/dislike/title/comment pages
-    public String create(String messageType) {
+    public void create(String messageType) {
 
         switch (MESSAGETYPE.valueOf(messageType)) //checking if the previously liked/disliked 
         {
@@ -78,15 +77,14 @@ public class Page {
                 splitContent = splitContent.concat(endContent);
                 content = splitContent;
             } else {
-                return content;
+                 Logger.getLogger(Page.class.getName()).log(Level.INFO, "MESSAGE ALREADY EXISTS :EXIT");
+                 System.exit(0);
             }
         }
-
-        return content;
     }
 
     public void check(String messageType) {
-        String splitContent, endContent;
+        String splitContent;
         if (content.contains(semanticSyntax(messageType))) // if the gene is already liked/disliked 
         {
             int index = content.indexOf(semanticSyntax(messageType));// + semanticSyntax(messageType).length());

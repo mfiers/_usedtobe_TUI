@@ -52,6 +52,48 @@ public class newWikiEditor {
     private String username, message;
     private static String BOT_USER;
 
+    public enum validMessageType {
+
+        LIKE, DISLIKE, TITLE, COMMENT
+    };
+
+    public newWikiEditor(String username, String message, String messageType) {
+        this.username = username;
+        this.message = message;
+        this.messageType = messageType;
+        title = "";
+        wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
+        if (isValidMessageType(messageType)) {
+
+            setSemanticSyntaxObjects(); // Extract information from the message
+            loadWiki();
+        } else {
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "INVALID MESSAGE");
+        }
+    }
+
+    private void loadWiki() {
+        loginWiki();    // log onto wiki
+        setObjectPage(object_name.toUpperCase() + ":" + object_Id.toUpperCase());   // check and set the object page
+
+        setUserPage();      //check and set the userpage
+    }
+
+    public void loginWiki() {
+        try {
+            try {
+                wiki.login(BOT_USER, BOT_PASS);
+            } catch (FailedLoginException ex) {
+                Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /*
+     *  Extracts objects from the message
+     */
+
     private void getMessageObjects(String messageType) {
         if (messageType.equalsIgnoreCase(validMessageType.LIKE.toString()) || messageType.equalsIgnoreCase(validMessageType.DISLIKE.toString())) {
             String[] messageElements = new String[4];
@@ -74,17 +116,14 @@ public class newWikiEditor {
         }
         if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString())) {
             String[] messageElements = new String[4];
-            String[] msgObjects = new String[3];
             int i = 0;
             Scanner scan = new Scanner(message).useDelimiter(" ");
             while (scan.hasNext()) {
-
                 if (i > 3) {
                     messageElements[messageElements.length - 1] = messageElements[messageElements.length - 1].concat(" " + scan.next());
                 } else {
                     messageElements[i] = scan.next();
                 }
-
                 i++;
             }
             String split[] = messageElements[1].split(":");
@@ -98,44 +137,6 @@ public class newWikiEditor {
          *      split the message into object name,id and comment
          * }
          */
-    }
-
-    public enum validMessageType {
-
-        LIKE, DISLIKE, TITLE, COMMENT
-    };
-
-    public newWikiEditor(String username, String message, String messageType) {
-        this.username = username;
-        this.message = message;
-        this.messageType = messageType;
-        title = "";
-        wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
-        if (isValidMessageType(messageType)) {
-            loadWiki();
-        } else {
-            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "INVALID MESSAGE");
-        }
-    }
-
-    private void loadWiki() {
-        setSemanticSyntaxObjects(); // Extract information from the message
-        loginWiki();    // log onto wiki
-        setObjectPage(object_name.toUpperCase() + ":" + object_Id.toUpperCase());   // check and set the object page
-
-        setUserPage();      //check and set the userpage
-    }
-
-    public void loginWiki() {
-        try {
-            try {
-                wiki.login(BOT_USER, BOT_PASS);
-            } catch (FailedLoginException ex) {
-                Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void setSemanticSyntaxObjects() {
@@ -163,9 +164,8 @@ public class newWikiEditor {
      */
 
     public void setObjectPage(String objectPagename) {
-        System.out.println("objectPagename: " + objectPagename);
         String pageContent = getPageContent(objectPagename);
-        Page objectPage = new Page(object_Id, object_name);
+        Page objectPage = new Page(object_Id, object_name,messageType);
 
         if (pageContent.length() < 2) //object page does not exist
         {
@@ -203,7 +203,7 @@ public class newWikiEditor {
     public void setUserPage() {
         String content = null;
         content = getPageContent(twiPage + username);
-        Page userpage = new Page(username, object_Id, content, object_name);
+        Page userpage = new Page(object_Id, content, object_name);
         switch (validMessageType.valueOf(messageType)) {
             case TITLE:
                 userpage.setTitle(title);
