@@ -63,10 +63,8 @@ public class newParser {
                         messageType = "DISLIKE";
                     }
                 }
-            } else {
-
-                message = msgSplit[0] + tuiData;
-
+            }
+            else {
                 if (message.matches(TITLE_TUI)) {
                     isValid = true;
                     messageType = "TITLE";
