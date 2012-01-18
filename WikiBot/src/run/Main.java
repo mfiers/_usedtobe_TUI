@@ -43,7 +43,6 @@ public class Main {
                 {
                     //free text is removed from the message
                     messageBuilder = messageBuilder.substring(messageBuilder.indexOf("#tui"));
-                    System.out.println("mesageBuilder"+messageBuilder);
                     String msgSplit[] = messageBuilder.split(" ");
                     messageBuilder = "";
                     for(int i = 0 ; i <3 ;i++)
