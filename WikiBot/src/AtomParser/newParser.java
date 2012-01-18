@@ -13,20 +13,16 @@ import java.util.logging.Logger;
  * 
  */
 public class newParser {
-
-    private String username;
     private String message;
     private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
     private static final String TITLE_TUI = "^(.*)#TUI (.*:.*)(DC:TITLE)(.*)";
-    private newWikiEditor editor;
     private String messageType;
 
     public newParser(String username, String msg) {
-        this.username = username;
         this.message = msg;
         messageType = "INVALID";
         if (isValidTuiMessage()) {
-            editor = new newWikiEditor(username, this.message, messageType);
+          newWikiEditor  editor = new newWikiEditor(username, this.message, messageType);
             Logger.getLogger(newParser.class.getName()).log(Level.SEVERE, " VALID TUI FORMATTED MESSAGE");
         } else {
             Logger.getLogger(newParser.class.getName()).log(Level.SEVERE, "NOT A VALID TUI FORMATTED MESSAGE");
