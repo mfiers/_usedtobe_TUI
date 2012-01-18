@@ -17,7 +17,7 @@ public class newParser {
     private String username;
     private String message;
     private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
-    private static final String TITLE_TUI = "^#TUI (.*:.*)(DC:TITLE)(.*)";
+    private static final String TITLE_TUI = "^(.*)#TUI (.*:.*)(DC:TITLE)(.*)";
     private newWikiEditor editor;
     private String messageType;
 
