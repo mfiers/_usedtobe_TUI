@@ -75,7 +75,6 @@ public class newWikiEditor {
     private void loadWiki() {
         loginWiki();    // log onto wiki
         setObjectPage(object_name.toUpperCase() + ":" + object_Id.toUpperCase());   // check and set the object page
-
         setUserPage();      //check and set the userpage
     }
 
@@ -97,7 +96,6 @@ public class newWikiEditor {
     private void getMessageObjects(String messageType) {
         if (messageType.equalsIgnoreCase(validMessageType.LIKE.toString()) || messageType.equalsIgnoreCase(validMessageType.DISLIKE.toString())) {
             String[] messageElements = new String[4];
-            String[] msgObjects = new String[3];
             int i = 0;
             Scanner scan = new Scanner(message).useDelimiter(":");
             while (scan.hasNext()) {
@@ -226,7 +224,7 @@ public class newWikiEditor {
         editWiki(twiPage + username, content, false);
     }
     /*
-     * appends the content to wiki
+     * append content to wiki
      */
 
     public void editWiki(String username, String pageContent, boolean wikiB) {

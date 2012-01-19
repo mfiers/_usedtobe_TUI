@@ -82,7 +82,9 @@ public class Page {
             }
         }
     }
-
+    /*
+     * Checks if the user liking an object has beore disliked it or not ,and vice-versa
+     */
     public void check(String messageType) {
         String splitContent;
         if (content.contains(semanticSyntax(messageType))) // if the gene is already liked/disliked 
@@ -104,7 +106,7 @@ public class Page {
         return content;
     }
 
-    //   eg for like     [[Like::TAIRG:AT1G01040.1]] ...genomeType-gene or protein(TAIRG) for title [[suggestion::STUFF:6253129]] : [[title::new title]]
+    //   eg for like     [[Like::TAIRG:AT1G01040.1]] ...genomeType-gene or protein(TAIRG); for title [[suggestion::STUFF:6253129]] : [[title::new title]]
     public String semanticSyntax(String messageType) {
         Logger.getLogger(Page.class.getName()).log(Level.INFO, "Creating semanticSyntax for the userpage");
         String semanticSyntax = "";
@@ -146,7 +148,7 @@ public class Page {
         data = data.concat("\n" + "<!-- " + type.toUpperCase() + "_" + start + "_HERE -->\n");
         return data;
     }
-
+// sets the title suggested by the user
     public void setTitle(String title) {
         this.title = title;
     }
