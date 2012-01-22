@@ -38,6 +38,8 @@ var TUI = {
 	TUI_LIKE_FORMAT: ' #tui I %s %s:%s',
     /* Tui change title format */
     TUI_TITLE_FORMAT: ' #tui %s:%s dc:title %s',
+    /* Tui comment format */
+    TUI_COMMENT_FORMAT: ' #tui %s:%s tui:comment %s',
 
 
 	//initializes the TUI object
@@ -108,6 +110,16 @@ var TUI = {
             title = TUI.encodeTuiString(newTitle);
         
         return sprintf(TUI.TUI_TITLE_FORMAT, name, id, title);
+    },
+    
+    //creates a tui comment formatted message
+    createComment: function(comment)
+    {
+        var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX),
+            id = TUI.getTuiMeta(TUI.META_TUI_ID);
+            comment = TUI.encodeTuiString(comment);
+            
+        return sprintf(TUI.TUI_COMMENT_FORMAT, name, id, comment);
     },
 	
 	
