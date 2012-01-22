@@ -176,6 +176,6 @@ var TUI = {
         //once that has been completed - notify all listeners that it is safe to start working
         //with the TUI object
         //this is called after one second to allow other scripts to attach themselves to the event
-        setTimeout(TUI._TUIReady(), 1000);
+        setTimeout(TUI._TUIReady, 1000);
 	}
 };
