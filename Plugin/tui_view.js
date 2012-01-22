@@ -10,11 +10,6 @@ var TUIView = {
     //the id of the like link
     LIKE_LINK_ID: "tui-like-link",
     DISLIKE_LINK_ID: "tui-dislike-link",
-
-    //injects a like display on the specified element
-    injectLikeDisplay: function(element) {
-        TUIView.injectLikeDisplay(element, false);
-    },
     
     //injects a like display on the specified element 
     //boolean to add a new line before the like count
