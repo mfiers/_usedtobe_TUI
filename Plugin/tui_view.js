@@ -8,8 +8,8 @@ var TUIView = {
     DISLIKE_IMG_EL: '<img src="' + chrome.extension.getURL('images/thumbs_down.png') + '" width="12" height="18" />',
     
     //the id of the like link
-    TUI_LIKE_LINK_ID: "tui-like-link",
-    TUI_DISLIKE_LINK_ID: "tui-dislike-link",
+    LIKE_LINK_ID: "tui-like-link",
+    DISLIKE_LINK_ID: "tui-dislike-link",
 
     //injects a like display on the specified element
     injectLikeDisplay: function(element) {
@@ -22,26 +22,26 @@ var TUIView = {
     
         //inject elements into the element
         var nl = (newline) ? '<br />' : "";
-        $(element).append(nl + ' <b><a style="display: none" id="' + TUIView.TUI_LIKE_LINK_ID + '">Like ' + TUIView.LIKE_IMG_EL + '</a>&nbsp; </b>');
-        $(element).append(' <b><a style="display: none" id="' + TUIView.TUI_DISLIKE_LINK_ID + '">Dislike ' + TUIView.DISLIKE_IMG_EL + '</a></b>');
+        $(element).append(nl + ' <b><a style="display: none" id="' + TUIView.LIKE_LINK_ID + '">Like ' + TUIView.LIKE_IMG_EL + '</a>&nbsp; </b>');
+        $(element).append(' <b><a style="display: none" id="' + TUIView.DISLIKE_LINK_ID + '">Dislike ' + TUIView.DISLIKE_IMG_EL + '</a></b>');
         
         //animation to slowly fade in
-        $("#" + TUIView.TUI_LIKE_LINK_ID).show("slow");
-        $("#" + TUIView.TUI_DISLIKE_LINK_ID).show("slow");
+        $("#" + TUIView.LIKE_LINK_ID).show("slow");
+        $("#" + TUIView.DISLIKE_LINK_ID).show("slow");
     
         //add click listeners for the elements
-        $('#' + TUIView.TUI_LIKE_LINK_ID).click(function () {
+        $('#' + TUIView.LIKE_LINK_ID).click(function () {
             TUIServiceProvider.postMessage(TUI.createTuiLike());
         });
-        $('#' + TUIView.TUI_DISLIKE_LINK_ID).click(function () {
+        $('#' + TUIView.DISLIKE_LINK_ID).click(function () {
             TUIServiceProvider.postMessage(TUI.createTuiDislike());
         });
     },
 
     //id of element that will control the title change
-    TUI_TITLE_ID: "tui-title-change",
+    TITLE_ID: "tui-title-change",
     //id of the input element that the user enters the new title into
-    TUI_TITLE_INPUT_ID: "tui-title-input", 
+    TITLE_INPUT_ID: "tui-title-input", 
     
     
     
@@ -53,13 +53,13 @@ var TUIView = {
     injectTitleChangeDisplay: function(element)
     {
         //create <span> around the title so we can assign it an ID
-        $(element).html('<span id="' + TUIView.TUI_TITLE_ID + '">' + $(element).html() + '</span>');
+        $(element).html('<span id="' + TUIView.TITLE_ID + '">' + $(element).html() + '</span>');
     
         //register a double-click event when title is clicked on
-        $('#' + TUIView.TUI_TITLE_ID).dblclick(function() {
+        $('#' + TUIView.TITLE_ID).dblclick(function() {
         
             //create a random id every time the popup box happens
-            var RAND_ID = TUIView.TUI_TITLE_INPUT_ID + "-" + Date.now(), submitFunction;
+            var RAND_ID = TUIView.TITLE_INPUT_ID + "-" + Date.now(), submitFunction;
             
             submitFunction = function() {
                 var data =  $('#' + RAND_ID).val();
@@ -86,7 +86,7 @@ var TUIView = {
         });
         
         //underline animation when user hovers over the title
-        $('#' + TUIView.TUI_TITLE_ID).hover(function () {
+        $('#' + TUIView.TITLE_ID).hover(function () {
             //on mouse over
             $(this).css("text-decoration", "underline");
         }, function() { 

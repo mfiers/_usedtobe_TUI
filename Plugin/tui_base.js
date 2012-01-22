@@ -35,11 +35,11 @@ var TUI = {
 	META_TUI_DISLIKE_COUNT: "tui-dislike-count",
 	
 	/* Tui like format */
-	TUI_LIKE_FORMAT: ' #tui I %s %s:%s',
+	LIKE_FORMAT: ' #tui I %s %s:%s',
     /* Tui change title format */
-    TUI_TITLE_FORMAT: ' #tui %s:%s dc:title %s',
+    TITLE_FORMAT: ' #tui %s:%s dc:title %s',
     /* Tui comment format */
-    TUI_COMMENT_FORMAT: ' #tui %s:%s tui:comment %s',
+    COMMENT_FORMAT: ' #tui %s:%s tui:comment %s',
 
 
 	//initializes the TUI object
@@ -88,7 +88,7 @@ var TUI = {
 		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX), 
             id = TUI.getTuiMeta(TUI.META_TUI_ID);
 		
-		return sprintf(TUI.TUI_LIKE_FORMAT, 'like', name, id);
+		return sprintf(TUI.LIKE_FORMAT, 'like', name, id);
 	},
 	
     //creates a tui dislike message for the current viewing page
@@ -98,7 +98,7 @@ var TUI = {
 		var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX),
             id = TUI.getTuiMeta(TUI.META_TUI_ID);
 		
-		return sprintf(TUI.TUI_LIKE_FORMAT, 'dislike', name, id);
+		return sprintf(TUI.LIKE_FORMAT, 'dislike', name, id);
 	},
     
     
@@ -109,7 +109,7 @@ var TUI = {
             id = TUI.getTuiMeta(TUI.META_TUI_ID),
             title = TUI.encodeTuiString(newTitle);
         
-        return sprintf(TUI.TUI_TITLE_FORMAT, name, id, title);
+        return sprintf(TUI.TITLE_FORMAT, name, id, title);
     },
     
     //creates a tui comment formatted message
@@ -119,7 +119,7 @@ var TUI = {
             id = TUI.getTuiMeta(TUI.META_TUI_ID);
             comment = TUI.encodeTuiString(comment);
             
-        return sprintf(TUI.TUI_COMMENT_FORMAT, name, id, comment);
+        return sprintf(TUI.COMMENT_FORMAT, name, id, comment);
     },
 	
 	
