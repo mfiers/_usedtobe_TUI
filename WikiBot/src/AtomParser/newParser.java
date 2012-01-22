@@ -15,7 +15,8 @@ import java.util.logging.Logger;
 public class newParser {
     private String message;
     private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
-    private static final String TITLE_TUI = "^(.*)#TUI (.*:.*)(DC:TITLE)(.*)";
+    private static final String REGEX_TITLE_TUI = "^(.*)#TUI (.*:.*)(DC:TITLE)(.*)";
+    private static final String REGEX_COMMENT_TUI = "^(.*)#TUI (.*:.*)(TUI:COMMENT)(.*)";
     private String messageType;
 
     public newParser(String username, String msg) {
@@ -61,9 +62,13 @@ public class newParser {
                 }
             }
             else {
-                if (message.matches(TITLE_TUI)) {
+                if (message.matches(REGEX_TITLE_TUI)) {
                     isValid = true;
                     messageType = "TITLE";
+                }
+                if(message.matches(REGEX_COMMENT_TUI)){
+                    isValid = true;
+                    messageType = "COMMENT";
                 }
             }
         }
