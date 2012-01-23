@@ -10,6 +10,10 @@ XCOPY Plugin\* ..\Plugin\* /S
 ECHO Copying script
 XCOPY Sites\stuff.js ..\Plugin\
 
-ECHO Configuring manifest.json
-REM hack here to overwrite manifest.json with alternate version (instead of editing the file)
-XCOPY Sites\manifest.json ..\Plugin\ /Y
+ECHO -----------------------
+ECHO Make sure to copy the 
+ECHO script name into the 
+ECHO manifest.json js array
+ECHO -----------------------
+
+PAUSE
