@@ -64,8 +64,7 @@ public class newWikiEditor {
         title = "";
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
         if (isValidMessageType(messageType)) {
-
-            setSemanticSyntaxObjects(); // Extract information from the message
+            getMessageObjects(messageType); // Extract information from the message
             loadWiki();
         } else {
             Logger.getLogger(newWikiEditor.class.getName()).log(Level.SEVERE, "INVALID MESSAGE");
@@ -136,26 +135,6 @@ public class newWikiEditor {
 
         }
     }
-
-    public void setSemanticSyntaxObjects() {
-        switch (validMessageType.valueOf(messageType.toUpperCase())) {
-            case LIKE:
-                getMessageObjects(validMessageType.LIKE.toString());
-                break;
-            case DISLIKE:
-                getMessageObjects(validMessageType.DISLIKE.toString());
-                break;
-            case TITLE:
-                getMessageObjects(validMessageType.TITLE.toString());
-                break;
-            case COMMENT:
-                getMessageObjects(validMessageType.COMMENT.toString());
-                break;
-            default:
-                break;
-        }
-
-    }
     /*
      * Checks if the object page exists or not
      * Create a new object page if the page does not exist.
@@ -181,7 +160,7 @@ public class newWikiEditor {
 
     public boolean isValidMessageType(String messageType) {
         boolean isValid = false;
-        switch (validMessageType.valueOf(messageType.toUpperCase())) {
+        switch (validMessageType.valueOf(messageType)) {
             case LIKE:
             case DISLIKE:
             case TITLE:
