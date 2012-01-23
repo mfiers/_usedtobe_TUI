@@ -48,7 +48,7 @@ public class newWikiEditor {
     private Wiki wiki;
     private static final String twiPage = "Twitter:";
     private static char[] BOT_PASS;
-    private String object_name, object_Id, messageType, title;
+    private String object_name, object_Id, messageType, title, comment;
     private String username, message;
     private static String BOT_USER;
 
@@ -112,7 +112,7 @@ public class newWikiEditor {
             Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "OBJECT ID : ", object_Id);     //eg AT1G01040
             Logger.getLogger(newWikiEditor.class.getName()).log(Level.INFO, "MESSAGE TYPE : ", messageType);   // eg LIKE
         }
-        if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString())) {
+        if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString()) || messageType.equalsIgnoreCase(validMessageType.COMMENT.toString())) {
             String[] messageElements = new String[4];
             int i = 0;
             Scanner scan = new Scanner(message).useDelimiter(" ");
@@ -127,14 +127,14 @@ public class newWikiEditor {
             String split[] = messageElements[1].split(":");
             object_name = split[0];
             object_Id = split[1];
-            title = messageElements[3];
+            if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString())) {
+                title = messageElements[3];
+            }
+            if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString())) {
+                comment = messageElements[3];
+            }
+
         }
-        /*
-         * if (messageType.equalsIgnoreCase(validMessageType.COMMENT.toString()))
-         * {
-         *      split the message into object name,id and comment
-         * }
-         */
     }
 
     public void setSemanticSyntaxObjects() {
@@ -163,7 +163,7 @@ public class newWikiEditor {
 
     public void setObjectPage(String objectPagename) {
         String pageContent = getPageContent(objectPagename);
-        Page objectPage = new Page(object_Id, object_name,messageType);
+        Page objectPage = new Page(object_Id, object_name, messageType);
 
         if (pageContent.length() < 2) //object page does not exist
         {
@@ -207,9 +207,7 @@ public class newWikiEditor {
                 userpage.setTitle(title);
                 break;
             case COMMENT:
-                /*
-                 * set comment
-                 */
+                userpage.setComment(comment);
                 break;
             default:
                 break;
