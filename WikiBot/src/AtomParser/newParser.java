@@ -9,10 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *Checks if the message is a valid TUI formatted message and 
+ *Invokes newWikiEditor
  * 
  */
 public class newParser {
+
     private String message;
     private static final String REGEX_TUI = "^(.*)#TUI (TUI:.*)(TUI:.*)";
     private static final String REGEX_TITLE_TUI = "^(.*)#TUI (.*:.*)(DC:TITLE)(.*)";
@@ -23,7 +25,7 @@ public class newParser {
         this.message = msg;
         messageType = "INVALID";
         if (isValidTuiMessage()) {
-          newWikiEditor  editor = new newWikiEditor(username, this.message, messageType);
+            newWikiEditor editor = new newWikiEditor(username, this.message, messageType);
             Logger.getLogger(newParser.class.getName()).log(Level.SEVERE, " VALID TUI FORMATTED MESSAGE");
         } else {
             Logger.getLogger(newParser.class.getName()).log(Level.SEVERE, "NOT A VALID TUI FORMATTED MESSAGE");
@@ -32,16 +34,11 @@ public class newParser {
 
     private boolean isValidTuiMessage() {
         boolean isValid = false;
-
         //need to put in "TUI:" in front of "I" and "Like"
-
         //message = message.replace(" :", " TUI:");
-
         String[] msgSplit = message.split("#TUI", 2); //limit two splits
-
         if (msgSplit.length > 1) {
             String tuiData = "#TUI " + msgSplit[1].trim();
-
             //need to check if the 5th index == "I"
             if (tuiData.charAt(5) == 'I') {
                 tuiData = tuiData.replaceFirst("#TUI I", "#TUI TUI:I");
@@ -49,7 +46,6 @@ public class newParser {
                 tuiData = tuiData.replaceFirst(" LIKE ", " TUI:LIKE ");
                 tuiData = tuiData.replaceFirst(" DISLIKE ", " TUI:DISLIKE ");
                 message = msgSplit[0] + tuiData;
-
                 if (message.matches(REGEX_TUI)) {
                     isValid = true;
                 }
@@ -60,13 +56,12 @@ public class newParser {
                         messageType = "DISLIKE";
                     }
                 }
-            }
-            else {
+            } else {
                 if (message.matches(REGEX_TITLE_TUI)) {
                     isValid = true;
                     messageType = "TITLE";
                 }
-                if(message.matches(REGEX_COMMENT_TUI)){
+                if (message.matches(REGEX_COMMENT_TUI)) {
                     isValid = true;
                     messageType = "COMMENT";
                 }
