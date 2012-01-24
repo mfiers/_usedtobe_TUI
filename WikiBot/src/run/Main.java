@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package run;
 
-import AtomParser.newParser;
+import AtomParser.Parser;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +49,7 @@ public class Main {
 
                         @Override
                         public void run() {
-                            newParser we = new newParser(user, message);
+                            Parser we = new Parser(user, message);
                         }
                     }).start();
                 } catch (Exception ex) {
