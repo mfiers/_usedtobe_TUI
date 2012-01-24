@@ -104,7 +104,7 @@ public class Page {
         return content;
     }
     //   The syntax for like     [[Like::objectName:objectId]] ...genomeType-gene or protein(TAIRG);
-    //              for title   [[suggestion::objectName:objectId]] : [[objectName:objectId::title::GENE AT]]
+    //              for title   [[suggestion::objectName:objectId]] : [[objectName:objectId::title::Title- GENE AT]]
 
     public String semanticSyntax(String messageType) {
         Logger.getLogger(Page.class.getName()).log(Level.INFO, "Creating semanticSyntax for the userpage");
@@ -115,7 +115,7 @@ public class Page {
         if (messageType.equalsIgnoreCase(MESSAGETYPE.TITLE.toString())) //generate semantic syntax for TITLE
         {
             semanticSyntax = semanticSyntax.concat(start + "suggestion" + col + col + object_name + col + object_Id + "]]");
-            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col + title + end);
+            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col +"Title- "+ title + end);
         } else// generate Semantic syntax for LIKE/DISLIKE
         {
             semanticSyntax = semanticSyntax.concat(start + messageType.toLowerCase() + col + col + object_name + col + object_Id + end);
