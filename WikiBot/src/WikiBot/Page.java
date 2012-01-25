@@ -17,13 +17,11 @@ public class Page {
     };
     private String object_Id, content, object_name;
     private String title, comment;
+    
     // initializing user page
-
     public Page(String object_Id, String content, String object_name) {
         this.content = content;
         this.object_name = object_name;
-
-        // this.username = username;
         this.object_Id = object_Id;
     }
 
@@ -100,8 +98,9 @@ public class Page {
     public String getContent() {
         return content;
     }
-    //   The syntax for like     [[Like::objectName:objectId]] ...genomeType-gene or protein(TAIRG);
-    //              for title   [[suggestion::objectName:objectId]] : [[objectName:objectId::title::Title- GENE AT]]
+    //   The syntax for like     [[Like::objectName:objectId]] 
+    //              for title    [[suggestion::objectName:objectId]] : [[Title:objectName:objectId::title:: <new title>]]
+    //              for comment  [[annotation::objectName:objectId]] : [[Comment:objectName:objectId::comment:: <comment>]]
 
     public String semanticSyntax(String messageType) {
         Logger.getLogger(Page.class.getName()).log(Level.INFO, "Creating semanticSyntax for the userpage");
@@ -112,11 +111,16 @@ public class Page {
         if (messageType.equalsIgnoreCase(MESSAGETYPE.TITLE.toString())) //generate semantic syntax for TITLE
         {
             semanticSyntax = semanticSyntax.concat(start + "suggestion" + col + col + object_name + col + object_Id + "]]");
-            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col +"Title- "+ title + end);
-        } else// generate Semantic syntax for LIKE/DISLIKE
+            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + "Title:"+ object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col + title + end);
+        }
+        else if(messageType.equalsIgnoreCase(MESSAGETYPE.COMMENT.toString()))
+        {
+            semanticSyntax = semanticSyntax.concat(start + "annotation" + col + col + object_name + col + object_Id + "]]");
+            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + "Comment:"+ object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col + comment + end);
+        }
+        else// generate Semantic syntax for LIKE/DISLIKE
         {
             semanticSyntax = semanticSyntax.concat(start + messageType.toLowerCase() + col + col + object_name + col + object_Id + end);
-
         }
         /*
          * if(messageType.equalsIgnoreCase(MESSAGETYPE.COMMENT.toString())) 
