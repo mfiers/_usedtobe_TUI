@@ -130,16 +130,6 @@ var TUI = {
     //encodes a string to TUI definition 
     encodeTuiString: function (str) {
 
-        /*
-         * NOTE: This function could pose a problem.
-         *
-         * If the string contains a quote mark before entering this function
-         * then this could add quote marks around it but parsers attempting to 
-         * parse the string as a string could fail.
-         *
-         * Some work here is needed...
-         */
-
         //first trim the whitespace from the ends of the string
         str = $.trim(str);
 
@@ -147,7 +137,8 @@ var TUI = {
         //if it does contain whitespace then is not needed to have quote marks around it
         if (!(/\s/.test(str))) {
             //if it DOESN'T contain whitespace then we need to surround it with quote marks
-            str = '"' + str + '"';
+            //AND also escape it so we can be sure that is doesn't contain any " or \ /
+            str = '"' + escape(str) + '"';
         }
 
         return str;
