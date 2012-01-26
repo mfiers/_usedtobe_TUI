@@ -54,9 +54,12 @@ var TUIView = {
 
             submitFunction = function () {
                 var data = $('#' + RAND_ID).val();
-                data = TUI.createChangeTitleMessage(data);
-                TUIServiceProvider.postMessage(data);
-
+                // if title is entered
+                if(data!="")
+                {
+                     data = TUI.createChangeTitleMessage(data);
+                     TUIServiceProvider.postMessage(data);
+                }
                 //close boxy
                 Boxy.get($('#' + RAND_ID)).hideAndUnload();
             };
