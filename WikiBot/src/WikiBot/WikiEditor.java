@@ -1,4 +1,3 @@
-
 package WikiBot;
 
 import java.io.File;
@@ -126,7 +125,7 @@ public class WikiEditor {
             if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString())) {
                 title = messageElements[3];
             }
-            if (messageType.equalsIgnoreCase(validMessageType.TITLE.toString())) {
+            if (messageType.equalsIgnoreCase(validMessageType.COMMENT.toString())) {
                 comment = messageElements[3];
             }
 
