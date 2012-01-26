@@ -54,6 +54,7 @@ var TUIView = {
 
             submitFunction = function () {
                 var data = $('#' + RAND_ID).val();
+                data = data.trim();
                 // if title is entered
                 if(data!="")
                 {
