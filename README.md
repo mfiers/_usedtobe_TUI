@@ -1,4 +1,6 @@
 # #TUI - Semantic Microblogging in Community Genome Annotation
+This project looks to embed semantic information in web pages and then allow users to tweet their views / suggestions of the page so that other people can see what they are talking about. The messages have semantic data encoded in them so that machines and programs can easily pick out the relevant information and do with it what they wish. We have defined a #TUI format so that anyone can come along and parse all the #TUI messages and have access to all the data.
+
 The goal of TUI is to use existing cloud services to store all the data - rather than implement new public databases. Free microblogging services such as Twitter offer us ways to store this data and have it publicly available. 
 
 
@@ -16,6 +18,12 @@ __#tui I like tairg:AT1G01040.1__
 
 The #tui message would then be posted to the users twitter stream where it can then be publicly accessed and people could see that this user likes that gene.
 
+## Domain Independent!
+It doesn't have to be related to genomics - our examples implement this system on a range of different sites. Any website that has a generic page layout for articles, stories, blogs - this plugin can be easily and quickly implemented on the target site.
+
+* Wikipedia
+* Stuff.co.nz 
+* NZHerald.co.nz
 
 
 ### Test URLs
