@@ -48,34 +48,12 @@ var TUIView = {
         //register a double-click event when title is clicked on
         $('#' + TUIView.TITLE_ID).dblclick(function () {
 
-            //create a random id every time the popup box happens
-            var RAND_ID = TUIView.TITLE_INPUT_ID + "-" + Date.now(),
-                submitFunction;
-
-            submitFunction = function () {
-                var data = $('#' + RAND_ID).val();
-                data = data.trim();
-                // if title is entered
-                if(data!="")
-                {
-                     data = TUI.createChangeTitleMessage(data);
-                     TUIServiceProvider.postMessage(data);
-                }
-                //close boxy
-                Boxy.get($('#' + RAND_ID)).hideAndUnload();
+            var submitFunction = function (data) {
+             data = TUI.createChangeTitleMessage(data);
+             TUIServiceProvider.postMessage(data);
             };
-
-            Boxy.confirm('<p style="text-align: center; " class="_null"> Enter a new title you wish to suggest. </p>' + '<textarea style="width: 348px; " class="_null" id="' + RAND_ID + '" ></textarea>', submitFunction, {
-                title: 'Change Title'
-            });
-
-            //keypress event
-            //register for "enter" key being pressed
-            $('#' + RAND_ID).keypress(function (event) {
-                if (event.which === 13) { //13 == enter key
-                    submitFunction();
-                }
-            });
+            
+            displayPopup("Change Title", "Enter a new title you wish to suggest.", submitFunction);
         });
 
         //underline animation when user hovers over the title
@@ -86,6 +64,45 @@ var TUIView = {
             //on mouse exit
             $(this).css("text-decoration", "none");
         });
+    }, 
+    
+    
+    //displays a popup that hovers over the page
+    //submit function needs to have a parameter - that is the data
+    displayPopup: function(displayTitle, message, submitFunction) {
+    
+        //create a random id every time the popup box happens
+        var RAND_ID = TUIView.TITLE_INPUT_ID + "-" + Date.now();
+        
+        var overrideFunction = function() {
+        
+            //get the data
+            var data = $('#' + RAND_ID).val();
+            
+            //trim data
+            data = data.trim();
+            
+            //close boxy
+            Boxy.get($('#' + RAND_ID)).hideAndUnload();
+            
+            // if title is entered
+            if(data!="")
+            {
+                submitFunction(data);
+            }
+        };
+    
+        Boxy.confirm('<p style="text-align: center; " class="_null"> ' + message + ' </p>' + '<textarea style="width: 348px; " class="_null" id="' + RAND_ID + '" ></textarea>', overrideFunction, {
+                title: displayTitle});
+    
+        //keypress event
+        //register for "enter" key being pressed
+        $('#' + RAND_ID).keypress(function (event) {
+            if (event.which === 13) { //13 == enter key
+                overrideFunction();
+            }
+        });
+    
     }
 
 };
