@@ -53,7 +53,7 @@ var TUIView = {
              TUIServiceProvider.postMessage(data);
             };
             
-            displayPopup("Change Title", "Enter a new title you wish to suggest.", submitFunction);
+            TUIView.displayPopup("Change Title", "Enter a new title you wish to suggest.", submitFunction);
         });
 
         //underline animation when user hovers over the title
