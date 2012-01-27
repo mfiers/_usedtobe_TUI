@@ -21,11 +21,14 @@ public class Parser {
     public Parser(String username, String msg) {
         this.message = msg;
         messageType = "INVALID";
+        
+        Logger.getLogger(Parser.class.getName()).log(Level.INFO, "New #TUI message from {0}: {1}", new Object[]{username, msg});
+        
         if (isValidTuiMessage()) {
             WikiEditor editor = new WikiEditor(username, this.message, messageType);
-            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, " VALID TUI FORMATTED MESSAGE");
+            Logger.getLogger(Parser.class.getName()).log(Level.INFO, " VALID TUI FORMATTED MESSAGE");
         } else {
-            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, "NOT A VALID TUI FORMATTED MESSAGE");
+            Logger.getLogger(Parser.class.getName()).log(Level.INFO, "NOT A VALID TUI FORMATTED MESSAGE");
         }
     }
 
