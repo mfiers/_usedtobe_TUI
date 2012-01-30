@@ -82,36 +82,17 @@ var TUIView = {
 		//click listener
 		$('#'+TUIView.COMMENT_LINK_ID).click(function()
 		{
-			//create a random id every time the popup box happens
-			var RAND_ID = TUIView.COMMENT_LINK_ID + "-" + Date.now(),
-				submit;
-
-			submit = function ()
+			var submit = function (data)
 			{
-				var data = $('#' + RAND_ID).val();
 				data = data.trim();
 				if(data!="")
 				{
 					data = TUI.createComment(data);
 					TUIServiceProvider.postMessage(data);
 				}
-				
-
-					//close boxy
-				Boxy.get($('#' + RAND_ID)).hideAndUnload();
 			};
-			Boxy.confirm('<p style="text-align: center; " class="_null"> Enter a comment </p>' + '<textarea style="width: 348px; " class="_null" id="' + RAND_ID + '" ></textarea>', submit, {
-					title: 'Comment'
-				});
-				//keypress event
-				//register for "enter" key being pressed
-			$('#' + RAND_ID).keypress(function (event)
-			{
-				if (event.which === 13) 
-				{ //13 == enter key
-					submit();
-				}
-			});
+            
+            TUIView.displayPopup("Comment" "Enter a comment.", submit);			
 		});
 		//displays the recent tweets
 		$('#'+TUIView.COMMENT_SHOW_ID).click(function()
