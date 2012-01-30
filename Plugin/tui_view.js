@@ -6,6 +6,7 @@ var TUIView = {
     LIKE_IMG_EL: '<img src="' + chrome.extension.getURL('images/thumbs_up.png') + '" width="12" height="18" />',
     //image element to a 'dislike' symbol
     DISLIKE_IMG_EL: '<img src="' + chrome.extension.getURL('images/thumbs_down.png') + '" width="12" height="18" />',
+	COMMENT_IMG_EL:'<img src="' + chrome.extension.getURL('images/comment.gif') + '" width="17" height="16" />',
 	TWITTER_SEARCH_URL: 'http://search.twitter.com/search.json?q=',
 
     //the id of the like link
@@ -72,12 +73,19 @@ var TUIView = {
 	COMMENT_SHOW_ID: "tui-show-comment",
 	injectCommentDisplay: function(element)
 	{
-		$(element).append(' <b><a id="'+TUIView.COMMENT_LINK_ID+'">Comment '+'</a></b>');
-		$(element).append(' <b><a id="'+TUIView.COMMENT_SHOW_ID+'"><font size=1> Show </font>'+'</a></b>');
+		$(element).append(' <b><a style="display:none" id="'+TUIView.COMMENT_LINK_ID+'">  Comment '+TUIView.COMMENT_IMG_EL +'</a></b>');
+		$(element).append(' <b><a id="'+TUIView.COMMENT_SHOW_ID+'"><font size=1><span></span></font>'+'</a></b>');
 		
 		//animation
 		$("#"+TUIView.COMMENT_LINK_ID).show("slow");
 		$("#"+TUIView.COMMENT_SHOW_ID).show("slow");
+		
+		$('#'+TUIView.COMMENT_LINK_ID).hover(function(){
+			 $("#"+TUIView.COMMENT_SHOW_ID).show();
+			 $("#"+TUIView.COMMENT_SHOW_ID).find("span").text("Show");
+			 $("#"+TUIView.COMMENT_SHOW_ID).hide(5000);
+			
+		});
 		
 		//click listener
 		$('#'+TUIView.COMMENT_LINK_ID).click(function()
@@ -92,7 +100,7 @@ var TUIView = {
 				}
 			};
             
-            TUIView.displayPopup("Comment" "Enter a comment.", submit);			
+            TUIView.displayPopup("Comment" ,"Enter a comment.", submit);			
 		});
 		//displays the recent tweets
 		$('#'+TUIView.COMMENT_SHOW_ID).click(function()
