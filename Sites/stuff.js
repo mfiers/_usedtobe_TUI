@@ -27,6 +27,7 @@ function loadStuff() {
         var el = $("#left_col").find('h1');
         TUIView.injectTitleChangeDisplay(el);
         TUIView.injectLikeDisplay(el, true);
+		TUIView.injectCommentDisplay(el);
     }
 }
 
