@@ -49,34 +49,12 @@ var TUIView = {
         //register a double-click event when title is clicked on
         $('#' + TUIView.TITLE_ID).dblclick(function () {
 
-            //create a random id every time the popup box happens
-            var RAND_ID = TUIView.TITLE_INPUT_ID + "-" + Date.now(),
-                submitFunction;
-
-            submitFunction = function () {
-                var data = $('#' + RAND_ID).val();
-                data = data.trim();
-                // if title is entered
-                if(data!="")
-                {
-                     data = TUI.createChangeTitleMessage(data);
-                     TUIServiceProvider.postMessage(data);
-                }
-                //close boxy
-                Boxy.get($('#' + RAND_ID)).hideAndUnload();
+            var submitFunction = function (data) {
+             data = TUI.createChangeTitleMessage(data);
+             TUIServiceProvider.postMessage(data);
             };
-
-            Boxy.confirm('<p style="text-align: center; " class="_null"> Enter a new title you wish to suggest. </p>' + '<textarea style="width: 348px; " class="_null" id="' + RAND_ID + '" ></textarea>', submitFunction, {
-                title: 'Change Title'
-            });
-
-            //keypress event
-            //register for "enter" key being pressed
-            $('#' + RAND_ID).keypress(function (event) {
-                if (event.which === 13) { //13 == enter key
-                    submitFunction();
-                }
-            });
+            
+            TUIView.displayPopup("Change Title", "Enter a new title you wish to suggest.", submitFunction);
         });
 
         //underline animation when user hovers over the title
@@ -87,7 +65,9 @@ var TUIView = {
             //on mouse exit
             $(this).css("text-decoration", "none");
         });
-    },
+    }, 
+    
+    
 	COMMENT_LINK_ID: "tui-comment-link",
 	COMMENT_SHOW_ID: "tui-show-comment",
 	injectCommentDisplay: function(element)
@@ -143,27 +123,67 @@ var TUIView = {
 	},
 	//gets all the recent tweets and displays them
 	getTweets: function()
-		{
-			
-			var tweetVal='';
-			//url encodes the comment to be searched
-			var query = encodeURIComponent(TUI.createComment(''));
-			$.getJSON(TUIView.TWITTER_SEARCH_URL+ query,function(json)
-			{
-				$.each(json.results,function(i,tweet)
-				{
-				 tweetVal = tweetVal+'<p><img src="'+tweet.profile_image_url+'" widt="48" height="48" align="left" /><b>' +tweet.from_user+'</b> <br> '+tweet.text+'</p><br>' ;
-				});
-				//if there are no recent tweets
-				if(tweetVal == '')
-				{
-					 Boxy.alert('No recent tweets',null,{title:'Recent Comments'});
-				}
-				else
-				{
-					Boxy.alert(tweetVal,null,{title:'Recent Comments'});
-				}
-				  
-			});
-		}
+    {
+        
+        var tweetVal='';
+        //url encodes the comment to be searched
+        var query = encodeURIComponent(TUI.createComment(''));
+        $.getJSON(TUIView.TWITTER_SEARCH_URL+ query,function(json)
+        {
+            $.each(json.results,function(i,tweet)
+            {
+             tweetVal = tweetVal+'<p><img src="'+tweet.profile_image_url+'" widt="48" height="48" align="left" /><b>' +tweet.from_user+'</b> <br> '+tweet.text+'</p><br>' ;
+            });
+            //if there are no recent tweets
+            if(tweetVal == '')
+            {
+                 Boxy.alert('No recent tweets',null,{title:'Recent Comments'});
+            }
+            else
+            {
+                Boxy.alert(tweetVal,null,{title:'Recent Comments'});
+            }
+              
+        });
+    },
+    
+    
+    //displays a popup that hovers over the page
+    //submit function needs to have a parameter - that is the data
+    displayPopup: function(displayTitle, message, submitFunction) {
+    
+        //create a random id every time the popup box happens
+        var RAND_ID = TUIView.TITLE_INPUT_ID + "-" + Date.now();
+        
+        var overrideFunction = function() {
+        
+            //get the data
+            var data = $('#' + RAND_ID).val();
+            
+            //trim data
+            data = data.trim();
+            
+            //close boxy
+            Boxy.get($('#' + RAND_ID)).hideAndUnload();
+            
+            // if title is entered
+            if(data!="")
+            {
+                submitFunction(data);
+            }
+        };
+    
+        Boxy.confirm('<p style="text-align: center; " class="_null"> ' + message + ' </p>' + '<textarea style="width: 348px; " class="_null" id="' + RAND_ID + '" ></textarea>', overrideFunction, {
+                title: displayTitle});
+    
+        //keypress event
+        //register for "enter" key being pressed
+        $('#' + RAND_ID).keypress(function (event) {
+            if (event.which === 13) { //13 == enter key
+                overrideFunction();
+            }
+        });
+    
+    }
+
 };
