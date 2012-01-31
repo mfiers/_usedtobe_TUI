@@ -10,7 +10,7 @@
     {
       "matches": ["http://*/*"],
       "css": ["boxy.css"],
-      "js": ["sprintf.js", "jquery.js", "jquery.boxy.js", "tui_base.js", "tui_messaging.js", "tui_view.js", "inject.js" , "stuff.js"],
+      "js": ["sprintf.js", "jquery.js", "jquery.boxy.js", "spin.js", "tui_base.js", "tui_messaging.js", "tui_view.js", "inject.js" , "stuff.js"],
 	  "run_at": "document_end"
     }
   ]
