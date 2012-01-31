@@ -1,4 +1,3 @@
-
 package AtomParser;
 
 import WikiBot.WikiEditor;
@@ -49,11 +48,11 @@ public class Parser {
                 if (message.matches(REGEX_TUI)) {
                     isValid = true;
                 }
-                if (message.contains("LIKE")) {
-                    messageType = "LIKE";
+                if (message.contains("DISLIKE")) {
+                    messageType = "DISLIKE";
                 } else {
-                    if (message.contains("DISLIKE")) {
-                        messageType = "DISLIKE";
+                    if (message.contains("LIKE")) {
+                        messageType = "LIKE";
                     }
                 }
             } else {
