@@ -1,4 +1,3 @@
-
 package WikiBot;
 
 import java.util.logging.Level;
@@ -76,8 +75,7 @@ public class Page {
                 content = splitContent;
             } else {
                 Logger.getLogger(Page.class.getName()).log(Level.INFO, "MESSAGE ALREADY EXISTS :EXIT");
-                System.exit(0);
-            }
+                }
         }
     }
     /*
