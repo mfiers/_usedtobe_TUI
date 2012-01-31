@@ -44,8 +44,9 @@ function loadTair() {
 
 
     //inject the like UI
-    TUIView.injectTitleChangeDisplay(getElementToInject());
-    TUIView.injectLikeDisplay(getElementToInject());
+    TUIView.injectTitleChangeDisplay(el);
+    TUIView.injectLikeDisplay(el);
+    TUIView.injectCommentDisplay(el);
 }
 
 //source: http://papermashup.com/read-url-get-variables-withjavascript/
