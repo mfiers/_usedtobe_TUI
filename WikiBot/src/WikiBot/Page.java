@@ -44,14 +44,18 @@ public class Page {
 
     public void create(String messageType) {
 
-        switch (MESSAGETYPE.valueOf(messageType)) //checking if the previously liked/disliked 
+        switch (MESSAGETYPE.valueOf(messageType)) //checking if the previously liked/disliked ;create new title/comment page
         {
             case LIKE:
                 check(MESSAGETYPE.DISLIKE.toString());
                 break;
             case DISLIKE:
                 check(MESSAGETYPE.LIKE.toString());
-                break;
+                break;                                  
+            case TITLE:                             
+                    break;
+            case COMMENT:
+                    break;
             default:
                 break;
         }
@@ -99,8 +103,8 @@ public class Page {
         return content;
     }
     //   The syntax for like     [[Like::objectName:objectId]] 
-    //              for title    [[suggestion::objectName:objectId]] : [[Title:objectName:objectId::title:: <new title>]]
-    //              for comment  [[annotation::objectName:objectId]] : [[Comment:objectName:objectId::comment:: <comment>]]
+    //              for title    [[suggestion::objectName:objectId]] : [[title:: <new title>]]
+    //              for comment  [[annotation::objectName:objectId]] : [[comment:: <comment>]]
 
     public String semanticSyntax(String messageType) {
         Logger.getLogger(Page.class.getName()).log(Level.INFO, "Creating semanticSyntax for the userpage");
@@ -111,12 +115,12 @@ public class Page {
         if (messageType.equalsIgnoreCase(MESSAGETYPE.TITLE.toString())) //generate semantic syntax for TITLE
         {
             semanticSyntax = semanticSyntax.concat(start + "suggestion" + col + col + object_name + col + object_Id + "]]");
-            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + "Title:"+ object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col + title + end);
+            semanticSyntax = semanticSyntax.concat(" " + col + " " + start +  messageType.toLowerCase() + col + col + title + end);
         }
-        else if(messageType.equalsIgnoreCase(MESSAGETYPE.COMMENT.toString()))
+        else if(messageType.equalsIgnoreCase(MESSAGETYPE.COMMENT.toString()))//generate semantic syntax for COMMENT
         {
             semanticSyntax = semanticSyntax.concat(start + "annotation" + col + col + object_name + col + object_Id + "]]");
-            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + "Comment:"+ object_name + col + object_Id + col + col + messageType.toLowerCase() + col + col + comment + end);
+            semanticSyntax = semanticSyntax.concat(" " + col + " " + start + messageType.toLowerCase() + col + col + comment + end);
         }
         else// generate Semantic syntax for LIKE/DISLIKE
         {
@@ -156,5 +160,24 @@ public class Page {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+    /*
+     * Creates a new page for each comment/title 
+     */
+    public String createSuggestionPage(String messageType,long currentTime,String userpageName)
+    {
+        String suggestionContent = "[[Category:"+messageType+"]]\n";
+        suggestionContent = suggestionContent.concat("[[user::"+userpageName+"]] suggested "+messageType.toLowerCase()+" for [[object::"+object_name+":"+object_Id+"]]");
+        suggestionContent = suggestionContent.concat("  [[time::"+currentTime+" ::link| ]] \n Suggested "+ messageType.toLowerCase()+" - [[dc::"+messageType.toLowerCase()+"::");
+        switch (MESSAGETYPE.valueOf(messageType.toUpperCase())) //checking if the previously liked/disliked ;create new title/comment page
+        {                                         
+            case TITLE:     suggestionContent = suggestionContent.concat(title+"]]");                        
+                    break;
+            case COMMENT:    suggestionContent = suggestionContent.concat(comment+"]]");  
+                    break;
+            default:
+                break;
+        }
+        return suggestionContent;
     }
 }

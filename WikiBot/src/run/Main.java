@@ -45,11 +45,14 @@ public class Main {
                         }
                     }
                     final String message = messageBuilder;
+                   
+                                      
                     new Thread(new Runnable() {
-
+                    
+                      long currentTime = System.currentTimeMillis();
                         @Override
                         public void run() {
-                            Parser we = new Parser(user, message);
+                            Parser we = new Parser(user, message,currentTime);
                         }
                     }).start();
                 } catch (Exception ex) {

@@ -18,20 +18,20 @@ public class Parser {
     private static final String REGEX_COMMENT_TUI = "^(.*)#TUI (.*:.*)(TUI:COMMENT)(.*)";
     private String messageType;
 
-    public Parser(String username, String msg) {
+    public Parser(String username, String msg,long currentTime) {
         this.message = msg;
         messageType = "INVALID";
         
         Logger.getLogger(Parser.class.getName()).log(Level.INFO, "New #TUI message from {0}: {1}", new Object[]{username, msg});
         
         if (isValidTuiMessage()) {
-            WikiEditor editor = new WikiEditor(username, this.message, messageType);
+            WikiEditor editor = new WikiEditor(username, this.message, messageType,currentTime);
             Logger.getLogger(Parser.class.getName()).log(Level.INFO, " VALID TUI FORMATTED MESSAGE");
         } else {
             Logger.getLogger(Parser.class.getName()).log(Level.INFO, "NOT A VALID TUI FORMATTED MESSAGE");
         }
     }
-
+   
     private boolean isValidTuiMessage() {
         boolean isValid = false;
         //need to put in "TUI:" in front of "I" and "Like"

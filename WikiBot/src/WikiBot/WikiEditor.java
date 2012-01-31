@@ -47,17 +47,19 @@ public class WikiEditor {
     private String object_name, object_Id, messageType, title, comment;
     private String username, message;
     private static String BOT_USER;
+    private long currentTime;
 
     public enum validMessageType {
 
         LIKE, DISLIKE, TITLE, COMMENT
     };
 
-    public WikiEditor(String username, String message, String messageType) {
+    public WikiEditor(String username, String message, String messageType,long currentTime) {
         this.username = username;
         this.message = message;
         this.messageType = messageType;
         title = "";
+        this.currentTime = currentTime;
         wiki = new Wiki("socgen.soer11.ceres.auckland.ac.nz/wiki/", "");
         if (isValidMessageType(messageType)) {
             getMessageObjects(messageType); // Extract information from the message
@@ -175,26 +177,32 @@ public class WikiEditor {
 
     public void setUserPage() {
         String content = null;
-        content = getPageContent(twiPage + username);
+        String userpageName = twiPage+username;
+        String suggestionpageName = (object_name + ":"+object_Id+":"+username+":"+currentTime);
+        content = getPageContent(userpageName);
         Page userpage = new Page(object_Id, content, object_name);
         switch (validMessageType.valueOf(messageType)) {
             case TITLE:
                 userpage.setTitle(title);
+                String titleContent = userpage.createSuggestionPage("Title",currentTime,userpageName);
+                editWiki(suggestionpageName, titleContent, false);  ////adds a new title page to the wiki
                 break;
             case COMMENT:
                 userpage.setComment(comment);
+                String commentContent = userpage.createSuggestionPage("Comment",currentTime,userpageName);
+                editWiki(suggestionpageName, commentContent, false);    //adds a new comment page to the wiki
                 break;
             default:
                 break;
         }
-        if (content.length() < 2) {             //if page does not exist,create a new userpage
+        if (content.length() < 2) {             //if userpage does not exist,create a new userpage
             userpage.createNewUserpage(messageType);
         } else {
             //if the page already exists,add the message to the page
             userpage.create(messageType);
         }
         content = userpage.getContent();
-        editWiki(twiPage + username, content, false);
+        editWiki(userpageName, content, false);
     }
     /*
      * append content to wiki
