@@ -113,6 +113,8 @@ var TUIView = {
 	//gets all the recent tweets and displays them
 	getTweets: function()
     {
+        //generate element to load data into
+        var data_id = "tui-dynamic-data-" + Date.now();
         
         var tweetVal='';
         //url encodes the comment to be searched
@@ -126,14 +128,22 @@ var TUIView = {
             //if there are no recent tweets
             if(tweetVal == '')
             {
-                 Boxy.alert('No recent tweets',null,{title:'Recent Comments'});
+                $('#' + data_id).html("<p>No recent tweets.</p>");
             }
             else
             {
-                Boxy.alert(tweetVal,null,{title:'Recent Comments'});
+                $('#' + data_id).html(tweetVal);
             }
               
         });
+        
+        var spinner_id = data_id + '-spinner';
+        
+        //create alert box
+        Boxy.alert('<div id="' + data_id + '"> <p>Loading tweets...</p> <div id="' + spinner_id + '"> </div> </div>',null,{title:'Recent Comments'});
+        
+        //create spinner to show loading
+        new Spinner({color:'#fff', lines: 12}).spin($('#' + spinner_id));
     },
     
     
