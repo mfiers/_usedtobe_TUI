@@ -123,7 +123,7 @@ var TUIView = {
         {
             $.each(json.results,function(i,tweet)
             {
-             tweetVal = tweetVal+'<p><img src="'+tweet.profile_image_url+'" widt="48" height="48" align="left" /><b>' +tweet.from_user+'</b> <br> '+tweet.text+'</p><br>' ;
+             tweetVal = tweetVal+'<p><img src="'+tweet.profile_image_url+'" width="48" height="48" align="left" /><b>' +tweet.from_user+'</b> <br> '+tweet.text+'</p><br>' ;
             });
             //if there are no recent tweets
             if(tweetVal == '')
