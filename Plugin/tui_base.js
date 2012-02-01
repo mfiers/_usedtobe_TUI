@@ -159,5 +159,34 @@ var TUI = {
         //with the TUI object
         //this is called after one second to allow other scripts to attach themselves to the event
         setTimeout(TUI._TUIReady, 1000);
+        
+        
+        var getLikeCountF = function () {
+                var searchQuery = "#tui " + TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX) + ":" + TUI.getTuiMeta(TUI.META_TUI_ID);
+                TUIServiceProvider.search(searchQuery, function(data) {
+            
+                if(data)
+                {
+                    $.each(data,function(i,msg)
+                    {
+                        if(msg.username.toLowerCase() == "tuibot" && msg.message.toLowerCase().indexOf(searchQuery) === 0)
+                        {
+                            var split = msg.message.split(" ");
+                            
+                            var likeCount = split[2].split(":")[1];
+                            var dislikeCount = split[3].split(":")[1];
+                            
+                            TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, likeCount);
+                            TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
+                            
+                            
+                        }
+                    });
+                }
+            });
+        };
+        
+        setTimeout(getLikeCountF, 1500);
+        
     }
 };
