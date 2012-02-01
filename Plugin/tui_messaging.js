@@ -53,5 +53,24 @@ var TUIServiceProvider = {
     //helper method to create a popup window
     _popupWindow: function (url, title, message) {
         window.open(url + encodeURIComponent(message), title, 'height=350,width=650');
+    },
+    
+    //twitter base search URL
+    TWITTER_SEARCH_URL: 'http://search.twitter.com/search.json?q=',
+    
+    //searches the provider and returns results based on the query
+    search: function(query) {
+    
+        switch (localStorage.TUIServiceProvider_provider) {
+        
+            case TUIServiceProvider.SP_Twitter:
+                //do something
+                break;
+                
+            case TUIServiceProvider.SP_Identica:
+                //do something
+                break;
+        }
+    
     }
 };
