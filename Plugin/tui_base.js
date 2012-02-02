@@ -76,6 +76,15 @@ var TUI = {
     //sets one of the meta-data tag content that has been dynamically inserted inside the page
     setTuiMeta: function (tagName, content) {
         $('meta[name=' + tagName + ']').attr("content", content);
+        
+        //if it is a change of the like/dislike count - then notify listeners
+        switch(tagName)
+        {
+            case TUI.META_TUI_LIKE_COUNT: TUI.notifyLikeCountChange();
+                break; 
+            case TUI.META_TUI_DISLIKE_COUNT: TUI.notifyDislikeCountChange();
+                break;
+        }
     },
 
     //creates a tui like message for the current viewing page
@@ -142,6 +151,30 @@ var TUI = {
         }
 
         return str;
+    },
+    
+    //listener section for values being updated
+    LIKE_COUNT_CHANGE_TRIGGER: 'tuiLikeCountChange', 
+    DISLIKE_COUNT_CHANGE_TRIGGER: 'tuiDisikeCountChange', 
+    
+    //attach a listener function to listen for changes in the like count
+    onLikeCountChange: function(listener) {
+        $(document).bind(TUI.LIKE_COUNT_CHANGE_TRIGGER, function() { listener(); });
+    },
+    
+    //triggers the dislike count change listeners to execute
+    notifyLikeCountChange: function() {
+        $(document).trigger(TUI.LIKE_COUNT_CHANGE_TRIGGER);
+    },
+    
+    //attach a listener function to listen for changes in the dislike count
+    onDisikeCountChange: function(listener) {
+        $(document).bind(TUI.DISLIKE_COUNT_CHANGE_TRIGGER, function() { listener(); });
+    },
+    
+    //triggers the dislike count change listeners to execute
+    notifyDislikeCountChange: function() {
+        $(document).trigger(TUI.DISLIKE_COUNT_CHANGE_TRIGGER);
     },
     
     //event name to call
