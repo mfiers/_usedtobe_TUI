@@ -2,9 +2,7 @@
 
 //only works on this valid site
 if (location.href.indexOf("http://en.wikipedia.org") === 0 || location.href.indexOf("http://www.en.wikipedia.org") === 0) {
-    $(document).bind('tuiLoaded', function () {
-        loadWikipedia();
-    });
+    TUI.onReady(loadWikipedia);
 }
 
 //base url to the wikipedia api (to get the article id

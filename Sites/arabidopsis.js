@@ -2,11 +2,7 @@
 
 //only works on this valid site
 if (location.href.indexOf("http://www.arabidopsis.org/servlets/TairObject?") == 0) {
-    console.log("VALID");
-
-    $(document).bind('tuiLoaded', function () {
-        loadTair();
-    });
+    TUI.onReady(loadTair);
 }
 
 function loadTair() {

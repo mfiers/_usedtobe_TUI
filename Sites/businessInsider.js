@@ -1,7 +1,5 @@
 if(location.href.indexOf("http://articles.businessinsider.com")  === 0  || location.href.indexOf("http://www.articles.businessinsider.com")  === 0 ) {
-    $(document).bind('tuiLoaded', function()  {
-        loadBusinessinsider();
-    });
+    TUI.onReady(loadBusinessinsider);
 }
 function loadBusinessinsider() {
     TUI.setTuiMeta(TUI.META_TUI_ID_PREFIX, "businessInsider");

@@ -2,11 +2,7 @@
 
 //only works on this valid site
 if (location.href.indexOf("http://wormbase.org") === 0 || location.href.indexOf("http://www.wormbase.org") === 0) {
-    console.log("VALID");
-
-    $(document).bind('tuiLoaded', function () {
-        loadWormBase();
-    });
+    TUI.onReady(loadWormBase);
 }
 
 function loadWormBase() {

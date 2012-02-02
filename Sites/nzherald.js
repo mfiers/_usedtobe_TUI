@@ -2,9 +2,7 @@
 
 //only works on this valid site
 if (location.href.indexOf("http://nzherald.co.nz") === 0 || location.href.indexOf("http://www.nzherald.co.nz") === 0) {
-    $(document).bind('tuiLoaded', function () {
-        loadNZHerald();
-    });
+    TUI.onReady(loadNZHerald);
 }
 
 function loadNZHerald() {

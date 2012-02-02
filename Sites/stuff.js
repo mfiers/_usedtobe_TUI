@@ -2,9 +2,7 @@
 
 //only works on this valid site
 if (location.href.indexOf("http://stuff.co.nz") === 0 || location.href.indexOf("http://www.stuff.co.nz") === 0) {
-    $(document).bind('tuiLoaded', function () {
-        loadStuff();
-    });
+    TUI.onReady(loadStuff);
 }
 
 function loadStuff() {

@@ -143,9 +143,33 @@ var TUI = {
 
         return str;
     },
-
+    
+    //event name to call
+    ON_READY_TRIGGER: 'tuiLoaded',
+    //true if the event has been called - false otherwise
+    onReady_called: false,
+    
+    //attach a listener to listen out for when TUI has finished loading and ready to use 
+    //listener = method to call when ready
+    onReady: function(listener) {
+        //if it has been called already then just run the function now
+        if(TUI.onReady_called) {
+            listener();
+        }
+        else {
+            $(document).bind(TUI.ON_READY_TRIGGER, function() { listener(); });
+        }
+    },
+    
+    //internal function to call tuiLoaded method
     _TUIReady: function () {
-        $(document).trigger('tuiLoaded');
+        
+        //only trigger it if it has not been triggered yet.
+        if(!TUI.onReady_called)
+        {
+            $(document).trigger(TUI.ON_READY_TRIGGER);
+            TUI.onReady_called = true;
+        }
     },
 
     //loads the tui object and injects data into 
@@ -156,8 +180,6 @@ var TUI = {
         TUI._init();
 
         //once that has been completed - notify all listeners that it is safe to start working
-        //with the TUI object
-        //this is called after one second to allow other scripts to attach themselves to the event
-        setTimeout(TUI._TUIReady, 1000);
+        TUI._TUIReady();
     }
 };
