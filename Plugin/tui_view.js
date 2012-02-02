@@ -7,7 +7,6 @@ var TUIView = {
     //image element to a 'dislike' symbol
     DISLIKE_IMG_EL: '<img src="' + chrome.extension.getURL('images/thumbs_down.png') + '" width="12" height="18" />',
 	COMMENT_IMG_EL:'<img src="' + chrome.extension.getURL('images/comment.gif') + '" width="17" height="16" />',
-	TWITTER_SEARCH_URL: 'http://search.twitter.com/search.json?q=',
 
     //the id of the like link
     LIKE_LINK_ID: "tui-like-link",
@@ -119,7 +118,7 @@ var TUIView = {
         var tweetVal='';
         //url encodes the comment to be searched
         var query = encodeURIComponent(TUI.createComment(''));
-        $.getJSON(TUIView.TWITTER_SEARCH_URL+ query,function(json)
+        $.getJSON(TUIServiceProvider.TWITTER_SEARCH_URL+ query,function(json)
         {
             $.each(json.results,function(i,tweet)
             {
