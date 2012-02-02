@@ -80,6 +80,7 @@ var TUIServiceProvider = {
                     $.each(json.results,function(i,tweet)
                     {
                         var data = new Object();
+                        data.id = tweet.id;
                         data.image = tweet.profile_image_url;
                         data.username = tweet.from_user;
                         data.message = tweet.text;
