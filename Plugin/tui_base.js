@@ -98,7 +98,7 @@ var TUI = {
         var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX),
             id = TUI.getTuiMeta(TUI.META_TUI_ID);
 
-        return sprintf(TUI.LIKE_FORMAT, 'like', name, id);
+        return $.trim(sprintf(TUI.LIKE_FORMAT, 'like', name, id));
     },
 
     //creates a tui dislike message for the current viewing page
@@ -108,7 +108,7 @@ var TUI = {
         var name = TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX),
             id = TUI.getTuiMeta(TUI.META_TUI_ID);
 
-        return sprintf(TUI.LIKE_FORMAT, 'dislike', name, id);
+        return $.trim(sprintf(TUI.LIKE_FORMAT, 'dislike', name, id));
     },
 
 
@@ -299,9 +299,32 @@ var TUI = {
                                 if($.isNumeric(dislikeCount)) {
                                     TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
                                 }
+                                
+                                //now search twitter for tweets that have been posted AFTER this tweet.
+                                TUIServiceProvider.searchWithSinceID(TUI.createTuiLike(), tweet.id, TUI.updateLikeCountFromTweets);
+                                TUIServiceProvider.searchWithSinceID(TUI.createTuiDislike(), tweet.id, TUI.updateLikeCountFromTweets);
                             }
                         }
                     });
+                }
+            });
+        }
+    }, 
+    
+    //updates the like count from tweets
+    updateLikeCountFromTweets: function(data) {
+        if(data)
+        {
+            var searchLike = TUI.createTuiLike().toLowerCase();
+            var searchDisike = TUI.createTuiDislike().toLowerCase();
+            $.each(data,function(i,tweet)
+            {
+                var msg = tweet.message.toLowerCase();
+                if(msg.indexOf(searchLike) > -1) {
+                    TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, parseInt(TUI.getTuiMeta(TUI.META_TUI_LIKE_COUNT)) +1);
+                }
+                if(msg.indexOf(searchDislike) > -1) {
+                    TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, parseInt(TUI.getTuiMeta(TUI.META_TUI_DISLIKE_COUNT)) +1);
                 }
             });
         }
