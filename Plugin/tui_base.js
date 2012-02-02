@@ -168,7 +168,7 @@ var TUI = {
     },
     
     //attach a listener function to listen for changes in the dislike count
-    onDisikeCountChange: function(listener) {
+    onDislikeCountChange: function(listener) {
         $(document).bind(TUI.DISLIKE_COUNT_CHANGE_TRIGGER, function() { listener(); });
     },
     
