@@ -12,16 +12,34 @@ var TUIView = {
     //the id of the like link
     LIKE_LINK_ID: "tui-like-link",
     DISLIKE_LINK_ID: "tui-dislike-link",
+    
+    //like/dislike count div's
+    LIKE_COUNT_ID: "tui-like-count-display", 
+    DISLIKE_COUNT_ID: "tui-dislike-count-display", 
 
     //injects a like display on the specified element 
     //boolean to add a new line before the like count
     injectLikeDisplay: function (element, newline) {
 
+        var likeDisp = '<div style="display: inline;" id="' + TUIView.LIKE_COUNT_ID + '">0</div>';
+        var dislikeDisp = '<div style="display: inline;" id="' + TUIView.DISLIKE_COUNT_ID + '">0</div>';
+        
+        //add listeners to listen for when the like/dislike changes
+        TUI.onLikeCountChange(function() {
+            $('#' + TUIView.LIKE_COUNT_ID).text(TUI.getTuiMeta(TUI.META_TUI_LIKE_COUNT));
+        });
+    
+        TUI.onDislikeCountChange(function() {
+            $('#' + TUIView.DISLIKE_COUNT_ID).text(TUI.getTuiMeta(TUI.META_TUI_DISLIKE_COUNT));
+        });
+        
         //inject elements into the element
         var nl = (newline) ? '<br />' : "";
-        $(element).append(nl + ' <b><a style="display: none" id="' + TUIView.LIKE_LINK_ID + '">Like ' + TUIView.LIKE_IMG_EL + '</a>&nbsp; </b>');
-        $(element).append(' <b><a style="display: none" id="' + TUIView.DISLIKE_LINK_ID + '">Dislike ' + TUIView.DISLIKE_IMG_EL + '</a></b>');
+        $(element).append(nl + ' <b><a style="display: none" id="' + TUIView.LIKE_LINK_ID + '">Like (' + likeDisp + ')' + TUIView.LIKE_IMG_EL + '</a>&nbsp; </b>');
+        $(element).append(' <b><a style="display: none" id="' + TUIView.DISLIKE_LINK_ID + '">Dislike (' + dislikeDisp + ')'  + TUIView.DISLIKE_IMG_EL + '</a></b>');
 
+        //create div tags to display the total like/dislike count
+        
         //animation to slowly fade in
         $("#" + TUIView.LIKE_LINK_ID).show("slow");
         $("#" + TUIView.DISLIKE_LINK_ID).show("slow");
