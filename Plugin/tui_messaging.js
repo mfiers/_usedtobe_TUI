@@ -67,6 +67,12 @@ var TUIServiceProvider = {
     //callback function must take a param (an array of tweets/messages)
     search: function(query, callbackFunction) {
     
+        TUIServiceProvider.searchWithSinceID(query, null, callbackFunction);    
+    }, 
+    
+    //search twitter with a since id
+    searchWithSinceID: function (query, since_id, callbackFunction) {
+    
         //ensure there is a provider set
         TUIServiceProvider.init();
     
@@ -74,7 +80,11 @@ var TUIServiceProvider = {
         
             case TUIServiceProvider.SP_Twitter:
             
-                $.getJSON(TUIServiceProvider.TWITTER_SEARCH_URL + encodeURIComponent(query), function(json)
+                var searchURL = TUIServiceProvider.TWITTER_SEARCH_URL + encodeURIComponent(query);
+                if(since_id) {
+                    searchURL += "&since_id=" + since_id;
+                }
+                $.getJSON(searchURL, function(json)
                 {
                     var results = new Array();
                     $.each(json.results,function(i,tweet)
@@ -96,6 +106,5 @@ var TUIServiceProvider = {
                 //TODO
                 break;
         }
-    
     }
 };
