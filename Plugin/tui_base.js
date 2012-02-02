@@ -214,5 +214,32 @@ var TUI = {
 
         //once that has been completed - notify all listeners that it is safe to start working
         TUI._TUIReady();
+        
+        //now search twitter to get the latest count of tweets
+        var searchQuery = "#tui " + TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX) + ":" + TUI.getTuiMeta(TUI.META_TUI_ID);
+        TUIServiceProvider.search(searchQuery, function(data) {
+            if(data)
+            {
+                $.each(data,function(i,msg)
+                {
+                    var message = msg.message.toLowerCase();
+                    if(msg.username.toLowerCase() == "tuibot" && message.indexOf(searchQuery) === 0)
+                    {
+                    
+                        //assert that it is a valid message
+                        if(message.indexOf("like:") > -1 && message.indexOf("dislike:") > -1)
+                        {
+                            var split = message.split(" ");
+                            
+                            var likeCount = split[2].split(":")[1];
+                            var dislikeCount = split[3].split(":")[1];
+                            
+                            TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, likeCount);
+                            TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
+                        }
+                    }
+                });
+            }
+        });
     }
 };
