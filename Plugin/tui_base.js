@@ -277,10 +277,10 @@ var TUI = {
             TUIServiceProvider.search(searchQuery, function(data) {
                 if(data)
                 {
-                    $.each(data,function(i,msg)
+                    $.each(data,function(i,tweet)
                     {
-                        var message = msg.message.toLowerCase();
-                        if(msg.username.toLowerCase() == "tuibot" && message.indexOf(searchQuery) === 0)
+                        var message = tweet.message.toLowerCase();
+                        if(tweet.username.toLowerCase() === "tuibot" && message.indexOf(searchQuery) === 0)
                         {
                         
                             //assert that it is a valid message
@@ -291,9 +291,14 @@ var TUI = {
                                 var likeCount = split[2].split(":")[1];
                                 var dislikeCount = split[3].split(":")[1];
                                 
-                                //setting these will notify listeners of any change
-                                TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, likeCount);
-                                TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
+                                //assert it is a number and then set them
+                                //note: setting these will notify listeners of any change
+                                if($.isNumeric(likeCount)) {
+                                    TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, likeCount);
+                                }
+                                if($.isNumeric(dislikeCount)) {
+                                    TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
+                                }
                             }
                         }
                     });
