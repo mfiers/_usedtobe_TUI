@@ -77,12 +77,16 @@ var TUI = {
     setTuiMeta: function (tagName, content) {
         $('meta[name=' + tagName + ']').attr("content", content);
         
-        //if it is a change of the like/dislike count - then notify listeners
+        //notify listeners (if applicable) of change
         switch(tagName)
         {
             case TUI.META_TUI_LIKE_COUNT: TUI.notifyLikeCountChange();
                 break; 
             case TUI.META_TUI_DISLIKE_COUNT: TUI.notifyDislikeCountChange();
+                break;
+            case TUI.META_TUI_ID: TUI.notifyIDSet();
+                break;
+            case TUI.META_TUI_ID_PREFIX: TUI.notifyIDPrefixSet();
                 break;
         }
     },
@@ -156,6 +160,46 @@ var TUI = {
     //listener section for values being updated
     LIKE_COUNT_CHANGE_TRIGGER: 'tuiLikeCountChange', 
     DISLIKE_COUNT_CHANGE_TRIGGER: 'tuiDisikeCountChange', 
+    ID_PREFIX_SET_TRIGGER: 'tuiIDPrefixSet', 
+    ID_SET_TRIGGER: 'tuiIDSet',
+    
+    //attach a listener function to listen for when the id prefix is set
+    onIDPrefixSet: function(listener) {
+        $(document).bind(TUI.ID_PREFIX_SET_TRIGGER, function() { listener(); });
+        
+        //if one has been set already - then notify
+        if(TUI.id_prefix_set_called) {
+            listener();
+        }
+    },
+    
+    //true if the id prefix has been notified already
+    id_prefix_set_called: false,
+    
+    //notify listeners that an id prefix was set
+    notifyIDPrefixSet: function() {
+        TUI.id_prefix_set_called = true;
+        $(document).trigger(TUI.ID_PREFIX_SET_TRIGGER);
+    },
+    
+    //attach a listener function to listen for when the id is set
+    onIDSet: function(listener) {
+        $(document).bind(TUI.ID_SET_TRIGGER, function() { listener(); });
+        
+        //if one has been set already - then notify
+        if(TUI.id_set_called) {
+            listener();
+        }
+    },
+    
+    //true if the id has been notified already
+    id_set_called: false,
+    
+    //notify listeners that an id was set
+    notifyIDSet: function() {
+        TUI.id_set_called = true;
+        $(document).trigger(TUI.ID_SET_TRIGGER);
+    },
     
     //attach a listener function to listen for changes in the like count
     onLikeCountChange: function(listener) {
@@ -215,31 +259,46 @@ var TUI = {
         //once that has been completed - notify all listeners that it is safe to start working
         TUI._TUIReady();
         
-        //now search twitter to get the latest count of tweets
-        var searchQuery = "#tui " + TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX) + ":" + TUI.getTuiMeta(TUI.META_TUI_ID);
-        TUIServiceProvider.search(searchQuery, function(data) {
-            if(data)
-            {
-                $.each(data,function(i,msg)
+        
+        //attach a listener to listen for when the id and the prefix is set 
+        //then go to twitter to attempt to find the latest count
+        TUI.onIDSet(TUI.updateLikeCountFromTwitter);
+        TUI.onIDPrefixSet(TUI.updateLikeCountFromTwitter);
+    },
+    
+    
+    //gets the total like count from twitter and notifies listeners that the count has changed
+    updateLikeCountFromTwitter: function() {
+        //only do it if we know both the id prefix and the id
+        if(TUI.id_set_called && TUI.id_prefix_set_called)
+        {
+            //search twitter to get the latest count of tweets
+            var searchQuery = "#tui " + TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX) + ":" + TUI.getTuiMeta(TUI.META_TUI_ID);
+            TUIServiceProvider.search(searchQuery, function(data) {
+                if(data)
                 {
-                    var message = msg.message.toLowerCase();
-                    if(msg.username.toLowerCase() == "tuibot" && message.indexOf(searchQuery) === 0)
+                    $.each(data,function(i,msg)
                     {
-                    
-                        //assert that it is a valid message
-                        if(message.indexOf("like:") > -1 && message.indexOf("dislike:") > -1)
+                        var message = msg.message.toLowerCase();
+                        if(msg.username.toLowerCase() == "tuibot" && message.indexOf(searchQuery) === 0)
                         {
-                            var split = message.split(" ");
-                            
-                            var likeCount = split[2].split(":")[1];
-                            var dislikeCount = split[3].split(":")[1];
-                            
-                            TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, likeCount);
-                            TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
+                        
+                            //assert that it is a valid message
+                            if(message.indexOf("like:") > -1 && message.indexOf("dislike:") > -1)
+                            {
+                                var split = message.split(" ");
+                                
+                                var likeCount = split[2].split(":")[1];
+                                var dislikeCount = split[3].split(":")[1];
+                                
+                                //setting these will notify listeners of any change
+                                TUI.setTuiMeta(TUI.META_TUI_LIKE_COUNT, likeCount);
+                                TUI.setTuiMeta(TUI.META_TUI_DISLIKE_COUNT, dislikeCount);
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 };
