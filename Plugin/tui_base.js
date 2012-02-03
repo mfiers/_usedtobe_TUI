@@ -275,6 +275,9 @@ var TUI = {
             //search twitter to get the latest count of tweets
             var searchQuery = "#tui " + TUI.getTuiMeta(TUI.META_TUI_ID_PREFIX) + ":" + TUI.getTuiMeta(TUI.META_TUI_ID);
             TUIServiceProvider.search(searchQuery, function(data) {
+                
+                var last_tweet_id;
+                
                 if(data)
                 {
                     $.each(data,function(i,tweet)
@@ -301,22 +304,37 @@ var TUI = {
                                 }
                                 
                                 //now search twitter for tweets that have been posted AFTER this tweet.
-                                TUIServiceProvider.searchWithSinceID(TUI.createTuiLike(), tweet.id, TUI.updateLikeCountFromTweets);
-                                TUIServiceProvider.searchWithSinceID(TUI.createTuiDislike(), tweet.id, TUI.updateLikeCountFromTweets);
+                                last_tweet_id = tweet.id;
                             }
                         }
                     });
                 }
+                
+                TUI.searchRecentTweets(last_tweet_id);
             });
         }
     }, 
+    
+    recent_tweets_searched: false,
+    
+    //searches for recent tweets but ONLY once
+    searchRecentTweets: function(last_tweet_id) {
+    
+        if(!TUI.recent_tweets_searched)
+        {
+            TUIServiceProvider.searchWithSinceID(TUI.createTuiLike(), last_tweet_id, TUI.updateLikeCountFromTweets);
+            TUIServiceProvider.searchWithSinceID(TUI.createTuiDislike(), last_tweet_id, TUI.updateLikeCountFromTweets);
+        }
+    
+        TUI.recent_tweets_searched = true;
+    },
     
     //updates the like count from tweets
     updateLikeCountFromTweets: function(data) {
         if(data)
         {
             var searchLike = TUI.createTuiLike().toLowerCase();
-            var searchDisike = TUI.createTuiDislike().toLowerCase();
+            var searchDislike = TUI.createTuiDislike().toLowerCase();
             $.each(data,function(i,tweet)
             {
                 var msg = tweet.message.toLowerCase();
