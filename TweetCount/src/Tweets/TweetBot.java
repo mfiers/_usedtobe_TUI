@@ -56,7 +56,6 @@ public class TweetBot {
 
     public void setConfig() {
         cb = new ConfigurationBuilder();
-
         cb.setOAuthConsumerKey(CONSUMERKEY);
         cb.setOAuthConsumerSecret(CONSUMERSECRET);
         cb.setOAuthAccessToken(ACCESSTOKEN);
@@ -65,7 +64,9 @@ public class TweetBot {
         twitter = tf.getInstance();
 
     }
-    //#tui stuff:6358590 like:5 dislike:2
+   /*
+     * Generate tweet to be sent to @tuibot
+     */
 
     public void generateTweet(String mapContent) {
         String tweetMessage = "#tui";
@@ -75,7 +76,9 @@ public class TweetBot {
         System.out.println("Generated Message: " + tweetMessage);
         sendTweet(tweetMessage);
     }
-
+/*
+     *  Post tweet to @tuibot
+     */
     public void sendTweet(String message) {
         try {
 
@@ -90,7 +93,10 @@ public class TweetBot {
             Logger.getLogger(UpdateStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/*
+     *  Gets the Timeline of @tuibot
+     *  Uses only the tweets made the previous day.
+     */
     public void getTuiBotTimeline() {
         try {
 
@@ -112,14 +118,14 @@ public class TweetBot {
                     Logger.getLogger(UpdateStatus.class.getName()).log(Level.SEVERE, null, "Status ID is less that the lastUpdate");
                 }
             }
-
-
         } catch (TwitterException ex) {
             Logger.getLogger(TweetBot.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
-
+/*
+     *  Updates the hashmap
+     */
     public void checkMap(String status) {
         String[] splitStatus = status.split(" ");
 
