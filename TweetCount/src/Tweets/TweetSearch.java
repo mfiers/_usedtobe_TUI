@@ -24,36 +24,39 @@ import twitter4j.TwitterFactory;
  * @author mpra289
  */
 public class TweetSearch {
-    private String date;
+    private String startDate,endDate;
     private Twitter twitter;
     private List<String> likeList;      //list of tui like messages
     private List<String> dislikeList;   //list of tui dislike messages
     private static final String REGEX_LIKE = "^(.*)#TUI (I LIKE)(.*:.*)";   //tui like format
     private static final String REGEX_DISLIKE = "^(.*)#TUI (I DISLIKE)(.*:.*)"; //tui dislike format
-    private HashMap map;    //A map where key=messages and value = number of like/dislike
+    private HashMap<String,String> map;    //A map where key=messages and value = number of like/dislike
 
     public TweetSearch() {
         twitter = new TwitterFactory().getInstance();
         likeList = new ArrayList<String>();
         dislikeList = new ArrayList<String>();
         map = new HashMap();
-        setDate();
+        Calendar cal = setDate();
         setLikeList();
         setDislikeList();
-        System.out.println("map: " + map.toString());
-
+        Logger.getLogger(TweetSearch.class.getName()).log(Level.INFO, "Date: "+startDate);
+         System.out.println("map: "+map.toString());
+         TweetBot tweetBot = new TweetBot(map,cal);
     }
     /*
      * Sets the current date
      */
 
-    public void setDate() {
+    public Calendar setDate() {
         Calendar cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DATE);
+        int day = cal.get(Calendar.DATE)-1;
         int month = cal.get(Calendar.MONTH)+1;
         int year = cal.get(Calendar.YEAR);
-         date = ("" + year + "-" + month + "-" + day + "");
-
+         startDate = ("" + year + "-" + month + "-" + day + "");
+        System.out.println("StartDate: " + startDate);
+        cal.set(year, month - 1, day -1);
+        return cal;
     }
 /*
      *  Sets the List of people with #tui like mesages
@@ -61,11 +64,11 @@ public class TweetSearch {
     public void setLikeList() {
         try {
             Query likeQuery = new Query("#tui I like ");
-            likeQuery.setSince(date);
-            QueryResult likeResult = twitter.search(new Query("#tui I like "));
+            likeQuery.setSince(startDate);
+            QueryResult likeResult = twitter.search(likeQuery);
             List<Tweet> likeTweets = likeResult.getTweets();
             for (Tweet tweet : likeTweets) {
-                System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText());
+               System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText()+ " DATE: "+tweet.getCreatedAt());
                 if (tweet.getText().toUpperCase().matches(REGEX_LIKE)) {
                     likeList.add(tweet.getText());
                 }
@@ -80,30 +83,32 @@ public class TweetSearch {
      */
     public void setDislikeList() {
         Query dislikeQuery = new Query("#tui I dislike ");
-        dislikeQuery.setSince(date);
+        dislikeQuery.setSince(startDate);
         try {
+     
             QueryResult dislikeResult = twitter.search(dislikeQuery);
             List<Tweet> dislikeTweets = dislikeResult.getTweets();
             for (Tweet tweet : dislikeTweets) {
-                System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText());
+               System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText()+ " DATE: "+tweet.getCreatedAt());
                 if (tweet.getText().toUpperCase().matches(REGEX_DISLIKE)) {
                     dislikeList.add(tweet.getText());
                 }
             }
         } catch (TwitterException te) {
             te.printStackTrace();
-            System.out.println("Failed to search tweets: " + te.getMessage());
+            Logger.getLogger(TweetSearch.class.getName()).log(Level.INFO, "Failed to search tweets: " , te.getMessage());
         }
         getTuiObject("DISLIKE", dislikeList);
     }
 
     public void getTuiObject(String messageType, List<String> msgList) {
         for (String msg : msgList) {
-            String tuiObject = msg.split(messageType)[0];
+            String[] tuiObject = msg.toUpperCase().split(messageType);
+            
             if (messageType.equalsIgnoreCase("DISLIKE")) {
-                addMap(false, tuiObject);
+                addMap(false, tuiObject[1].trim());
             } else {
-                addMap(true, tuiObject);
+                addMap(true, tuiObject[1].trim());
             }
         }
     }
@@ -113,15 +118,41 @@ public class TweetSearch {
     public void addMap(boolean add, String tuiObject) {
 
         if (map.isEmpty()) {
-            map.put(tuiObject, new Integer(1));
+            if(add)
+            {
+                 map.put(tuiObject.trim(),"1|0");
+            }
+            else
+            {
+                map.put(tuiObject.trim(), "0|1");
+            }
+           
         } else {
-            if (map.containsKey(tuiObject)) {
-                int value = (Integer) map.get(tuiObject);
-                value = value + 1;
+            if (map.containsKey(tuiObject.trim())) {
+                String value = (String) map.get(tuiObject.trim());
+                String[] valueSplit = value.split("|");
+                int likeCount = Integer.parseInt(valueSplit[1]);
+                int dislikeCount = Integer.parseInt(valueSplit[3]);
+                if(add)
+                {
+                    likeCount = likeCount +1;
+                }
+                else
+                {
+                    dislikeCount = dislikeCount +1;
+                }
+                value = likeCount+"|"+dislikeCount;
                 map.remove(tuiObject);
                 map.put(tuiObject, value);
             } else {
-                map.put(tuiObject, new Integer(1));
+                 if(add)
+                {
+                     map.put(tuiObject, "1|0");
+                }
+                else
+                {
+                    map.put(tuiObject,"0|1");
+                }
             }
         }
     }
