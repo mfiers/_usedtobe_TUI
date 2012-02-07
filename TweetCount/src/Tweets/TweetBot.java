@@ -74,7 +74,7 @@ public class TweetBot {
         tweetMessage = tweetMessage.concat(" " + mapSplit[0].trim());
         tweetMessage = tweetMessage.concat(" like:" + mapSplit[1].split("|")[1].trim() + " dislike:" + mapSplit[1].split("|")[3].trim());
         System.out.println("Generated Message: " + tweetMessage);
-       // sendTweet(tweetMessage);
+        sendTweet(tweetMessage);
     }
 /*
      *  Post tweet to @tuibot
@@ -83,7 +83,6 @@ public class TweetBot {
         try {
 
             Status status = twitter.updateStatus(message);
-
             System.out.println("Updated Status");
             if (status.getId() == 0) {
                 System.out.println("Error occured while posting tweets to twitter");
