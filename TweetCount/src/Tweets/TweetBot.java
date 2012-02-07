@@ -74,7 +74,7 @@ public class TweetBot {
         tweetMessage = tweetMessage.concat(" " + mapSplit[0].trim());
         tweetMessage = tweetMessage.concat(" like:" + mapSplit[1].split("|")[1].trim() + " dislike:" + mapSplit[1].split("|")[3].trim());
         System.out.println("Generated Message: " + tweetMessage);
-        sendTweet(tweetMessage);
+       // sendTweet(tweetMessage);
     }
 /*
      *  Post tweet to @tuibot
@@ -109,7 +109,7 @@ public class TweetBot {
                 Calendar statusDate = Calendar.getInstance();
                 statusDate.setTime(element.getCreatedAt());
                 int compare = statusDate.compareTo(todayDate);
-                System.out.println("element: " + element.getText() + "compare: "+ compare);
+                System.out.println("element: " + element.getText() + " compare: "+ compare);
                 if (compare > 0) {
                     String statusText = element.getText();
                     checkMap(statusText);

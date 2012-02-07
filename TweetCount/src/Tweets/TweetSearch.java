@@ -26,7 +26,7 @@ import twitter4j.TwitterFactory;
  */
 public class TweetSearch {
 
-    private String startDate;
+    private String startDate,endDate;
     private Twitter twitter;
     private List<String> likeList;      //list of tui like messages
     private List<String> dislikeList;   //list of tui dislike messages
@@ -52,11 +52,15 @@ public class TweetSearch {
 
     public Calendar setDate() {
         Calendar cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DATE) - 1;
+        int day = cal.get(Calendar.DATE)-1;
+        int endDay = cal.get(Calendar.DATE) ;
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
         startDate = ("" + year + "-" + month + "-" + day + "");
+        endDate = ("" + year + "-" + month + "-" + endDay + "");
+        
         System.out.println("StartDate: " + startDate);
+         System.out.println("endDate: " + endDate);
         cal.set(year, month - 1, day - 1);   //sets date as the previous date
         return cal;
     }
@@ -68,6 +72,8 @@ public class TweetSearch {
         try {
             Query likeQuery = new Query("#tui I like ");
             likeQuery.setSince(startDate);
+            likeQuery.setUntil(endDate);
+           
             QueryResult likeResult = twitter.search(likeQuery);
             List<Tweet> likeTweets = likeResult.getTweets();
             for (Tweet tweet : likeTweets) {
@@ -87,8 +93,11 @@ public class TweetSearch {
 
     public void setDislikeList() {
         Query dislikeQuery = new Query("#tui I dislike ");
-        dislikeQuery.setSince(startDate);
-        try {
+       dislikeQuery.setSince(startDate);
+        dislikeQuery.setUntil(endDate);
+           
+                   
+          try {
 
             QueryResult dislikeResult = twitter.search(dislikeQuery);
             List<Tweet> dislikeTweets = dislikeResult.getTweets();
