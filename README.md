@@ -35,4 +35,6 @@ http://www.wormbase.org/db/gene/gene?name=WBGene00021408;class=Gene
 ### Directory Descriptions:
 __Plugin__: The base TUI plugincode  for browsers to inject TUI content and offer quick and easy #tui format messages to post to twitter and other microblogging services.  
 __Sites__: A list of all the site-specific scripts for the TUI plugin.  
+__TweetCount__: A program to search through twitter once a day and collect the #tui tweets.  
 __WikiBot__: Polls twitter and identi.ca for #tui tweets and posts the data on Semantic Media Wiki.  
+
