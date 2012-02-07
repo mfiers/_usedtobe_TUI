@@ -98,9 +98,9 @@ var TUIView = {
 		$("#"+TUIView.COMMENT_SHOW_ID).show("slow");
 		
 		$('#'+TUIView.COMMENT_LINK_ID).hover(function(){
-			 $("#"+TUIView.COMMENT_SHOW_ID).show();
-			 $("#"+TUIView.COMMENT_SHOW_ID).find("span").text("Show");
-			 $("#"+TUIView.COMMENT_SHOW_ID).hide(5000);
+            //display the show comment link - then delay for 4 seconds before hiding it
+			$("#"+TUIView.COMMENT_SHOW_ID).show().delay(4000).hide(2000);
+            $("#"+TUIView.COMMENT_SHOW_ID).find("span").text("Show")
 			
 		});
 		
