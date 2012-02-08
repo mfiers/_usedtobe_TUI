@@ -6,10 +6,8 @@ package Tweets;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.Query;
@@ -26,7 +24,7 @@ import twitter4j.TwitterFactory;
  */
 public class TweetSearch {
 
-    private String startDate,endDate;
+    private String startDate, endDate;
     private Twitter twitter;
     private List<String> likeList;      //list of tui like messages
     private List<String> dislikeList;   //list of tui dislike messages
@@ -50,30 +48,28 @@ public class TweetSearch {
      * Sets the current date
      */
 
-    public Calendar setDate() {
+    private Calendar setDate() {
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DATE)-1;
-        int endDay = cal.get(Calendar.DATE) ;
+        int endDay = cal.get(Calendar.DATE);
         int month = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
         startDate = ("" + year + "-" + month + "-" + day + "");
         endDate = ("" + year + "-" + month + "-" + endDay + "");
-        
         System.out.println("StartDate: " + startDate);
-         System.out.println("endDate: " + endDate);
-        cal.set(year, month - 1, day - 1);   //sets date as the previous date
+        System.out.println("endDate: " + endDate);
+        cal.set(year, month - 1, day);   //sets date as the previous date
         return cal;
     }
     /*
      *  Sets the List of people with #tui like mesages
      */
 
-    public void setLikeList() {
+    private void setLikeList() {
         try {
             Query likeQuery = new Query("#tui I like ");
             likeQuery.setSince(startDate);
             likeQuery.setUntil(endDate);
-           
             QueryResult likeResult = twitter.search(likeQuery);
             List<Tweet> likeTweets = likeResult.getTweets();
             for (Tweet tweet : likeTweets) {
@@ -82,7 +78,8 @@ public class TweetSearch {
                     likeList.add(tweet.getText());
                 }
             }
-        } catch (TwitterException ex) {
+        }
+        catch (TwitterException ex) {
             Logger.getLogger(TweetSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
         getTuiObject("LIKE", likeList);
@@ -91,14 +88,11 @@ public class TweetSearch {
      *  Sets the List of people with #tui dislike mesages
      */
 
-    public void setDislikeList() {
+    private void setDislikeList() {
         Query dislikeQuery = new Query("#tui I dislike ");
-       dislikeQuery.setSince(startDate);
+        dislikeQuery.setSince(startDate);
         dislikeQuery.setUntil(endDate);
-           
-                   
-          try {
-
+        try {
             QueryResult dislikeResult = twitter.search(dislikeQuery);
             List<Tweet> dislikeTweets = dislikeResult.getTweets();
             for (Tweet tweet : dislikeTweets) {
@@ -107,7 +101,8 @@ public class TweetSearch {
                     dislikeList.add(tweet.getText());
                 }
             }
-        } catch (TwitterException te) {
+        }
+        catch (TwitterException te) {
             te.printStackTrace();
             Logger.getLogger(TweetSearch.class.getName()).log(Level.INFO, "Failed to search tweets: ", te.getMessage());
         }
@@ -120,10 +115,10 @@ public class TweetSearch {
     public void getTuiObject(String messageType, List<String> msgList) {
         for (String msg : msgList) {
             String[] tuiObject = msg.toUpperCase().split(messageType);
-
             if (messageType.equalsIgnoreCase("DISLIKE")) {
                 addMap(false, tuiObject[1].trim());
-            } else {
+            }
+            else {
                 addMap(true, tuiObject[1].trim());
             }
         }
@@ -133,15 +128,16 @@ public class TweetSearch {
      */
 
     public void addMap(boolean add, String tuiObject) {
-
         if (map.isEmpty()) {
             if (add) {
                 map.put(tuiObject.trim(), "1|0");
-            } else {
+            }
+            else {
                 map.put(tuiObject.trim(), "0|1");
             }
 
-        } else {
+        }
+        else {
             if (map.containsKey(tuiObject.trim())) //if the hashmap contains the key,then increment the count
             {
                 String value = (String) map.get(tuiObject.trim());
@@ -150,16 +146,19 @@ public class TweetSearch {
                 int dislikeCount = Integer.parseInt(valueSplit[3]);
                 if (add) {
                     likeCount = likeCount + 1;
-                } else {
+                }
+                else {
                     dislikeCount = dislikeCount + 1;
                 }
                 value = likeCount + "|" + dislikeCount;
                 map.remove(tuiObject);
                 map.put(tuiObject, value);
-            } else {
+            }
+            else {
                 if (add) {
                     map.put(tuiObject, "1|0");
-                } else {
+                }
+                else {
                     map.put(tuiObject, "0|1");
                 }
             }
@@ -168,7 +167,5 @@ public class TweetSearch {
 
     public static void main(String[] args) {
         TweetSearch ts = new TweetSearch();
-
-
     }
 }
