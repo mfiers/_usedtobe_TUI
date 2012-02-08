@@ -5,20 +5,16 @@
 package Tweets;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.examples.tweets.UpdateStatus;
 
@@ -35,26 +31,26 @@ public class TweetBot {
     private ConfigurationBuilder cb;
     private Twitter twitter;
     private HashMap<String, String> tweetMap;
-    private Calendar todayDate ;
+    private Calendar todayDate;
+    private static final String REGEX = "^(.*)#tui (.*:.*)(like:.*)(dislike:.*)";
 
-    public TweetBot(HashMap<String, String> tweetMap,Calendar todayDate) {
+    public TweetBot(HashMap<String, String> tweetMap, Calendar todayDate) {
         this.tweetMap = tweetMap;
         setConfig();
         this.todayDate = todayDate;
         getTuiBotTimeline();
         mapIterator();
-       
     }
-    public void mapIterator()
-    {
-         Set s = tweetMap.entrySet();
+
+    private void mapIterator() {
+        Set s = tweetMap.entrySet();
         Iterator i = s.iterator();
         while (i.hasNext()) {
             generateTweet(i.next().toString());
         }
     }
 
-    public void setConfig() {
+    private void setConfig() {
         cb = new ConfigurationBuilder();
         cb.setOAuthConsumerKey(CONSUMERKEY);
         cb.setOAuthConsumerSecret(CONSUMERSECRET);
@@ -62,9 +58,8 @@ public class TweetBot {
         cb.setOAuthAccessTokenSecret(TOKENSECRET);
         TwitterFactory tf = new TwitterFactory(cb.build());
         twitter = tf.getInstance();
-
     }
-   /*
+    /*
      * Generate tweet to be sent to @tuibot
      */
 
@@ -74,77 +69,86 @@ public class TweetBot {
         tweetMessage = tweetMessage.concat(" " + mapSplit[0].trim());
         tweetMessage = tweetMessage.concat(" like:" + mapSplit[1].split("|")[1].trim() + " dislike:" + mapSplit[1].split("|")[3].trim());
         System.out.println("Generated Message: " + tweetMessage);
-        sendTweet(tweetMessage);
+        // sendTweet(tweetMessage);
     }
-/*
+    /*
      *  Post tweet to @tuibot
      */
+
     public void sendTweet(String message) {
         try {
-
             Status status = twitter.updateStatus(message);
             System.out.println("Updated Status");
             if (status.getId() == 0) {
                 System.out.println("Error occured while posting tweets to twitter");
             }
-
         } catch (TwitterException ex) {
             Logger.getLogger(UpdateStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-/*
+    /*
      *  Gets the Timeline of @tuibot
      *  Uses only the tweets made the previous day.
      */
-    public void getTuiBotTimeline() {
-        try {
 
-            User user = twitter.verifyCredentials();
-            Status latestStatus = user.getStatus();
+    private void getTuiBotTimeline() {
+        try {
             ResponseList<Status> timelineList = twitter.getUserTimeline();
             Iterator iterator = timelineList.iterator();
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
+            {
                 Status element = (Status) iterator.next();
                 Calendar statusDate = Calendar.getInstance();
                 statusDate.setTime(element.getCreatedAt());
                 int compare = statusDate.compareTo(todayDate);
-                System.out.println("element: " + element.getText() + " compare: "+ compare);
-                if (compare > 0) {
+                System.out.println("element: " + element.getText() + " compare: " + compare);
+                if (compare > 0) 
+                {
                     String statusText = element.getText();
                     checkMap(statusText);
                 } 
-                else {
-                    Logger.getLogger(UpdateStatus.class.getName()).log(Level.SEVERE, null, "Status ID is less that the lastUpdate");
+                else 
+                {
+                    Logger.getLogger(UpdateStatus.class.getName()).log(Level.INFO, "Status ID is less that the lastUpdate");
                 }
             }
-        } catch (TwitterException ex) {
+        } 
+        catch (TwitterException ex) 
+        {
             Logger.getLogger(TweetBot.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
-/*
+    /*
      *  Updates the hashmap
      */
+
     public void checkMap(String status) {
-        String[] splitStatus = status.split(" ");
-
-        String key = splitStatus[1].trim();
-        int likeCount = Integer.parseInt(splitStatus[2].trim().split(":")[1]);
-        int dislikeCount = Integer.parseInt(splitStatus[3].trim().split(":")[1]);
-        if (tweetMap.containsKey(key)) {
-            String value = (String) tweetMap.get(key);
-            int likeValue = Integer.parseInt(value.trim().split("|")[1]);
-            int dislikeValue = Integer.parseInt(value.trim().split("|")[3]);
-            likeValue = likeValue + likeCount;
-            dislikeValue = dislikeValue + dislikeCount;
-            value = likeValue + "|" + dislikeValue;
-            tweetMap.remove(key);
-            tweetMap.put(key, value);
-
-        } else {
-            String value = "" + likeCount + "|" + dislikeCount;
-            tweetMap.put(key, value);
+        if (status.matches(REGEX)) //checks if the tuiBot status is of valid format
+        {
+            String[] splitStatus = status.split(" ");
+            String key = splitStatus[1].trim();
+            int likeCount = Integer.parseInt(splitStatus[2].split(":")[1]);
+            int dislikeCount = Integer.parseInt(splitStatus[3].split(":")[1]);
+            if (tweetMap.containsKey(key))
+            {
+                String value = (String) tweetMap.get(key);
+                int likeValue = Integer.parseInt(value.trim().split("|")[1]);
+                int dislikeValue = Integer.parseInt(value.trim().split("|")[3]);
+                likeValue = likeValue + likeCount;
+                dislikeValue = dislikeValue + dislikeCount;
+                value = likeValue + "|" + dislikeValue;
+                tweetMap.remove(key);
+                tweetMap.put(key, value);
+            } 
+            else 
+            {
+                String value = "" + likeCount + "|" + dislikeCount;
+                tweetMap.put(key, value);
+            }
+        } 
+        else 
+        {
+            Logger.getLogger(TweetBot.class.getName()).log(Level.INFO, "Not a valid formatted status");
         }
-
     }
 }
