@@ -41,7 +41,6 @@ public class TweetSearch {
         setLikeList();
         setDislikeList();
         Logger.getLogger(TweetSearch.class.getName()).log(Level.INFO, "Date: " + startDate);
-        System.out.println("map: " + map.toString());
         TweetBot tweetBot = new TweetBot(map, cal);
     }
     /*
@@ -56,8 +55,6 @@ public class TweetSearch {
         int year = cal.get(Calendar.YEAR);
         startDate = ("" + year + "-" + month + "-" + day + "");
         endDate = ("" + year + "-" + month + "-" + endDay + "");
-        System.out.println("StartDate: " + startDate);
-        System.out.println("endDate: " + endDate);
         cal.set(year, month - 1, day);   //sets date as the previous date
         return cal;
     }
@@ -73,7 +70,6 @@ public class TweetSearch {
             QueryResult likeResult = twitter.search(likeQuery);
             List<Tweet> likeTweets = likeResult.getTweets();
             for (Tweet tweet : likeTweets) {
-                System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText() + " DATE: " + tweet.getCreatedAt());
                 if (tweet.getText().toUpperCase().matches(REGEX_LIKE)) {
                     likeList.add(tweet.getText());
                 }
@@ -96,7 +92,6 @@ public class TweetSearch {
             QueryResult dislikeResult = twitter.search(dislikeQuery);
             List<Tweet> dislikeTweets = dislikeResult.getTweets();
             for (Tweet tweet : dislikeTweets) {
-                System.out.println("@" + tweet.getFromUser() + " - " + tweet.getText() + " DATE: " + tweet.getCreatedAt());
                 if (tweet.getText().toUpperCase().matches(REGEX_DISLIKE)) {
                     dislikeList.add(tweet.getText());
                 }
