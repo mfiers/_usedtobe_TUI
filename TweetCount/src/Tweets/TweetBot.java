@@ -68,7 +68,6 @@ public class TweetBot {
         String[] mapSplit = mapContent.split("=");
         tweetMessage = tweetMessage.concat(" " + mapSplit[0].trim());
         tweetMessage = tweetMessage.concat(" like:" + mapSplit[1].split("|")[1].trim() + " dislike:" + mapSplit[1].split("|")[3].trim());
-        System.out.println("Generated Message: " + tweetMessage);
         sendTweet(tweetMessage);
     }
     /*
@@ -78,9 +77,8 @@ public class TweetBot {
     public void sendTweet(String message) {
         try {
             Status status = twitter.updateStatus(message);
-            System.out.println("Updated Status");
             if (status.getId() == 0) {
-                System.out.println("Error occured while posting tweets to twitter");
+               Logger.getLogger(UpdateStatus.class.getName()).log(Level.INFO,"Error while posting to twitter");
             }
         } catch (TwitterException ex) {
             Logger.getLogger(UpdateStatus.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,7 +99,6 @@ public class TweetBot {
                 Calendar statusDate = Calendar.getInstance();
                 statusDate.setTime(element.getCreatedAt());
                 int compare = statusDate.compareTo(todayDate);
-                System.out.println("element: " + element.getText() + " compare: " + compare);
                 if (compare > 0) 
                 {
                     String statusText = element.getText();
