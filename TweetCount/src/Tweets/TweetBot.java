@@ -92,7 +92,7 @@ public class TweetBot {
     private void getTuiBotTimeline() {
         try {
             User user = twitter.verifyCredentials();
-            ResponseList<Status> timelineList = twitter.getUserTimeline(new Paging(1, user.getStatusesCount();));
+            ResponseList<Status> timelineList = twitter.getUserTimeline(new Paging(1, user.getStatusesCount()));
             Iterator iterator = timelineList.iterator();
             while (iterator.hasNext())
             {
