@@ -107,7 +107,8 @@ public class TweetBot {
                 } 
                 else 
                 {
-                    Logger.getLogger(UpdateStatus.class.getName()).log(Level.INFO, "Status ID is less that the lastUpdate");
+                    Logger.getLogger(UpdateStatus.class.getName()).log(Level.INFO, "End of previous day's tweets");
+                    break;
                 }
             }
         } 
