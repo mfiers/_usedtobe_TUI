@@ -17,10 +17,10 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.examples.tweets.UpdateStatus;
-
+import twitter4j.User;
 /**
  *
- * @author mpra289
+ * Sends updated tweets to @tuibot
  */
 public class TweetBot {
 
@@ -91,7 +91,8 @@ public class TweetBot {
 
     private void getTuiBotTimeline() {
         try {
-            ResponseList<Status> timelineList = twitter.getUserTimeline();
+            User user = twitter.verifyCredentials();
+            ResponseList<Status> timelineList = twitter.getUserTimeline(new Paging(1, user.getStatusesCount();));
             Iterator iterator = timelineList.iterator();
             while (iterator.hasNext())
             {
