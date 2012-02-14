@@ -38,7 +38,7 @@ var TUI = {
     /* Tui change title format */
     TITLE_FORMAT: ' #tui %s:%s dc:title %s',
     /* Tui comment format */
-    COMMENT_FORMAT: ' #tui %s:%s comment %s',
+    COMMENT_FORMAT: ' #tui %s:%s tui:comment %s',
 
     //initializes the TUI object
     _init: function () {
