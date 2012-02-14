@@ -1,7 +1,8 @@
 //arabidopsis.org TUI script
 
 //only works on this valid site
-if (location.href.indexOf("http://www.arabidopsis.org/servlets/TairObject?") == 0) {
+if (location.href.indexOf("http://www.arabidopsis.org/servlets/TairObject?") == 0 || 
+    location.href.indexOf("http://arabidopsis.org/servlets/TairObject?") == 0) {
     TUI.onReady(loadTair);
 }
 
