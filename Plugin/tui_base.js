@@ -24,7 +24,7 @@ function dlog(text) {
 //define the tui namespace
 var TUI = {
 
-    VERSION: "testing",
+    VERSION: "1.0",
 
     /* Meta Data Tags */
     META_TUI_ID: "tui-id",

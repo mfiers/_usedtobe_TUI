@@ -1,6 +1,6 @@
 {
-  "name": "TUI Base Testing", /* change name to TUI <site_name> */
-  "version": "0.9",
+  "name": "TUI - [site_name]", 
+  "version": "1.0",
   "permissions": 
   [
 	"tabs",
@@ -10,7 +10,7 @@
     {
       "matches": ["http://*/*"],
       "css": ["boxy.css"],
-      "js": ["sprintf.js", "jquery.js", "jquery.boxy.js", "spin.js", "tui_base.js", "tui_messaging.js", "tui_view.js", "inject.js" , "stuff.js"],
+      "js": ["sprintf.js", "jquery.js", "jquery.boxy.js", "spin.js", "tui_base.js", "tui_messaging.js", "tui_view.js", "inject.js" , "script.js"],
 	  "run_at": "document_end"
     }
   ]
