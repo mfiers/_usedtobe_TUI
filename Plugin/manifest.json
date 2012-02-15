@@ -1,6 +1,12 @@
 {
   "name": "TUI - [site_name]", 
   "version": "1.0",
+  "icons":
+  { 
+    "16": "tui.png",
+    "48": "tui.png",
+    "128": "tui.png" 
+  },
   "permissions": 
   [
 	"tabs",
