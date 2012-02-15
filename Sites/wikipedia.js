@@ -5,13 +5,13 @@ if (location.href.indexOf("http://en.wikipedia.org") === 0 || location.href.inde
     TUI.onReady(loadWikipedia);
 }
 
-//base url to the wikipedia api (to get the article id
-var WIKI_API_BASE = 'http://en.wikipedia.org/w/api.php?format=json&action=query&titles=';
-
 function loadWikipedia() {
     //only one id for stuff
     TUI.setTuiMeta(TUI.META_TUI_ID_PREFIX, "wikipedia");
 
+    //base url to the wikipedia api (to get the article id
+    var WIKI_API_BASE = 'http://en.wikipedia.org/w/api.php?format=json&action=query&titles=';
+    
     //split the URL
     var urlSplit = window.location.href.split("/");
     //get the page title
