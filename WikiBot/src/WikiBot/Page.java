@@ -152,12 +152,22 @@ public class Page {
 // sets the title suggested by the user
 
     public void setTitle(String title) {
-        this.title = title;
+        String newTitle = title;
+        if(title.startsWith("\""))
+        {
+           newTitle =  title.substring(1,title.length()-1);
+        }
+        this.title = newTitle;
     }
     //set the comment
 
     public void setComment(String comment) {
-        this.comment = comment;
+        String newComment = comment;
+        if(title.startsWith("\""))
+        {
+           newComment =  comment.substring(1,comment.length()-1);
+        }
+        this.comment = newComment;
     }
     /*
      * Creates a new page for each comment/title 
