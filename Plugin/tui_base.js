@@ -4,7 +4,7 @@
     
                         #TUI 
     Semantic Microblogging in Community Genome Annotation
-            https://github.com/andrew-smith/TUI
+            https://github.com/mfiers/TUI
 
 	
 	
