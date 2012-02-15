@@ -24,9 +24,10 @@ public class Parser {
         Logger.getLogger(Parser.class.getName()).log(Level.INFO, "New #TUI message from {0}: {1}", new Object[]{username, msg});
         
         if (isValidTuiMessage()) {
-            WikiEditor editor = new WikiEditor(username, this.message, messageType,currentTime);
             Logger.getLogger(Parser.class.getName()).log(Level.INFO, " VALID TUI FORMATTED MESSAGE");
-        } else {
+            WikiEditor editor = new WikiEditor(username, this.message, messageType,currentTime);
+        }
+        else {
             Logger.getLogger(Parser.class.getName()).log(Level.INFO, "NOT A VALID TUI FORMATTED MESSAGE");
         }
     }
@@ -56,6 +57,8 @@ public class Parser {
                     }
                 }
             } else {
+                 tuiData = tuiData.replaceFirst(" COMMENT", " TUI:COMMENT");
+                 message = msgSplit[0] + tuiData;
                 if (message.matches(REGEX_TITLE_TUI)) {
                     isValid = true;
                     messageType = "TITLE";
